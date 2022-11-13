@@ -33,4 +33,4 @@ def create_moon_data(name_folder: str, path_folder: str, n_sample: int, n_point:
         np.savetxt(path_join + '/moon_' + str(i) + '.csv', arr, delimiter=',', fmt='%f')
 
 
-create_data('test', '/Users/alicebatte/Documents/TUB/PML/MLP_Project/', 3, 10)
+create_moon_data('sandbox', '/Users/alicebatte/Documents/TUB/PML/MLP_Project/', 3, 10)
