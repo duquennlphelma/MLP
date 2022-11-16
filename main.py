@@ -1,19 +1,30 @@
 import torch
+import math
 from RNVP import RNVP
-from data_simple import D, x_sample, batch
+from data_simple import x_sample, batch
 
 
 if __name__ == '__main__':
 
 
-    model = RNVP()
 
-    # trying forward on a one 2d-point
+    # data
     point = torch.Tensor([2, 3])
+
+    # lengths
+    # from shape of a data point
+    D = 2
+    print(D)
+    # ceiling of a half of D
+    d = 1
+
+
+    model = RNVP(D, d)
+    # trying forward on a one 2d-point
     out = model.forward(point)
     #print(out)
 
-
+    # preparation for using the loss function
     s_sum = 0
     for i in range(batch):
         # add all scaling factors s from all coupling layers
