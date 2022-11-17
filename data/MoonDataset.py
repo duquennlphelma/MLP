@@ -8,7 +8,7 @@ class MoonDataset(Dataset):
 
     """Characterize the 2 moons dataset for pytorch """
 
-    def __init__(self, n_sample: int, shuffle=None, noise=None, random_state=None):
+    def __init__(self, n_sample: int, shuffle=None, noise=None, random_state=None, transform=None):
         """Initialisation
         :param n_sample: Number of samples created.
         :param shuffle: Whether to shuffle the points.
@@ -17,6 +17,7 @@ class MoonDataset(Dataset):
         """
         self.samples, _ = datasets.make_moons(n_sample, shuffle=shuffle, noise=noise, random_state=random_state)
         self.noise = noise
+        self.transform = transform
 
     def __len__(self):
         """Returns the number of samples"""
