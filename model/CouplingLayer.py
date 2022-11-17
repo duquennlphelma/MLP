@@ -1,6 +1,6 @@
 import torch
 from torch import nn
-from ResNet import ResNet
+from model.ResNet import ResNet
 
 
 # next: ResNets for s and t

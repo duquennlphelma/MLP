@@ -1,7 +1,6 @@
 import torch
-import math
-from RNVP import RNVP
-from data_simple import x_sample, batch
+from model.RNVP import RNVP
+from data.data_simple import x_sample, batch
 
 
 if __name__ == '__main__':
