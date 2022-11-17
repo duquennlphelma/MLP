@@ -1,6 +1,6 @@
 import torch
 from torch import nn
-from CouplingLayer import CouplingLayer
+from model.rnvp.CouplingLayer import CouplingLayer
 
 # next: generalization for more dimensions
 

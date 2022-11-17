@@ -1,5 +1,5 @@
 import torch
-from model.RNVP import RNVP
+from model.rnvp.RNVP import RNVP
 from data.data_simple import x_sample, batch
 
 
