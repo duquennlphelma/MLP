@@ -34,6 +34,3 @@ class MoonDataset(Dataset):
         plt.xlabel('x')
         plt.ylabel('y')
         plt.show()
-
-test=MoonDataset(100)
-test.show()
