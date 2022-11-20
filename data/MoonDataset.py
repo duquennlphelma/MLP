@@ -15,6 +15,9 @@ class MoonDataset(Dataset):
         :param shuffle: Whether to shuffle the points.
         :param noise: Standard deviation of Gaussian noise added to the data.
         :param random_state: Determines random number generation for dataset shuffling and noise.
+        :param transform:
+        :param download: If true, downloads the dataset from the internet and puts it in '' directory.
+                        If dataset is already downloaded, it is not downloaded again.
         """
         directory = ''
         file_name = 'moon_' + str(n_sample) + '_' + str(shuffle) + '_' + str(noise) + '_' + str(random_state) + '_' + str(transform) + '.csv'
