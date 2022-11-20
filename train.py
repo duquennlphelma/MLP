@@ -20,7 +20,7 @@ def load_data(dataset: str, transformation=None, n_train=None, n_test=None):
     batch_size = 64
 
     match dataset:
-        case 'MoonDatset':
+        case 'MoonDataset':
 
             train_dataset = MoonDataset.MoonDataset(n_train, transform=transformation)
             train_loader = data.DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
