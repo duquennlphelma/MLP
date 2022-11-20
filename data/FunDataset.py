@@ -25,8 +25,12 @@ class FunDataset(Dataset):
             for j in range(len(im_th[0])):
                 if im_th[i, j]==0:
                     sequence.append([i, j])
-
-        self.samples=np.array(random.choices(sequence, weights=None, cum_weights=None, k=n_sample))
+        clean_samples = np.array(random.choices(sequence, weights=None, cum_weights=None, k=n_sample))
+        if noise==None:
+            self.samples=clean_samples
+        else:
+            random_noise = np.random.normal(np.mean(clean_samples), noise, [len(clean_samples), len(clean_samples[0])])
+            self.samples=clean_samples + random_noise
         self.noise = noise
         self.transform = transform
 
@@ -46,7 +50,7 @@ class FunDataset(Dataset):
         plt.ylabel('y')
         plt.show()
 
-test=FunDataset(2000)
+test=FunDataset(2000, 10, None)
 test.show()
 
 

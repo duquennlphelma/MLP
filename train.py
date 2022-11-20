@@ -3,7 +3,7 @@ import torch
 import torch.utils.data as data
 import torchvision
 
-from data import MoonDataset
+from data import MoonDataset, FunDataset
 
 path_data_cluster = '/home/space/datasets'
 
@@ -20,6 +20,12 @@ def load_data(dataset: str, transformation=None, n_train=None, n_test=None):
     batch_size = 64
 
     match dataset:
+        case 'FunDataset':
+            train_dataset = FunDataset.FunDataset(n_train, transform=transformation)
+            train_loader = data.DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
+            test_dataset = FunDataset.FunDataset(n_test, transform=transformation)
+            test_loader = data.DataLoader(test_dataset, batch_size=batch_size, shuffle=True)
+
         case 'MoonDataset':
 
             train_dataset = MoonDataset.MoonDataset(n_train, transform=transformation)
@@ -29,9 +35,16 @@ def load_data(dataset: str, transformation=None, n_train=None, n_test=None):
 
         case 'MNIST':
 
-            patch_dataset = os.path.join(path_data_cluster, dataset)
+            path_dataset = '/home/space/datasets/MNIST'
 
-            train_dataset = torchvision.datasets.MNIST(patch_dataset, train=True, transform=transformation, download=True)
+            train_dataset = torchvision.datasets.MNIST(path_dataset, train=True, transform=transformation, download=True)
             train_loader = data.DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
-            test_dataset = torchvision.datasets.MNIST(patch_dataset, train=False, transform=transformation, download=True)
+            test_dataset = torchvision.datasets.MNIST(path_dataset, train=False, transform=transformation, download=True)
             test_loader = data.DataLoader(test_dataset, batch_size=batch_size, shuffle=True)
+
+        case _:
+            print('Dataset not found')
+            train_loader = None
+            test_loader = None
+
+    return train_loader, test_loader
