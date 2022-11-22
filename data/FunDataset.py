@@ -14,7 +14,7 @@ class FunDataset(Dataset):
         :param n_sample: Number of samples created.
         :param noise: Standard deviation of Gaussian noise added to the data.
         """
-        directory = '/Users/alicebatte/Documents/TUB/PML/MLP/sandbox'
+        directory = '/Users/louiseduquenne/Documents/BERLIN/Cours/machine_learning_project/MLP/sandbox'
         file_name = 'fun_' + str(n_sample) + '_' + str(noise) + '_' + str(transform) + '.csv'
         path = os.path.join(directory, file_name)
 
@@ -29,8 +29,8 @@ class FunDataset(Dataset):
                 # cv2.imwrite('../sandbox/TUB_Logo_bin.jpg', im_th)
 
                 sequence = []
-                for i in range(len(im_th) - 1):
-                    for j in range(len(im_th[0])):
+                for i in range((len(im_th) - 1)):
+                    for j in range((len(im_th[0])-1)):
                         if im_th[i, j] == 0:
                             sequence.append([i, j])
                 clean_samples = np.array(random.choices(sequence, weights=None, cum_weights=None, k=n_sample))
@@ -58,7 +58,7 @@ class FunDataset(Dataset):
             if noise is None:
                 self.samples = clean_samples
             else:
-                random_noise = np.random.normal(np.mean(clean_samples), noise,
+                random_noise = np.random.normal(0, noise,
                                                 [len(clean_samples), len(clean_samples[0])])
                 self.samples = clean_samples + random_noise
 
@@ -75,14 +75,12 @@ class FunDataset(Dataset):
 
     def show(self):
         plt.figure()
-        plt.plot(self.samples[:, 0], self.samples[:, 1], '.')
-        plt.title('FunDataset for ' + str(len(self)))
+        plt.plot( self.samples[:, 0],self.samples[:, 1], '.')
+        plt.title('FunDataset for ' + str(len(self)) + ' samples with Gaussian noise std = ' + str(self.noise))
         plt.xlabel('x')
         plt.ylabel('y')
         plt.show()
 
 
-test=FunDataset(200, 10, None)
-test.show()
 
 
