@@ -1,32 +1,30 @@
 import torch
 from torch import nn
 from model.resnet.ResNet import ResNet
+import torch.nn.functional
+import numpy as np
 
-
-# next: ResNets for s and t
-# question: is it better to write an option to permute the dimensions in the coupling layer class?
-# define D using shape of data variable
-# define d to be a roof of half of D?
 
 class CouplingLayer(nn.Module):
-    def __init__(self, input_size, output_size):
+    def __init__(self, input_size, d, up=True):
         """
         Initialisation of the coupling layer
+        Specific case of dataset of non images but points with [x, y] coordinates.
         :param input_size: size of the input
         :param output_size: size of the output
         """
         super().__init__()
         # todo: convolutional ResNets or DenseNets with skip connections
         #   and rectifier non-linearities for s and t
-        self.s_recent = None
-        self.s = ResNet(output_size, input_size-output_size)
-        self.t = ResNet(output_size, input_size-output_size)
-        self.output_size = output_size
-        self.input_size = input_size
 
-        print(self, "Trainable parameters are: ")
-        for param in self.parameters():
-            print("parameter shape: ", param.shape)
+        self.s = nn.Linear(input_size, input_size - d)
+        self.t = nn.Linear(input_size, input_size - d)
+        self.d = d
+        self.input_size = input_size
+        if up:
+            self.mask = np.concatenate((np.ones(d), np.zeros(input_size - d)), axis=None)
+        else:
+            self.mask = np.concatenate((np.zeros(d), np.ones(input_size - d)), axis=None)
 
     def forward(self, x):
         """
@@ -34,6 +32,12 @@ class CouplingLayer(nn.Module):
         :param x: input of the layer
         :return: output of the layer
         """
-        self.s_recent = self.s(x[0:self.output_size])    # will be used in loss function
-        coupling_out = torch.cat([self.s_recent, torch.mul(x[self.output_size+1:self.input_size], torch.exp(self.s_recent) + self.t(x[0:self.input_size]))])
-        return coupling_out
+        b = self.mask
+
+        b_x = x * b
+        s_x = self.s(b_x)
+        t_x = self.t(b_x)
+
+        y = b_x + (1-b) * (x * np.exp(s_x) + t_x)
+
+        return y
