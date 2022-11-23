@@ -4,10 +4,9 @@ import os
 
 def show(x, outfile=None):
     """
-
-    :param x: The data as a torch.Tensor
-    :param outfile:
-    :return:
+    Plot the Data
+    :param x: The data as an array
+    :param outfile: if True save PNG file with the plot
     """
 
     x_array = np.array(x)
