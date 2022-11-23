@@ -32,7 +32,7 @@ class MoonDataset(Dataset):
 
         else:
             self.samples, _ = datasets.make_moons(n_sample, shuffle=shuffle, noise=noise, random_state=random_state)
-
+            self.samples = self.samples.astype(np.float32)
         self.noise = noise
         self.transform = transform
 

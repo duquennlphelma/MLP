@@ -22,10 +22,9 @@ class CouplingLayer(nn.Module):
         self.d = d
         self.input_size = input_size
         if up:
-            self.mask = np.concatenate((np.ones(d), np.zeros(input_size - d)), axis=None)
+            self.mask = torch.FloatTensor(np.concatenate((np.ones(d), np.zeros(input_size - d)), axis=None))
         else:
-            self.mask = np.concatenate((np.zeros(d), np.ones(input_size - d)), axis=None)
-
+            self.mask = torch.FloatTensor(np.concatenate((np.zeros(d), np.ones(input_size - d)), axis=None))
     def forward(self, x):
         """
         Definition of the forward pass into a coupling layer for an input x
@@ -34,10 +33,10 @@ class CouplingLayer(nn.Module):
         """
         b = self.mask
 
-        b_x = x * b
+        b_x = torch.mul(x , b)
         s_x = self.s(b_x)
         t_x = self.t(b_x)
 
-        y = b_x + (1-b) * (x * np.exp(s_x) + t_x)
+        y = b_x + torch.mul((1-b), ( torch.mul(x , np.exp(s_x)) + t_x))
 
         return y

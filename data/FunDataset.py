@@ -54,7 +54,7 @@ class FunDataset(Dataset):
                 for j in range(len(im_th[0])):
                     if im_th[i, j] == 0:
                         sequence.append([i, j])
-            clean_samples = np.array(random.choices(sequence, weights=None, cum_weights=None, k=n_sample))
+            clean_samples = np.array(random.choices(sequence, weights=None, cum_weights=None, k=n_sample),dtype=np.float32)
             if noise is None:
                 self.samples = clean_samples
             else:
@@ -80,7 +80,6 @@ class FunDataset(Dataset):
         plt.xlabel('x')
         plt.ylabel('y')
         plt.show()
-
 
 
 
