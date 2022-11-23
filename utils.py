@@ -1,36 +1,32 @@
-"""Creation of the 2 moons Dataset
-
-@duquennel
-@battoubattou
-
-13/11/2022
-"""
-
-import os
-import torch
-from torch.utils.data import Dataset
-from sklearn import datasets
+import matplotlib.pyplot as plt
 import numpy as np
+import os
 
-
-def create_moon_data(name_folder: str, path_folder: str, n_sample: int, n_point: int, shuffle=True, noise=None, random_state=None):
+def show(x, outfile=None):
     """
-    Create a dataset of two moons.
 
-    :param name_folder: Name of the folder to load the data in (can be created).
-    :param path_folder: Path to the folder.
-    :param n_sample: Number of samples created.
-    :param n_point: Number of points in each data sample
-    :param shuffle: Whether to shuffle the points.
-    :param noise: Standard deviation of Gaussian noise added to the data.
-    :param random_state: Determines random number generation for dataset shuffling and noise.
+    :param x: The data as a torch.Tensor
+    :param outfile:
+    :return:
     """
-    path_join = os.path.join(path_folder, name_folder)
-    os.mkdir(path_join)
-    for i in range(n_sample):
-        arr, _ = datasets.make_moons(n_point, shuffle=shuffle, noise=noise, random_state=random_state)
 
-        np.savetxt(path_join + '/moon_' + str(i) + '.csv', arr, delimiter=',', fmt='%f')
+    x_array = np.array(x)
 
-current_directory = os.getcwd() +'/'
-create_moon_data('sandbox', current_directory, 3, 10)
+
+    if outfile != None :
+        directory = '/Users/louiseduquenne/Documents/BERLIN/Cours/machine_learning_project/MLP/sandbox'
+        file_name = outfile + '.png'
+        path = os.path.join(directory, file_name)
+
+        plt.plot(x_array[:, 0], x_array[:, 1], '.')
+        plt.savefig(path)
+        plt.show()
+    else:
+        plt.plot(x_array[:, 0], x_array[:, 1], '.')
+        plt.show()
+
+
+directory = '/Users/louiseduquenne/Documents/BERLIN/Cours/machine_learning_project/MLP/data/fun_100_10_None.csv'
+data = np.loadtxt(directory, dtype=float, delimiter=',')
+show(data, 'data_test')
+
