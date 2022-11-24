@@ -27,9 +27,7 @@ class FunDataset(Dataset):
             else:
                 im = cv2.imread('shrek.jpg')
                 im_gray = cv2.cvtColor(im, cv2.COLOR_BGR2GRAY)
-                # cv2.imwrite('../sandbox/TUB_Logo_gray.jpg', im_gray)
                 th, im_th = cv2.threshold(im_gray, 128, 255, cv2.THRESH_BINARY)
-                # cv2.imwrite('../sandbox/TUB_Logo_bin.jpg', im_th)
 
                 sequence = []
                 for i in range((len(im_th) - 1)):
@@ -48,9 +46,7 @@ class FunDataset(Dataset):
         else:
             im = cv2.imread('shrek.jpg')
             im_gray = cv2.cvtColor(im, cv2.COLOR_BGR2GRAY)
-            # cv2.imwrite('../sandbox/TUB_Logo_gray.jpg', im_gray)
             th, im_th = cv2.threshold(im_gray, 128, 255, cv2.THRESH_BINARY)
-            # cv2.imwrite('../sandbox/TUB_Logo_bin.jpg', im_th)
 
             sequence = []
             for i in range(len(im_th) - 1):

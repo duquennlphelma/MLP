@@ -13,7 +13,7 @@ path_data_cluster = '/home/space/datasets'
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 
-def load_data(dataset: str, transformation=None, n_train=None, n_test=None):
+def load_data(dataset: str, transformation=None, n_train=None, n_test=None, noise=None, download= False):
     """Loading of the dataset"""
 
     # Default settings
@@ -26,23 +26,23 @@ def load_data(dataset: str, transformation=None, n_train=None, n_test=None):
 
     if dataset == 'FunDataset':
         directory = FunDataset.DIRECTORY
-        train_dataset = FunDataset.FunDataset(n_train, transform=transformation)
+        train_dataset = FunDataset.FunDataset(n_train, noise= noise, transform=transformation, download=download)
         train_loader = data.DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
-        test_dataset = FunDataset.FunDataset(n_test, transform=transformation)
+        test_dataset = FunDataset.FunDataset(n_test, noise= noise, transform=transformation,  download=download)
         test_loader = data.DataLoader(test_dataset, batch_size=batch_size, shuffle=True)
 
     elif dataset == 'MoonDataset':
         directory = MoonDataset.DIRECTORY
-        train_dataset = MoonDataset.MoonDataset(n_train, noise=0.1, transform=transformation)
+        train_dataset = MoonDataset.MoonDataset(n_train, noise= noise, transform=transformation, download=download)
         train_loader = data.DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
-        test_dataset = MoonDataset.MoonDataset(n_test, transform=transformation)
+        test_dataset = MoonDataset.MoonDataset(n_test, noise= noise, transform=transformation,  download=download)
         test_loader = data.DataLoader(test_dataset, batch_size=batch_size, shuffle=True)
 
     elif dataset == 'MNIST':
         directory = '/home/space/datasets/MNIST'
-        train_dataset = torchvision.datasets.MNIST(directory, train=True, transform=transformation, download=True)
+        train_dataset = torchvision.datasets.MNIST(directory, train=True, transform=transformation,  download=download)
         train_loader = data.DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
-        test_dataset = torchvision.datasets.MNIST(directory, train=False, transform=transformation, download=True)
+        test_dataset = torchvision.datasets.MNIST(directory, train=False, transform=transformation,  download=download)
         test_loader = data.DataLoader(test_dataset, batch_size=batch_size, shuffle=True)
 
     else:
@@ -54,23 +54,36 @@ def load_data(dataset: str, transformation=None, n_train=None, n_test=None):
 
     return train_dataset, train_loader, test_dataset, test_loader
 
+if __name__ == "__main__":
+    #Dowload a MoonDataset example
+    data_Moon, train_Moon, _, _ = load_data('MoonDataset', transformation=None, n_train=100, n_test=100, noise= 10, download=True)
 
-data, train, _, _ = load_data('MoonDataset', transformation=None, n_train=100, n_test=100)
-show(data)
-model_rnvp = RNVP(2, 1)
-sortie_array = []
-for element in train:
-    sortie = model_rnvp(element)
-    print(sortie)
-    sortie = sortie.detach().numpy()
-    print(sortie)
-    sortie_array.append(sortie[0])
-sortie_array = np.array(sortie_array)
-"""print(sortie_array)
-print(np.size(sortie_array))
-plt.plot(sortie_array[:,0], sortie_array[:,1], '.')
-plt.show()"""
-show(sortie_array, outfile=None)
+    # Dowload a FunDataset example
+    data_Fun, train_Fun, _, _ = load_data('FunDataset', transformation=None, n_train=100, n_test=100, noise=0.1, download=True)
+
+    #Download MNIST
+    data_MNIST, train_MNIST, _, _ = load_data('MNIST', transformation=None, n_train=100, n_test=100,download=True)
+
+    #Creating the model
+    model_rnvp = RNVP(2, 1)
+
+    #Passing MoonData into the model
+    exit_array = []
+    for element in train_Moon:
+        exit = model_rnvp(element)
+        print(exit)
+        exit = exit.detach().numpy()
+        print(exit)
+        exit_array.append(exit[0])
+
+    # Plot the data
+    exit_array = np.array(exit_array)
+    show(exit_array, outfile=None)
+
+
+
+
+
 
 
 
