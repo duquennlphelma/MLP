@@ -2,6 +2,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import os
 
+
 def show(x, outfile=None):
     """
     Plot the Data
@@ -22,9 +23,3 @@ def show(x, outfile=None):
     else:
         plt.plot(x_array[:, 0], x_array[:, 1], '.')
         plt.show()
-
-
-directory = '/Users/louiseduquenne/Documents/BERLIN/Cours/machine_learning_project/MLP/data/fun_100_10_None.csv'
-data = np.loadtxt(directory, dtype=float, delimiter=',')
-show(data, 'data_test')
-
