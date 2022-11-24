@@ -4,6 +4,8 @@ import matplotlib.pyplot as plt
 from sklearn import datasets
 from torch.utils.data import Dataset
 
+DIRECTORY = '/home/space/datasets/RNVP_MoonDataset'
+
 
 class MoonDataset(Dataset):
 
@@ -19,7 +21,7 @@ class MoonDataset(Dataset):
         :param download: If true, downloads the dataset from the internet and puts it in '' directory.
                         If dataset is already downloaded, it is not downloaded again.
         """
-        directory = '/home/space/datasets/Moon_Dataset'
+        directory = DIRECTORY
         file_name = 'moon_' + str(n_sample) + '_' + str(shuffle) + '_' + str(noise) + '_' + str(random_state) + '_' + str(transform) + '.csv'
         path = os.path.join(directory, file_name)
 
