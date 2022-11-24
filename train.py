@@ -32,7 +32,7 @@ def load_data(dataset: str, transformation=None, n_train=None, n_test=None):
         test_loader = data.DataLoader(test_dataset, batch_size=batch_size, shuffle=True)
 
     elif dataset == 'MoonDataset':
-        directory = FunDataset.DIRECTORY
+        directory = MoonDataset.DIRECTORY
         train_dataset = MoonDataset.MoonDataset(n_train, noise=0.1, transform=transformation)
         train_loader = data.DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
         test_dataset = MoonDataset.MoonDataset(n_test, transform=transformation)
@@ -47,10 +47,12 @@ def load_data(dataset: str, transformation=None, n_train=None, n_test=None):
 
     else:
         print('Dataset not found')
+        train_dataset = None
+        test_dataset = None
         train_loader = None
         test_loader = None
 
-    return train_loader, test_loader
+    return train_dataset, train_loader, test_dataset, test_loader
 
 
 train, test = load_data('MoonDataset', transformation=None, n_train=100, n_test=100)
