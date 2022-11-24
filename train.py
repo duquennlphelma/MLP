@@ -55,9 +55,10 @@ def load_data(dataset: str, transformation=None, n_train=None, n_test=None):
     return train_dataset, train_loader, test_dataset, test_loader
 
 
-train, test = load_data('MoonDataset', transformation=None, n_train=100, n_test=100)
+data, train, _, _ = load_data('MoonDataset', transformation=None, n_train=100, n_test=100)
+show(data)
 model_rnvp = RNVP(2, 1)
-sortie_array=[]
+sortie_array = []
 for element in train:
     sortie = model_rnvp(element)
     print(sortie)
@@ -65,10 +66,12 @@ for element in train:
     print(sortie)
     sortie_array.append(sortie[0])
 sortie_array = np.array(sortie_array)
-print(sortie_array)
+"""print(sortie_array)
 print(np.size(sortie_array))
 plt.plot(sortie_array[:,0], sortie_array[:,1], '.')
-plt.show()
+plt.show()"""
+show(sortie_array, outfile=None)
+
 
 
 
