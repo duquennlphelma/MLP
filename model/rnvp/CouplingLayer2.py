@@ -16,9 +16,9 @@ class CouplingLayer(nn.Module):
         super().__init__()
         # todo: convolutional ResNets or DenseNets with skip connections
         #   and rectifier non-linearities for s and t
-
+        list_f = [nn.Linear(input_size, input_size), nn.ReLU(), nn.Linear(input_size, input_size - d)]
         self.s = nn.Linear(input_size, input_size - d)
-        self.t = nn.Linear(input_size, input_size - d)
+        self.t = nn.Sequential(*list_f)
         self.d = d
         self.input_size = input_size
         if up:
