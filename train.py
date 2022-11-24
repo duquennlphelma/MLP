@@ -70,11 +70,11 @@ if __name__ == "__main__":
     #Passing MoonData into the model
     exit_array = []
     for element in train_Moon:
-        exit = model_rnvp(element)
-        print(exit)
-        exit = exit.detach().numpy()
-        print(exit)
-        exit_array.append(exit[0])
+        exit_data = model_rnvp(element)
+        print(exit_data)
+        exit_data = exit_data.detach().numpy()
+        print(exit_data)
+        exit_array.append(exit_data[0])
 
     # Plot the data
     exit_array = np.array(exit_array)
