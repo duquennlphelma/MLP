@@ -11,7 +11,9 @@ class CouplingLayer(nn.Module):
         Initialisation of the coupling layer
         Specific case of dataset of non images but points with [x, y] coordinates.
         :param input_size: size of the input
-        :param output_size: size of the output
+        :param d: size of the modified part of the vector into the CouplingLayer
+        :param up: if True the modified part of the vector is the upper part
+                   if False the modified part of the vector is the lower part
         """
         super().__init__()
         # todo: convolutional ResNets or DenseNets with skip connections
@@ -32,6 +34,7 @@ class CouplingLayer(nn.Module):
         :param x: input of the layer
         :return: output of the layer
         """
+        x = torch.Tensor(x)
         b = self.mask
 
         b_x = torch.mul(x, b)
