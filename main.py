@@ -1,7 +1,7 @@
 import torch
-from model.rnvp.RNVP import RNVP
+from model.rnvp.RNVP2 import RNVP
 from data.data_simple import x_sample, batch
-
+from model.loss import loss
 
 if __name__ == '__main__':
 
@@ -35,6 +35,8 @@ if __name__ == '__main__':
     for i in range(batch):
         z_output[i] = model.forward(x_sample[i])
     # print(z_output)
+    print(loss(z_output, s_sum))
+
 
     # next: calculate loss function value of this output here
     # further: train the network
