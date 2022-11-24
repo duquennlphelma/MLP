@@ -5,12 +5,12 @@ import torchvision
 from model.rnvp.RNVP2 import RNVP
 import matplotlib.pyplot as plt
 import numpy as np
-# import cv2
 
 
 from data import MoonDataset, FunDataset
 
 path_data_cluster = '/home/space/datasets'
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 
 def load_data(dataset: str, transformation=None, n_train=None, n_test=None):
