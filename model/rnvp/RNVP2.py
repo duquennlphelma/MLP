@@ -3,7 +3,6 @@ from torch import nn
 from model.rnvp.CouplingLayer2 import CouplingLayer
 
 #todo generalize for n coupling layer in the network
-#todo use learnable function for s and t
 #todo generalize for more than dimensions of points
 
 

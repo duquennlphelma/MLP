@@ -4,6 +4,9 @@ from model.resnet.ResNet import ResNet
 import torch.nn.functional
 import numpy as np
 
+#todo use learnable function for s and t
+#todo generalize for more than dimensions of points
+
 
 class CouplingLayer(nn.Module):
     def __init__(self, input_size, d, up=True):
@@ -16,8 +19,6 @@ class CouplingLayer(nn.Module):
                    if False the modified part of the vector is the lower part
         """
         super().__init__()
-        # todo: convolutional ResNets or DenseNets with skip connections
-        #   and rectifier non-linearities for s and t
         list_f = [nn.Linear(input_size, input_size), nn.ReLU(), nn.Linear(input_size, input_size - d)]
         self.s = nn.Linear(input_size, input_size - d)
         self.t = nn.Sequential(*list_f)
