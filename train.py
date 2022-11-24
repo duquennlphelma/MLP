@@ -6,8 +6,8 @@ from model.rnvp.RNVP2 import RNVP
 import matplotlib.pyplot as plt
 import numpy as np
 
-
 from data import MoonDataset, FunDataset
+from utils import show
 
 path_data_cluster = '/home/space/datasets'
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
@@ -25,31 +25,30 @@ def load_data(dataset: str, transformation=None, n_train=None, n_test=None):
     batch_size = 1
 
     if dataset == 'FunDataset':
-            train_dataset = FunDataset.FunDataset(n_train, transform=transformation)
-            train_loader = data.DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
-            test_dataset = FunDataset.FunDataset(n_test, transform=transformation)
-            test_loader = data.DataLoader(test_dataset, batch_size=batch_size, shuffle=True)
+        directory = FunDataset.DIRECTORY
+        train_dataset = FunDataset.FunDataset(n_train, transform=transformation)
+        train_loader = data.DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
+        test_dataset = FunDataset.FunDataset(n_test, transform=transformation)
+        test_loader = data.DataLoader(test_dataset, batch_size=batch_size, shuffle=True)
 
     elif dataset == 'MoonDataset':
-
-            train_dataset = MoonDataset.MoonDataset(n_train, transform=transformation)
-            train_loader = data.DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
-            test_dataset = MoonDataset.MoonDataset(n_test, transform=transformation)
-            test_loader = data.DataLoader(test_dataset, batch_size=batch_size, shuffle=True)
+        directory = FunDataset.DIRECTORY
+        train_dataset = MoonDataset.MoonDataset(n_train, noise=0.1, transform=transformation)
+        train_loader = data.DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
+        test_dataset = MoonDataset.MoonDataset(n_test, transform=transformation)
+        test_loader = data.DataLoader(test_dataset, batch_size=batch_size, shuffle=True)
 
     elif dataset == 'MNIST':
-
-            path_dataset = '/home/space/datasets/MNIST'
-
-            train_dataset = torchvision.datasets.MNIST(path_dataset, train=True, transform=transformation, download=True)
-            train_loader = data.DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
-            test_dataset = torchvision.datasets.MNIST(path_dataset, train=False, transform=transformation, download=True)
-            test_loader = data.DataLoader(test_dataset, batch_size=batch_size, shuffle=True)
+        directory = '/home/space/datasets/MNIST'
+        train_dataset = torchvision.datasets.MNIST(directory, train=True, transform=transformation, download=True)
+        train_loader = data.DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
+        test_dataset = torchvision.datasets.MNIST(directory, train=False, transform=transformation, download=True)
+        test_loader = data.DataLoader(test_dataset, batch_size=batch_size, shuffle=True)
 
     else:
-            print('Dataset not found')
-            train_loader = None
-            test_loader = None
+        print('Dataset not found')
+        train_loader = None
+        test_loader = None
 
     return train_loader, test_loader
 
