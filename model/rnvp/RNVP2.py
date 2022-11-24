@@ -2,11 +2,15 @@ import torch
 from torch import nn
 from model.rnvp.CouplingLayer2 import CouplingLayer
 
-# next: generalization for more dimensions
+#todo generalize for n coupling layer in the network
+#todo use learnable function for s and t
+#todo generalize for more than dimensions of points
 
 
 class RNVP(nn.Module):
-    # abbreviation of real valued non-volume preserving transformations
+    """
+    RNVP network model for 2 layers, using CouplingLayer2
+    """
     def __init__(self, input_size, d):
         super().__init__()
 
@@ -21,10 +25,7 @@ class RNVP(nn.Module):
 
     def forward(self, x: torch.Tensor):
         """
-        Data goes through each of coupling layers.
-        Between layers it is permutated,
-        so that non dimension goes through identities only,
-        therefore each dimension is transformed.
+        Forword pass of the RNVP network making the data pass into each coupling layers.
         """
         y_mid = self.layer_0.forward(x)
         y_out = self.layer_1.forward(y_mid)
