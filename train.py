@@ -57,13 +57,13 @@ def load_data(dataset: str, transformation=None, n_train=None, n_test=None, nois
 
 if __name__ == "__main__":
     #Dowload a MoonDataset example
-    data_Moon, train_Moon, _, _ = load_data('MoonDataset', transformation=None, n_train=100, n_test=100, noise=0.1, download=False)
-    show(data_Moon)
+    data_Moon, train_Moon, _, _ = load_data('MoonDataset', transformation=None, n_train=100, n_test=100, noise=0.1, download=True)
+
     # Dowload a FunDataset example
-    #data_Fun, train_Fun, _, _ = load_data('FunDataset', transformation=None, n_train=100, n_test=100, noise=0.1, download=True)
+    data_Fun, train_Fun, _, _ = load_data('FunDataset', transformation=None, n_train=100, n_test=100, noise=0.1, download=True)
 
     #Download MNIST
-    #data_MNIST, train_MNIST, _, _ = load_data('MNIST', transformation=None, n_train=100, n_test=100,download=True)
+    data_MNIST, train_MNIST, _, _ = load_data('MNIST', transformation=None, n_train=100, n_test=100, download=True)
 
     #Creating the model
     model_rnvp = RNVP(2, 1)
