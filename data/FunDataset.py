@@ -5,6 +5,9 @@ import matplotlib.pyplot as plt
 from torch.utils.data import Dataset
 import random
 
+DIRECTORY = '/home/space/datasets/RNVP_FunDataset'
+
+
 class FunDataset(Dataset):
 
     """Characterize the fun dataset for pytorch """
@@ -14,7 +17,7 @@ class FunDataset(Dataset):
         :param n_sample: Number of samples created.
         :param noise: Standard deviation of Gaussian noise added to the data.
         """
-        directory = '/Users/louiseduquenne/Documents/BERLIN/Cours/machine_learning_project/MLP/sandbox'
+        directory = DIRECTORY
         file_name = 'fun_' + str(n_sample) + '_' + str(noise) + '_' + str(transform) + '.csv'
         path = os.path.join(directory, file_name)
 
