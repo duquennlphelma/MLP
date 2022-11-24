@@ -27,14 +27,15 @@ class MoonDataset(Dataset):
 
         if download:
             if os.path.exists(path):
-                self.samples = np.loadtxt(path, dtype=float, delimiter=',')
+                self.samples = np.loadtxt(path, dtype=np.float32, delimiter=',')
             else:
-                self.samples, _ = datasets.make_moons(n_sample, shuffle=shuffle, noise=noise, random_state=random_state)
+                samples, _ = datasets.make_moons(n_sample, shuffle=shuffle, noise=noise, random_state=random_state)
+                self.samples = samples.astype(np.float32)
                 np.savetxt(path, self.samples, delimiter=',', fmt='%f')
 
         else:
-            self.samples, _ = datasets.make_moons(n_sample, shuffle=shuffle, noise=noise, random_state=random_state)
-            self.samples = self.samples.astype(np.float32)
+            samples, _ = datasets.make_moons(n_sample, shuffle=shuffle, noise=noise, random_state=random_state)
+            self.samples = samples.astype(np.float32)
         self.noise = noise
         self.transform = transform
 
