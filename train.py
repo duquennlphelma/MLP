@@ -19,11 +19,9 @@ import torch.nn as nn
 from data import MoonDataset, FunDataset
 from utils import show, train_one_epoch
 
-path_data_cluster = '/home/space/datasets'
+path_data_cluster = '/home/space/datasets/MNIST'
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
-
-directory_louise = '/Users/louiseduquenne/Documents/BERLIN/Cours/machine_learning_project/MLP/sandbox'
 
 def load_data(dataset: str, transformation=None, n_train=None, n_test=None, noise=None, batch_size=32, shuffle=True, download= False):
     """Loading of the dataset"""
@@ -36,21 +34,21 @@ def load_data(dataset: str, transformation=None, n_train=None, n_test=None, nois
 
 
     if dataset == 'FunDataset':
-        directory = directory_louise
+        directory = FunDataset.DIRECTORY
         train_dataset = FunDataset.FunDataset(n_train, noise= noise, transform=transformation, download=download)
         train_loader = data.DataLoader(train_dataset, batch_size=batch_size, shuffle=shuffle)
         test_dataset = FunDataset.FunDataset(n_test, noise= noise, transform=transformation,  download=download)
         test_loader = data.DataLoader(test_dataset, batch_size=batch_size, shuffle=shuffle)
 
     elif dataset == 'MoonDataset':
-        directory = directory_louise
+        directory = MoonDataset.DIRECTORY
         train_dataset = MoonDataset.MoonDataset(n_train, noise= noise, transform=transformation, download=download)
         train_loader = data.DataLoader(train_dataset, batch_size=batch_size, shuffle=shuffle)
         test_dataset = MoonDataset.MoonDataset(n_test, noise= noise, transform=transformation,  download=download)
         test_loader = data.DataLoader(test_dataset, batch_size=batch_size, shuffle=shuffle)
 
     elif dataset == 'MNIST':
-        directory = directory_louise
+        directory = path_data_cluster
         train_dataset = torchvision.datasets.MNIST(directory, train=True, transform=transformation,  download=download)
         train_loader = data.DataLoader(train_dataset, batch_size=batch_size, shuffle=shuffle)
         test_dataset = torchvision.datasets.MNIST(directory, train=False, transform=transformation,  download=download)
