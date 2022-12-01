@@ -21,7 +21,8 @@ class MoonDataset(Dataset):
         :param download: If true, downloads the dataset from the internet and puts it in '' directory.
                         If dataset is already downloaded, it is not downloaded again.
         """
-        directory = DIRECTORY
+        #directory = DIRECTORY
+        directory = '/Users/louiseduquenne/Documents/BERLIN/Cours/machine_learning_project/MLP/sandbox'
         file_name = 'moon_' + str(n_sample) + '_' + str(shuffle) + '_' + str(noise) + '_' + str(random_state) + '_' + str(transform) + '.csv'
         path = os.path.join(directory, file_name)
 

@@ -14,15 +14,18 @@ import torchvision
 from model.rnvp.RNVP2 import RNVP
 import matplotlib.pyplot as plt
 import numpy as np
+import torch.nn as nn
 
 from data import MoonDataset, FunDataset
-from utils import show
+from utils import show, train_one_epoch
 
 path_data_cluster = '/home/space/datasets'
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 
-def load_data(dataset: str, transformation=None, n_train=None, n_test=None, noise=None, download= False):
+directory_louise = '/Users/louiseduquenne/Documents/BERLIN/Cours/machine_learning_project/MLP/sandbox'
+
+def load_data(dataset: str, transformation=None, n_train=None, n_test=None, noise=None, batch_size=32, shuffle=True, download= False):
     """Loading of the dataset"""
 
     # Default settings
@@ -31,28 +34,27 @@ def load_data(dataset: str, transformation=None, n_train=None, n_test=None, nois
     if not n_test:
         n_test = 100
 
-    batch_size = 1
 
     if dataset == 'FunDataset':
-        directory = FunDataset.DIRECTORY
+        directory = directory_louise
         train_dataset = FunDataset.FunDataset(n_train, noise= noise, transform=transformation, download=download)
-        train_loader = data.DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
+        train_loader = data.DataLoader(train_dataset, batch_size=batch_size, shuffle=shuffle)
         test_dataset = FunDataset.FunDataset(n_test, noise= noise, transform=transformation,  download=download)
-        test_loader = data.DataLoader(test_dataset, batch_size=batch_size, shuffle=True)
+        test_loader = data.DataLoader(test_dataset, batch_size=batch_size, shuffle=shuffle)
 
     elif dataset == 'MoonDataset':
-        directory = MoonDataset.DIRECTORY
+        directory = directory_louise
         train_dataset = MoonDataset.MoonDataset(n_train, noise= noise, transform=transformation, download=download)
-        train_loader = data.DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
+        train_loader = data.DataLoader(train_dataset, batch_size=batch_size, shuffle=shuffle)
         test_dataset = MoonDataset.MoonDataset(n_test, noise= noise, transform=transformation,  download=download)
-        test_loader = data.DataLoader(test_dataset, batch_size=batch_size, shuffle=True)
+        test_loader = data.DataLoader(test_dataset, batch_size=batch_size, shuffle=shuffle)
 
     elif dataset == 'MNIST':
-        directory = '/home/space/datasets/MNIST'
+        directory = directory_louise
         train_dataset = torchvision.datasets.MNIST(directory, train=True, transform=transformation,  download=download)
-        train_loader = data.DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
+        train_loader = data.DataLoader(train_dataset, batch_size=batch_size, shuffle=shuffle)
         test_dataset = torchvision.datasets.MNIST(directory, train=False, transform=transformation,  download=download)
-        test_loader = data.DataLoader(test_dataset, batch_size=batch_size, shuffle=True)
+        test_loader = data.DataLoader(test_dataset, batch_size=batch_size, shuffle=shuffle)
 
     else:
         print('Dataset not found')
@@ -64,15 +66,33 @@ def load_data(dataset: str, transformation=None, n_train=None, n_test=None, nois
     return train_dataset, train_loader, test_dataset, test_loader
 
 
+def train_apply(model, dataset: str, epochs=10, batch_size=32, lr=0.01, momentum=0.0):
+    _,train_loader,_,test_loader = load_data(dataset, transformation=None, n_train=100, n_test=100, noise=0.1,
+                                             batch_size=batch_size, shuffle=True, download= False)
+    optimizer = torch.optim.SGD(model.parameters(), lr=lr, momentum=momentum)
+
+    epoch_loss = []
+
+    # Train the model epochs * times
+    # Collect training metrics progress over the training
+    for i in range(epochs):
+        epoch_loss_i, accuracy_i = train_one_epoch(model, train_loader, optimizer)
+        epoch_loss.append(epoch_loss_i)
+
+    arr_epoch_loss = np.array(epoch_loss)
+
+    return arr_epoch_loss
+
+
 if __name__ == "__main__":
     #Dowload a MoonDataset example
     data_Moon, train_Moon, _, _ = load_data('MoonDataset', transformation=None, n_train=100, n_test=100, noise=0.1, download=True)
 
     # Dowload a FunDataset example
-    data_Fun, train_Fun, _, _ = load_data('FunDataset', transformation=None, n_train=100, n_test=100, noise=0.1, download=True)
+   # data_Fun, train_Fun, _, _ = load_data('FunDataset', transformation=None, n_train=100, n_test=100, noise=0.1, download=True)
 
     #Download MNIST
-    data_MNIST, train_MNIST, _, _ = load_data('MNIST', transformation=None, n_train=100, n_test=100, download=True)
+   # data_MNIST, train_MNIST, _, _ = load_data('MNIST', transformation=None, n_train=100, n_test=100, download=True)
 
     #Creating the model
     model_rnvp = RNVP(2, 1)
