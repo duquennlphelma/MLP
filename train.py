@@ -32,7 +32,6 @@ def load_data(dataset: str, transformation=None, n_train=None, n_test=None, nois
     if not n_test:
         n_test = 100
 
-
     if dataset == 'FunDataset':
         directory = FunDataset.DIRECTORY
         train_dataset = FunDataset.FunDataset(n_train, noise= noise, transform=transformation, download=download)
@@ -65,8 +64,8 @@ def load_data(dataset: str, transformation=None, n_train=None, n_test=None, nois
 
 
 def train_apply(model, dataset: str, epochs=10, batch_size=32, lr=0.01, momentum=0.0):
-    _,train_loader,_,test_loader = load_data(dataset, transformation=None, n_train=100, n_test=100, noise=0.1,
-                                             batch_size=batch_size, shuffle=True, download= False)
+    _, train_loader, _, test_loader = load_data(dataset, transformation=None, n_train=100, n_test=100, noise=0.1,
+                                                batch_size=batch_size, shuffle=True, download=False)
     optimizer = torch.optim.SGD(model.parameters(), lr=lr, momentum=momentum)
 
     epoch_loss = []
@@ -74,7 +73,7 @@ def train_apply(model, dataset: str, epochs=10, batch_size=32, lr=0.01, momentum
     # Train the model epochs * times
     # Collect training metrics progress over the training
     for i in range(epochs):
-        epoch_loss_i, accuracy_i = train_one_epoch(model, train_loader, optimizer)
+        epoch_loss_i = train_one_epoch(model, train_loader, optimizer)
         epoch_loss.append(epoch_loss_i)
 
     arr_epoch_loss = np.array(epoch_loss)
@@ -84,19 +83,19 @@ def train_apply(model, dataset: str, epochs=10, batch_size=32, lr=0.01, momentum
 
 if __name__ == "__main__":
     #Dowload a MoonDataset example
-    data_Moon, train_Moon, _, _ = load_data('MoonDataset', transformation=None, n_train=100, n_test=100, noise=0.1, download=True)
+    # data_Moon, train_Moon, _, _ = load_data('MoonDataset', transformation=None, n_train=100, n_test=100, noise=0.1, download=True)
 
     # Dowload a FunDataset example
-   # data_Fun, train_Fun, _, _ = load_data('FunDataset', transformation=None, n_train=100, n_test=100, noise=0.1, download=True)
+    # data_Fun, train_Fun, _, _ = load_data('FunDataset', transformation=None, n_train=100, n_test=100, noise=0.1, download=True)
 
     #Download MNIST
-   # data_MNIST, train_MNIST, _, _ = load_data('MNIST', transformation=None, n_train=100, n_test=100, download=True)
+    # data_MNIST, train_MNIST, _, _ = load_data('MNIST', transformation=None, n_train=100, n_test=100, download=True)
 
     #Creating the model
     model_rnvp = RNVP(2, 1)
 
     #Passing MoonData into the model
-    exit_array = []
+    """exit_array = []
     for element in train_Moon:
         exit_data = model_rnvp(element)
         print(exit_data)
@@ -106,7 +105,14 @@ if __name__ == "__main__":
 
     # Plot the data
     exit_array = np.array(exit_array)
-    show(exit_array, outfile=None)
+    show(exit_array, outfile=None)"""
+    directory_fig = '/home/pml_07/plot_train_50_epoch.png'
+
+    out = train_apply(model_rnvp, 'MoonDataset', 50)
+    print(out)
+
+    plt.plot([i for i in range(50)], out)
+    plt.savefig(directory_fig)
 
 
 

@@ -39,7 +39,7 @@ def train_one_epoch(model: nn.Module, train_loader: data.DataLoader, optimizer):
         size = [np.size(y, 0), np.size(y, 1)]
         target = torch.randn(size[0], size[1])
         var = torch.ones(size[0], size[1], requires_grad=True)
-        output = loss(input, target, var)
+        output = loss(y, target, var)
 
         # update the mosel
         output.backward()
@@ -48,7 +48,7 @@ def train_one_epoch(model: nn.Module, train_loader: data.DataLoader, optimizer):
         # collect statistics
 
         # detach() returns a new tensor that doesn't share the history of the original Tensor
-        losses.append(loss.detach())
+        losses.append(output.detach())
 
     epoch_loss = torch.mean(torch.tensor(losses))
 
