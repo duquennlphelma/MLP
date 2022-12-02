@@ -97,7 +97,7 @@ if __name__ == "__main__":
     # Plot the data
     exit_array = np.array(exit_array)
     show(exit_array, outfile=None)"""
-    directory_fig = '/home/pml_07/plot_train_50_epoch.png'
+    directory_fig = '/home/pml_07/MLP/plot_train_50_epoch.png'
 
     out = train_apply(model_rnvp, 'MoonDataset', 50)
     print(out)
