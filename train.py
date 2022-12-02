@@ -1,12 +1,3 @@
-#!/usr/bin/env python3
-#$ -N MS1_RNVP
-#$ -l cuda=1
-#$ -q all.q
-#$ -cwd
-#$ -V
-#$ -t 1-100
-#$ -M louisedqne@gmail.com
-
 import os
 import torch
 import torch.utils.data as data
