@@ -105,6 +105,18 @@ if __name__ == "__main__":
     plt.plot([i for i in range(50)], out)
     plt.savefig(directory_fig)
 
+    data_Moon, train_Moon, _, _ = load_data('MoonDataset', transformation=None, n_train=100, n_test=100, noise=0.1,
+                                            download=False)
+    exit_array = []
+    for element in train_Moon:
+        exit_data = model_rnvp(element)
+        exit_data = exit_data.detach().numpy()
+        exit_array.append(exit_data[0])
+
+    # Plot the data
+    exit_array = np.array(exit_array)
+    show(exit_array, outfile='exit_after_train')
+
 
 
 

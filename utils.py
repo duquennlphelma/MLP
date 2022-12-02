@@ -16,7 +16,7 @@ def show(x, outfile=None):
     x_array = np.array(x)
 
     if outfile is not None:
-        directory = '/Users/louiseduquenne/Documents/BERLIN/Cours/machine_learning_project/MLP/sandbox'
+        directory = '/home/pml_07/MLP'
         file_name = outfile + '.png'
         path = os.path.join(directory, file_name)
 
