@@ -6,5 +6,5 @@
 #$ -V              # provide environment variables
 #$ -M louisedqne@gmail.com
 
-#$ echo “Staring Real NVP script”
-#$ python3 train.py  # here you perform any commands to start your program
+echo “Staring Real NVP script”
+python3 train.py  # here you perform any commands to start your program
