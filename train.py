@@ -100,11 +100,8 @@ if __name__ == "__main__":
     show(exit_array, outfile=None)"""
     directory_fig = '/home/pml_07/MLP/plot_train_50_epoch.png'
 
-    out = train_apply(model_rnvp, 'MoonDataset', 50)
+    out = train_apply(model_rnvp, 'MoonDataset', 10, batch_size=25)
     print(out)
-
-    plt.plot([i for i in range(50)], out)
-    plt.savefig(directory_fig)
 
     data_Moon, train_Moon, _, _ = load_data('MoonDataset', transformation=None, n_train=100, n_test=100, noise=0.1,
                                             download=False)
@@ -116,7 +113,7 @@ if __name__ == "__main__":
 
     # Plot the data
     exit_array = np.array(exit_array)
-    show(exit_array, outfile='exit_after_train')
+    show(exit_array)
 
 
 

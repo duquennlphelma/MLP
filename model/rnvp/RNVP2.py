@@ -34,6 +34,8 @@ class RNVP(nn.Module):
             y, det_J=self.layers[i].forward(y)
             sum_det_J=sum_det_J+ det_J
 
+        print('sum detJ \n', sum_det_J)
+
         return y, sum_det_J
 
     def inverse(self, y:torch.Tensor):
