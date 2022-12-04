@@ -103,18 +103,6 @@ if __name__ == "__main__":
     out = train_apply(model_rnvp, 'MoonDataset', 10, batch_size=25)
     print(out)
 
-    data_Moon, train_Moon, _, _ = load_data('MoonDataset', transformation=None, n_train=100, n_test=100, noise=0.1,
-                                            download=False)
-    exit_array = []
-    for element in train_Moon:
-        exit_data = model_rnvp(element)
-        exit_data = exit_data.detach().numpy()
-        exit_array.append(exit_data[0])
-
-    # Plot the data
-    exit_array = np.array(exit_array)
-    show(exit_array)
-
 
 
 
