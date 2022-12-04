@@ -22,7 +22,7 @@ class RNVP(nn.Module):
         self.input_size = input_size
         self.d = d
 
-        self.layers= nn.ModuleList(self.layer_0,self.layer_1)
+        self.layers= nn.ModuleList([self.layer_0,self.layer_1])
 
     def forward(self, x: torch.Tensor):
         """
