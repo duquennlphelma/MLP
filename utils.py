@@ -4,6 +4,7 @@ import os
 import torch.utils.data as data
 import torch.nn as nn
 import torch
+from model.rnvp.loss_function import loss_log
 
 
 def show(x, outfile=None):
@@ -35,7 +36,7 @@ def train_one_epoch(model: nn.Module, train_loader: data.DataLoader, optimizer):
     for x in train_loader:
         # forward pass
         y = model(x)
-        loss = nn.GaussianNLLLoss()
+        loss = loss_log
         size = [np.size(y, 0), np.size(y, 1)]
         target = torch.randn(size[0], size[1])
         var = torch.ones(size[0], size[1], requires_grad=True)
