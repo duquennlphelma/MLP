@@ -35,12 +35,12 @@ def train_one_epoch(model: nn.Module, train_loader: data.DataLoader, optimizer):
 
     for x in train_loader:
         # forward pass
-        y = model(x)
+        y , det_J= model(x)
         loss = loss_log
-        size = [np.size(y, 0), np.size(y, 1)]
-        target = torch.randn(size[0], size[1])
-        var = torch.ones(size[0], size[1], requires_grad=True)
-        output = loss(y, target, var)
+        #size = [np.size(y, 0), np.size(y, 1)]
+        #target = torch.randn(size[0], size[1])
+        #var = torch.ones(size[0], size[1], requires_grad=True)
+        output = loss(y, det_J)
 
         # update the mosel
         output.backward()
