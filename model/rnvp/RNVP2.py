@@ -22,10 +22,26 @@ class RNVP(nn.Module):
         self.input_size = input_size
         self.d = d
 
+        self.layers= nn.ModuleList(self.layer_0,self.layer_1)
+
     def forward(self, x: torch.Tensor):
         """
         Forword pass of the RNVP network making the data pass into each coupling layers.
         """
-        y_mid = self.layer_0.forward(x)
-        y_out = self.layer_1.forward(y_mid)
-        return y_out
+        y=x
+        sum_det_J=0
+        for i in range(len(self.layers)):
+            y, det_J=self.layers[i].forward(y)
+            sum_det_J=sum_det_J+ det_J
+
+        return y, sum_det_J
+
+    def inverse(self, y:torch.Tensor):
+        sum_det_J=0
+        x=y
+        for i in range(len(self.layers),-1,-1):
+            x, det_J=self.layers[i].forward(x)
+            sum_det_J=sum_det_J+det_J
+
+        return x, sum_det_J
+

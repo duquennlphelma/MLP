@@ -42,6 +42,25 @@ class CouplingLayer(nn.Module):
         s_x = self.s(b_x)
         t_x = self.t(b_x)
 
+
         y = b_x + torch.mul((1-b), (torch.mul(x, torch.exp(s_x)) + t_x))
 
-        return y
+        det_J= torch.sum(s_x, -1)
+
+        return y, det_J
+
+    def inverse(self,y):
+        y = torch.Tensor(y)
+        b = self.mask
+
+        b_x = torch.mul(y, b)
+        s_x = self.s(b_x)
+        t_x = self.t(b_x)
+
+        x = b_x + torch.mul((torch.mul((1 - b), y) -t_x), torch.exp(-s_x))
+
+        det_J=torch.sum(-s_x)
+
+        return x,det_J
+
+
