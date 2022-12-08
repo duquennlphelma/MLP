@@ -8,4 +8,4 @@ def loss_log(z, det_J):
     N = len(z_detach)
     print('len(z_detach)\n', N)
     pz = -N/2 * np.log(2*np.pi) - 1/2 * torch.sum(torch.mul(z_detach,z_detach))
-    return np.log(pz) + torch.sum(det_J)
+    return pz + torch.sum(det_J)
