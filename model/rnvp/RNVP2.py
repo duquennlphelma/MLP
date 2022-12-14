@@ -32,6 +32,8 @@ class RNVP(nn.Module):
         sum_det_J=0
         for i in range(len(self.layers)):
             y, det_J=self.layers[i].forward(y)
+
+            #summing the sum of s_x from all the coupling layers : that's LDJ : log determinant jacobian
             sum_det_J=sum_det_J+ det_J
 
         print('sum detJ \n', sum_det_J)

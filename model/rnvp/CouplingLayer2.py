@@ -45,6 +45,7 @@ class CouplingLayer(nn.Module):
 
         y = b_x + torch.mul((1-b), (torch.mul(x, torch.exp(s_x)) + t_x))
 
+        #s_x is a function from d in d and we are summing over d
         det_J= torch.sum(s_x, -1)
 
         return y, det_J
