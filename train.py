@@ -76,7 +76,7 @@ def train_apply(model, dataset: str, epochs=10, batch_size=32, lr=0.01, momentum
 
 if __name__ == "__main__":
     #Dowload a MoonDataset example
-    data_Moon, train_Moon, _, _ = load_data('MoonDataset', transformation=None, n_train=100, n_test=100, noise=0.1, download=True)
+    data_Moon, train_Moon, _, _ = load_data('MoonDataset', transformation=None, n_train=100, n_test=100, noise=0.1, download=False)
 
     # Dowload a FunDataset example
     # data_Fun, train_Fun, _, _ = load_data('FunDataset', transformation=None, n_train=100, n_test=100, noise=0.1, download=True)
