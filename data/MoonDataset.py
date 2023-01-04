@@ -2,6 +2,7 @@ import os
 import numpy as np
 import matplotlib.pyplot as plt
 from sklearn import datasets
+from sklearn import preprocessing
 from torch.utils.data import Dataset
 
 DIRECTORY = '/home/space/datasets/RNVP_MoonDataset'
@@ -27,15 +28,22 @@ class MoonDataset(Dataset):
 
         if download:
             if os.path.exists(path):
-                self.samples = np.loadtxt(path, dtype=np.float32, delimiter=',')
+                samples = np.loadtxt(path, dtype=np.float32, delimiter=',')
             else:
                 samples, _ = datasets.make_moons(n_sample, shuffle=shuffle, noise=noise, random_state=random_state)
-                self.samples = samples.astype(np.float32)
+                samples = samples.astype(np.float32)
                 np.savetxt(path, self.samples, delimiter=',', fmt='%f')
 
         else:
             samples, _ = datasets.make_moons(n_sample, shuffle=shuffle, noise=noise, random_state=random_state)
-            self.samples = samples.astype(np.float32)
+            samples = samples.astype(np.float32)
+
+        samples[:, 0] = samples[:, 0] - np.mean(samples[:, 0])
+        samples[:, 1] = samples[:, 1] - np.mean(samples[:, 1])
+        samples[:, 0] = samples[:, 0] / (np.max(samples[:, 0]) - np.min(samples[:, 0]))
+        samples[:, 1] = samples[:, 1] / (np.max(samples[:, 1]) - np.min(samples[:, 1]))
+        self.samples = samples
+
         self.noise = noise
         self.transform = transform
 
