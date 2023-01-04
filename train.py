@@ -116,7 +116,9 @@ if __name__ == "__main__":
         exit_array.append(exit_data[0])
 
     # Plot the data
+
     exit_array = np.array(exit_array)
+    print('EXIT ARRAY', exit_array)
     show(exit_array, 'plot_after_training')
     directory_fig = '/home/pml_07/MLP'
 
