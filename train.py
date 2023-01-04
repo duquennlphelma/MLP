@@ -90,6 +90,7 @@ if __name__ == "__main__":
     #Passing MoonData into the model
     exit_array = []
     for element in train_Moon:
+        print('element', element)
         exit_data = model_rnvp(element)
         print('exit data before detach',exit_data)
         exit_data = exit_data.detach().numpy()
