@@ -14,7 +14,7 @@ def show(x, outfile=None):
     :param outfile: if True save PNG file with the plot
     """
 
-    x_array = x
+    x_array = np.array(x)
 
     if outfile is not None:
         directory = '/home/pml_07/MLP'
