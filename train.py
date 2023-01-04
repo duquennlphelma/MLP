@@ -101,6 +101,7 @@ if __name__ == "__main__":
     directory_fig = '/home/pml_07/MLP/plot_train_50_epoch.png'
 
     out = train_apply(model_rnvp, 'MoonDataset', 10, batch_size=25)
+    print('Final output')
     print(out)
 
 
