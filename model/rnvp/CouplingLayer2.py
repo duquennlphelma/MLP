@@ -19,8 +19,11 @@ class CouplingLayer(nn.Module):
                    if False the modified part of the vector is the lower part
         """
         super().__init__()
-        list_f = [nn.Linear(input_size, input_size), nn.ReLU(), nn.Linear(input_size, input_size - d)]
-        list_v = [nn.Linear(input_size, input_size), nn.ReLU(), nn.Linear(input_size, input_size - d),nn.ReLU()]
+        #list_f = [nn.Linear(input_size, input_size), nn.ReLU(), nn.Linear(input_size, input_size - d)]
+        list_f = [nn.Sequential(nn.Linear(input_size, input_size), nn.LeakyReLU(), nn.Linear(input_size, input_size), nn.LeakyReLU(), nn.Linear(input_size, input_size-d),
+                      nn.Tanh())]
+        #list_v = [nn.Linear(input_size, input_size), nn.ReLU(), nn.Linear(input_size, input_size - d)]
+        list_v = [nn.Sequential(nn.Linear(input_size, input_size), nn.LeakyReLU(), nn.Linear(input_size, input_size), nn.LeakyReLU(), nn.Linear(input_size, input_size-d))]
         self.s = nn.Sequential(*list_v)
         self.t = nn.Sequential(*list_f)
         self.d = d
