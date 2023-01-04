@@ -15,4 +15,4 @@ def loss_log(z, det_J):
     #print("len pz and pz \n", pz)
     #are we really summing over the batch doing torch.sum(det_J) ? yes we are
     #print("which size is det_J?\n", len(det_J))
-    return pz - torch.sum(det_J)
+    return -pz + torch.sum(det_J)
