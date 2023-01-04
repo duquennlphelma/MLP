@@ -95,7 +95,7 @@ if __name__ == "__main__":
         print('exit data before detach',exit_data)
         exit_data = exit_data[0].detach().numpy()
         print(exit_data)
-        exit_array.append(exit_data[0])
+        exit_array.append(exit_data)
 
     # Plot the data
     exit_array = np.array(exit_array)
@@ -113,7 +113,7 @@ if __name__ == "__main__":
         print(exit_data)
         exit_data = exit_data[0].detach().numpy()
         print(exit_data)
-        exit_array.append(exit_data[0])
+        exit_array.append(exit_data)
 
     # Plot the data
 
