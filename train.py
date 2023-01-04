@@ -76,7 +76,7 @@ def train_apply(model, dataset: str, epochs=10, batch_size=32, lr=0.01, momentum
 
 if __name__ == "__main__":
     #Dowload a MoonDataset example
-    # data_Moon, train_Moon, _, _ = load_data('MoonDataset', transformation=None, n_train=100, n_test=100, noise=0.1, download=True)
+    data_Moon, train_Moon, _, _ = load_data('MoonDataset', transformation=None, n_train=100, n_test=100, noise=0.1, download=True)
 
     # Dowload a FunDataset example
     # data_Fun, train_Fun, _, _ = load_data('FunDataset', transformation=None, n_train=100, n_test=100, noise=0.1, download=True)
@@ -88,7 +88,7 @@ if __name__ == "__main__":
     model_rnvp = RNVP(2, 1)
 
     #Passing MoonData into the model
-    """exit_array = []
+    exit_array = []
     for element in train_Moon:
         exit_data = model_rnvp(element)
         print(exit_data)
@@ -98,12 +98,26 @@ if __name__ == "__main__":
 
     # Plot the data
     exit_array = np.array(exit_array)
-    show(exit_array, outfile=None)"""
-    directory_fig = '/home/pml_07/MLP/plot_train_50_epoch.png'
+    show(exit_array, outfile=None)
+    directory_fig = '/home/pml_07/MLP/plot_before_training.png'
 
     out = train_apply(model_rnvp, 'MoonDataset', 10, batch_size=25)
     print('Final output')
     print(out)
+
+    #Passing MoonData into the model
+    exit_array = []
+    for element in train_Moon:
+        exit_data = model_rnvp(element)
+        print(exit_data)
+        exit_data = exit_data.detach().numpy()
+        print(exit_data)
+        exit_array.append(exit_data[0])
+
+    # Plot the data
+    exit_array = np.array(exit_array)
+    show(exit_array, outfile=None)
+    directory_fig = '/home/pml_07/MLP/plot_after_training.png'
 
 
 
