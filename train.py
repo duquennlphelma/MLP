@@ -102,7 +102,7 @@ if __name__ == "__main__":
     show(exit_array, 'plot_before_training')
     directory_fig = '/home/pml_07/MLP'
 
-    out = train_apply(model_rnvp, 'MoonDataset', 1000, batch_size=25)
+    out = train_apply(model_rnvp, 'MoonDataset', 4000, batch_size=25)
     print('Final output')
     print(out)
 
