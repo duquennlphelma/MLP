@@ -111,7 +111,7 @@ if __name__ == "__main__":
     for element in train_Moon:
         exit_data = model_rnvp(element)
         print('exit data before detach',exit_data)
-        exit_data = exit_data[0].detach().numpy()
+        exit_data = exit_data[0].detach()
         print('exit data after detach',exit_data)
         exit_array.append(exit_data[0])
         print('EXIT ARRAY', exit_array)
