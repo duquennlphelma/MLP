@@ -3,7 +3,8 @@ import torch
 
 def loss_log(z, det_J):
     print('z:\n', z)
-    z_detach = z.detach()
+    #z_detach = z.detach()
+    z_detach=z
     print('z_detach:\n', z_detach)
     N = len(z_detach)
     print('len(z_detach)\n', N)
