@@ -98,7 +98,7 @@ if __name__ == "__main__":
         exit_array=np.concatenate((exit_array,exit_data))
 
     # Plot the data
-    exit_array = np.array(exit_array)
+    exit_array = np.array(exit_array[1:])
     show(exit_array, 'plot_before_training')
     directory_fig = '/home/pml_07/MLP'
 
@@ -118,9 +118,9 @@ if __name__ == "__main__":
 
     # Plot the data
 
-    exit_array_bis = np.array(exit_array)
+    exit_array_bis = np.array(exit_array[1:])
     print('EXIT ARRAY', exit_array_bis)
-    show(exit_array_bis[1:], 'plot_after_training')
+    show(exit_array_bis, 'plot_after_training')
     directory_fig = '/home/pml_07/MLP'
 
 
