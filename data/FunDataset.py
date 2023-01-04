@@ -23,7 +23,7 @@ class FunDataset(Dataset):
 
         if download:
             if os.path.exists(path):
-                self.samples = np.loadtxt(path, dtype=float, delimiter=',')
+                samples = np.loadtxt(path, dtype=float, delimiter=',')
             else:
                 im = cv2.imread('shrek.jpg')
                 im_gray = cv2.cvtColor(im, cv2.COLOR_BGR2GRAY)
@@ -36,12 +36,12 @@ class FunDataset(Dataset):
                             sequence.append([i, j])
                 clean_samples = np.array(random.choices(sequence, weights=None, cum_weights=None, k=n_sample))
                 if noise is None:
-                    self.samples = clean_samples
+                    samples = clean_samples
                 else:
                     random_noise = np.random.normal(np.mean(clean_samples), noise,
                                                     [len(clean_samples), len(clean_samples[0])])
-                    self.samples = clean_samples + random_noise
-                np.savetxt(path, self.samples, delimiter=',', fmt='%f')
+                    samples = clean_samples + random_noise
+                np.savetxt(path, samples, delimiter=',', fmt='%f')
 
         else:
             im = cv2.imread('shrek.jpg')
@@ -55,12 +55,16 @@ class FunDataset(Dataset):
                         sequence.append([i, j])
             clean_samples = np.array(random.choices(sequence, weights=None, cum_weights=None, k=n_sample),dtype=np.float32)
             if noise is None:
-                self.samples = clean_samples
+                samples = clean_samples
             else:
                 random_noise = np.random.normal(0, noise,
                                                 [len(clean_samples), len(clean_samples[0])])
-                self.samples = clean_samples + random_noise
+                samples = clean_samples + random_noise
 
+        samples[:, 0] = samples[:, 0] - np.mean(samples[:, 0])
+        samples[:, 1] = samples[:, 1] - np.mean(samples[:, 1])
+        samples[:, 0] = samples[:, 0] / (np.max(samples[:, 0]) - np.min(samples[:, 0]))
+        samples[:, 1] = samples[:, 1] / (np.max(samples[:, 1]) - np.min(samples[:, 1]))
         self.noise = noise
         self.transform = transform
 
