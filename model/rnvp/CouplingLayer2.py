@@ -20,7 +20,8 @@ class CouplingLayer(nn.Module):
         """
         super().__init__()
         list_f = [nn.Linear(input_size, input_size), nn.ReLU(), nn.Linear(input_size, input_size - d)]
-        self.s = nn.Linear(input_size, input_size - d)
+        list_v = [nn.Linear(input_size, input_size), nn.ReLU(), nn.Linear(input_size, input_size - d),nn.ReLU()]
+        self.s = nn.Sequential(*list_v)
         self.t = nn.Sequential(*list_f)
         self.d = d
         self.input_size = input_size
