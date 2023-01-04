@@ -93,7 +93,7 @@ if __name__ == "__main__":
         print('element', element)
         exit_data = model_rnvp(element)
         print('exit data before detach',exit_data)
-        exit_data = exit_data[0].detach().array()
+        exit_data = exit_data[0].detach().numpy()
         print(exit_data)
         exit_array.append(exit_data[0])
 
