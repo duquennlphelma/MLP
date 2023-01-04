@@ -107,20 +107,20 @@ if __name__ == "__main__":
     print(out)
 
     #Passing MoonData into the model
-    exit_array = np.array([[0,0]])
+    exit_array_bis = np.array([[0,0]])
     for element in train_Moon:
         exit_data = model_rnvp(element)
         print('exit data before detach',exit_data)
         exit_data = exit_data[0].detach().numpy()
         print('exit data after detach',exit_data)
-        exit_array=np.concatenate((exit_array,exit_data))
+        exit_array_bis=np.concatenate((exit_array_bis,exit_data))
         print('EXIT ARRAY', exit_array)
 
     # Plot the data
 
-    exit_array = np.array(exit_array)
-    print('EXIT ARRAY', exit_array)
-    show(exit_array, 'plot_after_training')
+    exit_array_bis = np.array(exit_array)
+    print('EXIT ARRAY', exit_array_bis)
+    show(exit_array_bis[1:], 'plot_after_training')
     directory_fig = '/home/pml_07/MLP'
 
 
