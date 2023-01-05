@@ -137,12 +137,6 @@ if __name__ == "__main__":
     print('EXIT ARRAY', exit_array_test)
     show(exit_array_test, 'plot_after_training_Fun_Dataset')
 
-    print('EXIT ARRAY', exit_array_bis)
-    show(exit_array_bis, 'plot_after_training_Fun_Dataset')
-    plt.figure()
-    plt.hist(exit_array_bis[0,:])
-    plt.savefig('/home/pml_07/MLP/histogram_X')
-
 
     #Pass the data in the other way after training : from normal distribution to fun dataset
     #z = torch.distributions.MultivariateNormal(torch.zeros(2), torch.eye(2)).sample(1000)
