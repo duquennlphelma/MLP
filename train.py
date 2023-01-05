@@ -106,7 +106,7 @@ if __name__ == "__main__":
 
 
 
-    out = train_apply(model_rnvp, 'FunDataset', 700, batch_size=25)
+    out = train_apply(model_rnvp, 'FunDataset', 4000, batch_size=25)
     directory = '/home/pml_07/MLP'
     file_name = 'epoch_loss' + '.png'
     path = os.path.join(directory, file_name)
