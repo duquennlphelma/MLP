@@ -56,7 +56,7 @@ def load_data(dataset: str, transformation=None, n_train=None, n_test=None, nois
 
 
 def train_apply(model, dataset: str, epochs=10, batch_size=32, lr=1e-4, momentum=0.0):
-    _, train_loader, _, test_loader = load_data(dataset, transformation=None, n_train=10000, n_test=100, noise=0.1,
+    _, train_loader, _, test_loader = load_data(dataset, transformation=None, n_train=1000, n_test=100, noise=0.1,
                                                 batch_size=batch_size, shuffle=True, download=False)
     optimizer = torch.optim.Adam([p for p in model.parameters() if p.requires_grad==True], lr=lr)
     #optimizer = torch.optim.SGD(model.parameters(), lr=lr, momentum=momentum)
@@ -79,7 +79,7 @@ if __name__ == "__main__":
     #data_Moon, train_Moon, _, _ = load_data('MoonDataset', transformation=None, n_train=100, n_test=100, noise=0.1, download=False)
 
     # Dowload a FunDataset example
-    data_Fun, train_Fun, _, _ = load_data('FunDataset', transformation=None, n_train=100, n_test=100, noise=0.1, download=False)
+    data_Fun, train_Fun, _, _ = load_data('FunDataset', transformation=None, n_train=1000, n_test=100, noise=0.1, download=False)
 
     #Download MNIST
     # data_MNIST, train_MNIST, _, _ = load_data('MNIST', transformation=None, n_train=100, n_test=100, download=True)
@@ -91,11 +91,11 @@ if __name__ == "__main__":
     exit_array = np.array([[0,0]])
     for element in train_Fun:
 
-        print('element', element)
+
         exit_data = model_rnvp(element)
-        print('exit data before detach',exit_data)
+
         exit_data = exit_data[0].detach().numpy()
-        print(exit_data)
+
         exit_array=np.concatenate((exit_array,exit_data))
 
     # Plot the data
@@ -124,11 +124,11 @@ if __name__ == "__main__":
     exit_array_bis = np.array([[0,0]])
     for element in train_Fun:
         exit_data = model_rnvp(element)
-        print('exit data before detach',exit_data)
+
         exit_data = exit_data[0].detach().numpy()
-        print('exit data after detach',exit_data)
+
         exit_array_bis=np.concatenate((exit_array_bis,exit_data))
-        print('EXIT ARRAY', exit_array)
+
 
     # Plot the data
 
