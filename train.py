@@ -130,11 +130,17 @@ if __name__ == "__main__":
         exit_array_bis=np.concatenate((exit_array_bis,exit_data))
 
 
+
+
     # Plot the data
 
     exit_array_bis = np.array(exit_array_bis[1:])
+
     print('EXIT ARRAY', exit_array_bis)
     #show(exit_array_bis, 'plot_after_training_Fun_Dataset')
+    plt.figure()
+    plt.hist(exit_array_bis[0,:])
+    plt.savefig('/home/pml_07/MLP/histogram_X')
 
 
     #Pass the data in the other way after training : from normal distribution to fun dataset
