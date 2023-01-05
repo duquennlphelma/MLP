@@ -31,14 +31,14 @@ class RNVP(nn.Module):
         Forward pass of the RNVP network making the data pass into each coupling layers.
         """
         y = x
-        sum_det_J = 0
+        #sum_det_J is size batch_size,1
+        sum_det_J = torch.zeros(len(x))
         for i in range(len(self.layers)):
             y, det_J = self.layers[i].forward(y)
 
             # summing s_x from all the coupling layers : that's LDJ : log determinant jacobian
-            sum_det_J = sum_det_J + det_J
+            sum_det_J = torch.add(sum_det_J , det_J)
 
-        # print('sum detJ \n', sum_det_J)
 
         return y, sum_det_J
 

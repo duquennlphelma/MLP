@@ -50,7 +50,9 @@ class CouplingLayer(nn.Module):
 
         y = b_x + torch.mul((1-b), (torch.mul(x, torch.exp(s_x)) + t_x))
 
-        det_J = torch.sum(s_x, -1)
+        #s_x is a vector of size (batch_size, d) and we sum on d to have the determinant for each samples
+        #and we took the logarithm of the det that is why we sum the s and log(1)=0
+        det_J = torch.sum(s_x, 1)
 
         return y, det_J
 
