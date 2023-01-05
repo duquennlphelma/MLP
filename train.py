@@ -105,8 +105,8 @@ if __name__ == "__main__":
                                          download=False)
 
     # Plotting example of the data
-    data_Fun_array = [data_Fun[i] for i in range(len(data_Fun))]
-    show(data_Fun_array, 'plot_before_training_Fun_Dataset')
+    #ata_Fun_array = [data_Fun[i] for i in range(len(data_Fun))]
+    #show(data_Fun_array, 'plot_before_training_Fun_Dataset')
 
     # Creating the model
     model_rnvp = RNVP(2, 1)
