@@ -139,7 +139,7 @@ if __name__ == "__main__":
 
     #Pass the data in the other way after training : from normal distribution to fun dataset
     #z = torch.distributions.MultivariateNormal(torch.zeros(2), torch.eye(2)).sample(1000)
-    z= torch.from_numpy(np.random.multivariate_normal(np.zeros(2), np.eye(2), 1000))
+    z= torch.from_numpy(np.float32(np.random.multivariate_normal(np.zeros(2), np.eye(2), 1000)))
     dataset_recreated = model_rnvp.inverse(z)
     exit_data = dataset_recreated[0].detach().numpy()
 
