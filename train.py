@@ -55,10 +55,10 @@ def load_data(dataset: str, transformation=None, n_train=None, n_test=None, nois
     return train_dataset, train_loader, test_dataset, test_loader
 
 
-def train_apply(model, dataset: str, epochs=10, batch_size=32, lr=0.01, momentum=0.0):
+def train_apply(model, dataset: str, epochs=10, batch_size=32, lr=1e-4, momentum=0.0):
     _, train_loader, _, test_loader = load_data(dataset, transformation=None, n_train=100, n_test=100, noise=0.1,
                                                 batch_size=batch_size, shuffle=True, download=False)
-    optimizer = torch.optim.Adam([p for p in model.parameters() if p.requires_grad==True], lr=1e-4)
+    optimizer = torch.optim.Adam([p for p in model.parameters() if p.requires_grad==True], lr=lr)
     #optimizer = torch.optim.SGD(model.parameters(), lr=lr, momentum=momentum)
 
     epoch_loss = []
@@ -106,7 +106,7 @@ if __name__ == "__main__":
 
 
 
-    out = train_apply(model_rnvp, 'FunDataset', 400, batch_size=25)
+    out = train_apply(model_rnvp, 'FunDataset', 4000, batch_size=25)
     print('Final output')
     print(out)
 
