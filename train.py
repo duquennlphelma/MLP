@@ -100,7 +100,7 @@ if __name__ == "__main__":
 
     # Plot the data
     exit_array = np.array(exit_array[1:])
-    show(exit_array, 'plot_before_training_Fun_Dataset')
+    #show(exit_array, 'plot_before_training_Fun_Dataset')
     directory_fig = '/home/pml_07/MLP'
 
 
@@ -109,11 +109,11 @@ if __name__ == "__main__":
     out = train_apply(model_rnvp, 'FunDataset', 250, batch_size=25)
     directory = '/home/pml_07/MLP'
     file_name = 'epoch_loss' + '.png'
-    path = os.path.join(directory, file_name)
-    plt.figure()
-    plt.plot(out, '.')
-    plt.savefig(path)
-    plt.show()
+    #path = os.path.join(directory, file_name)
+    #plt.figure()
+    #plt.plot(out, '.')
+    #plt.savefig(path)
+    #plt.show()
     print('Final output')
     print(out)
 
@@ -134,12 +134,12 @@ if __name__ == "__main__":
 
     exit_array_bis = np.array(exit_array_bis[1:])
     print('EXIT ARRAY', exit_array_bis)
-    show(exit_array_bis, 'plot_after_training_Fun_Dataset')
+    #show(exit_array_bis, 'plot_after_training_Fun_Dataset')
 
 
     #Pass the data in the other way after training : from normal distribution to fun dataset
-    z = torch.distributions.MultivariateNormal(torch.zeros(2), torch.eye(2)).sample(1000)
-
+    #z = torch.distributions.MultivariateNormal(torch.zeros(2), torch.eye(2)).sample(1000)
+    z= torch.from_numpy(np.random.multivariate_normal(np.zeros(2), np.eye(2), 1000))
     dataset_recreated = model_rnvp.inverse(z)
     exit_data = dataset_recreated[0].detach().numpy()
 
