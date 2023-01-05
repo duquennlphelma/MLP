@@ -31,6 +31,13 @@ def show(x, outfile=None):
 
 
 def train_one_epoch(model: nn.Module, train_loader: data.DataLoader, optimizer):
+    """
+    Training the model on one epoch
+    :param model: model chosen
+    :param train_loader: Dataloader of the training data
+    :param optimizer: chosen optimizer
+    :return: loss value on the epoch
+    """
     losses = []
 
     for x in train_loader:
