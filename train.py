@@ -97,21 +97,30 @@ def train_apply(model, dataset: str, epochs=10, batch_size=32, lr=1e-4, momentum
 
 
 if __name__ == "__main__":
+
+    epochs=250
+    batch_size=150
+    dataset= 'FunDataset'
+    samples_train=1000
+    samples_test=100
+    noise=0.1
+    learning_rate=1e-4
     # Dowload a MoonDataset example
     #data_Moon, train_Moon, _, _ = load_data('MoonDataset', transformation=None, n_train=100, n_test=100, noise=0.1,
     #                                        download=False)
     # Dowload a FunDataset example
-    _, _, data_Fun, test_Fun = load_data('FunDataset', transformation=None, n_train=1000, n_test=1000, noise=0.1,
+    _, _, data_Fun, test_Fun = load_data('FunDataset', transformation=None, n_train=samples_train, n_test=samples_test, noise=noise,
                                          download=False)
 
     # Plotting example of the data
     #ata_Fun_array = [data_Fun[i] for i in range(len(data_Fun))]
     #show(data_Fun_array, 'plot_before_training_Fun_Dataset')
 
+
     # Creating the model
     model_rnvp = RNVP(2, 1)
     # Training
-    out = train_apply(model_rnvp, 'FunDataset', 250, batch_size=150)
+    out = train_apply(model_rnvp, dataset, epochs, batch_size=batch_size, lr=learning_rate)
 
     #Ploting the loss for each epoch
     directory = '/home/pml_07/MLP'
@@ -151,6 +160,7 @@ if __name__ == "__main__":
     #Validation test
 
     mean, std, skew, kurtosis=index_statistics(torch.tensor(exit_array_test))
+    print('dataset:',dataset,' epochs:',epochs,' batch_size:', batch_size, 'n_train:', samples_train, ' n_test:', samples_train, ' lr:', learning_rate, 'noise:', noise)
     print('mean\n', mean)
     print('std\n', std)
     print('skew\n', skew)
