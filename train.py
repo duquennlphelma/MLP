@@ -146,4 +146,4 @@ if __name__ == "__main__":
     # Plot the data
 
     exit_array_bis = np.array(exit_data)
-    show(exit_array_bis, 'plot_dataset_recreated.png')
+    show(exit_array_bis, 'plot_dataset_recreated')
