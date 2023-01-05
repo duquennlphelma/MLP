@@ -147,7 +147,7 @@ if __name__ == "__main__":
 
     exit_array_bis = np.array(exit_data)
     print('EXIT ARRAY', exit_array_bis)
-    show(exit_array_bis, 'plot_after_training_Fun_Dataset')
+    show(exit_array_bis, 'plot_dataset_recreated.png')
 
 
 
