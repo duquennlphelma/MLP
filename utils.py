@@ -32,28 +32,21 @@ def show(x, outfile=None):
 
 def train_one_epoch(model: nn.Module, train_loader: data.DataLoader, optimizer):
     losses = []
-    predictions = []
 
     for x in train_loader:
         # forward pass
         optimizer.zero_grad()
-        y , det_J= model(x)
+        y, det_J = model(x)
         loss = loss_log
-
-        #size = [np.size(y, 0), np.size(y, 1)]
-        #target = torch.randn(size[0], size[1])
-        #var = torch.ones(size[0], size[1], requires_grad=True)
         output = loss(y, det_J)
-        print('OUTPUT - train one epoch loss')
-        print(output)
 
-        # update the mosel
+        # print('OUTPUT - train one epoch loss\n', output)
+
+        # update the model
         output.backward()
         optimizer.step()
 
         # collect statistics
-
-        # detach() returns a new tensor that doesn't share the history of the original Tensor
         losses.append(output.detach())
 
     epoch_loss = torch.mean(torch.tensor(losses))
