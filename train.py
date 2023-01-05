@@ -104,7 +104,7 @@ if __name__ == "__main__":
     samples_train=1000
     samples_test=1000
     noise=0.1
-    learning_rate=0.001
+    learning_rate=0.01
     # Dowload a MoonDataset example
     #data_Moon, train_Moon, _, _ = load_data('MoonDataset', transformation=None, n_train=100, n_test=100, noise=0.1,
     #                                        download=False)
