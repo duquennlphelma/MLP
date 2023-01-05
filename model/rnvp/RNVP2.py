@@ -17,11 +17,15 @@ class RNVP(nn.Module):
 
         layer_0 = CouplingLayer(input_size, d, up=True)
         layer_1 = CouplingLayer(input_size, d, up=False)
+        layer_2 = CouplingLayer(input_size, d, up=True)
+        layer_3 = CouplingLayer(input_size, d, up=False)
+        layer_4 = CouplingLayer(input_size, d, up=True)
+        layer_5 = CouplingLayer(input_size, d, up=False)
 
         self.input_size = input_size
         self.d = d
 
-        self.layers = nn.ModuleList([layer_0, layer_1])
+        self.layers = nn.ModuleList([layer_0, layer_1, layer_2, layer_3, layer_4, layer_5])
 
     def forward(self, x: torch.Tensor):
         """
