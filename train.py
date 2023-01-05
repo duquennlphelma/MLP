@@ -8,7 +8,7 @@ import numpy as np
 import torch.nn as nn
 
 from data import MoonDataset, FunDataset
-from utils import show, train_one_epoch
+from utils import show, train_one_epoch, index_statistics
 
 path_data_cluster = '/home/space/datasets/MNIST'
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
@@ -147,3 +147,11 @@ if __name__ == "__main__":
 
     exit_array_bis = np.array(exit_data)
     show(exit_array_bis, 'plot_dataset_recreated')
+
+    #Validation test
+    mean, std, skew, kurtosis=index_statistics(exit_array_test)
+
+    print('mean\n', mean)
+    print('std\n', std)
+    print('skew\n', skew)
+    print('kurtosis\n',kurtosis)
