@@ -19,7 +19,7 @@ class NLL(nn.Module):
         nll = -ll.mean()"""
 
         log_pz = self.prior.log_prob(z)
-        return -log_pz + torch.sum(det_J)
+        return (-log_pz + det_J).mean()
 
 
 
