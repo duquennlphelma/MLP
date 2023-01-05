@@ -46,8 +46,9 @@ class RNVP(nn.Module):
         """
         Inverse pass of the RNVP network making the data go back through each coupling layers.
         """
-        sum_det_J = torch.zeros(len(x))
+
         x = y
+        sum_det_J = torch.zeros(len(x))
         for i in range(1, len(self.layers)+1):
             x, det_J = self.layers[len(self.layers)-i].inverse(x)
             sum_det_J += det_J
