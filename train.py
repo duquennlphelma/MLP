@@ -98,11 +98,11 @@ def train_apply(model, dataset: str, epochs=10, batch_size=32, lr=1e-4, momentum
 
 if __name__ == "__main__":
 
-    epochs=90
-    batch_size=150
+    epochs=250
+    batch_size=25
     dataset= 'FunDataset'
     samples_train=1000
-    samples_test=100
+    samples_test=1000
     noise=0.1
     learning_rate=1e-4
     # Dowload a MoonDataset example
