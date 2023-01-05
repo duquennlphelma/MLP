@@ -149,7 +149,7 @@ if __name__ == "__main__":
     show(exit_array_bis, 'plot_dataset_recreated')
 
     #Validation test
-    mean, std, skew, kurtosis=index_statistics(exit_array_test)
+    mean, std, skew, kurtosis=index_statistics(torch.tensor(exit_array_test))
 
     print('mean\n', mean)
     print('std\n', std)
