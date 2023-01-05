@@ -48,8 +48,8 @@ class RNVP(nn.Module):
         """
         sum_det_J = 0
         x = y
-        for i in range(len(self.layers), -1, -1):
-            x, det_J = self.layers[i].inverse(x)
+        for i in range(1,len(self.layers)+1):
+            x, det_J = self.layers[len(self.layers)-i].inverse(x)
             sum_det_J = sum_det_J + det_J
 
         return x, sum_det_J
