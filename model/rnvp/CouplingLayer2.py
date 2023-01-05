@@ -73,7 +73,7 @@ class CouplingLayer(nn.Module):
 
         x = b_x + torch.mul((torch.mul((1 - b), y) - t_x), torch.exp(-s_x))
 
-        det_J = torch.sum(-s_x)
+        det_J = torch.sum(-s_x, 1)
 
         return x, det_J
 
