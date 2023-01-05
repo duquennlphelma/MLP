@@ -106,7 +106,7 @@ if __name__ == "__main__":
 
 
 
-    out = train_apply(model_rnvp, 'FunDataset', 4000, batch_size=25)
+    out = train_apply(model_rnvp, 'FunDataset', 250, batch_size=25)
     directory = '/home/pml_07/MLP'
     file_name = 'epoch_loss' + '.png'
     path = os.path.join(directory, file_name)
@@ -137,6 +137,11 @@ if __name__ == "__main__":
     show(exit_array_bis, 'plot_after_training_Fun_Dataset')
     directory_fig = '/home/pml_07/MLP'
 
+
+    #Pass the data in the other way after training : from normal distribution to fun dataset
+    #z = torch.distributions.MultivariateNormal(torch.zeros(2), torch.eye(2))
+
+    #dataset_recreated=model_rnvp.inverse(z)
 
 
 
