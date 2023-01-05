@@ -47,8 +47,8 @@ class CouplingLayer(nn.Module):
         b = self.mask
 
         b_x = torch.mul(x, b)
-        s_x = self.s(b_x)
-        t_x = self.t(b_x)
+        s_x = self.s(b_x) * (1-b)
+        t_x = self.t(b_x) * (1-b)
 
         y = b_x + torch.mul((1-b), (torch.mul(x, torch.exp(s_x)) + t_x))
 
