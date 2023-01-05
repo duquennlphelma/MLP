@@ -19,14 +19,16 @@ class CouplingLayer(nn.Module):
         """
         super().__init__()
 
-        #list_f = [nn.Linear(input_size, input_size), nn.ReLU(), nn.Linear(input_size, input_size - d)]
-        list_f = [nn.Sequential(nn.Linear(input_size, input_size), nn.LeakyReLU(), nn.Linear(input_size, input_size), nn.LeakyReLU(), nn.Linear(input_size, input_size-d),
-                     nn.Tanh())]
-        #list_v = [nn.Linear(input_size, input_size), nn.ReLU(), nn.Linear(input_size, input_size - d)]
-        list_v = [nn.Sequential(nn.Linear(input_size, input_size), nn.LeakyReLU(), nn.Linear(input_size, input_size), nn.LeakyReLU(), nn.Linear(input_size, input_size-d))]
+        #list_t = [nn.Linear(input_size, input_size), nn.ReLU(), nn.Linear(input_size, input_size - d)]
+        list_t = [nn.Linear(input_size, 256), nn.LeakyReLU(), nn.Linear(256, 256), nn.LeakyReLU(),
+                  nn.Linear(256, input_size), nn.Tanh()]
+        self.t = nn.Sequential(*list_t)
 
-        self.s = nn.Sequential(*list_v)
-        self.t = nn.Sequential(*list_f)
+        #list_s = [nn.Linear(input_size, input_size), nn.ReLU(), nn.Linear(input_size, input_size - d)]
+        list_s = [nn.Linear(input_size, 256), nn.LeakyReLU(), nn.Linear(256, 256), nn.LeakyReLU(),
+                  nn.Linear(256, input_size)]
+        self.s = nn.Sequential(*list_s)
+
         self.d = d
         self.input_size = input_size
 
@@ -45,8 +47,8 @@ class CouplingLayer(nn.Module):
         b = self.mask
 
         b_x = torch.mul(x, b)
-        s_x = self.s(b_x)
-        t_x = self.t(b_x)
+        s_x = self.s(b_x) * (1-b)
+        t_x = self.t(b_x) * (1-b)
 
         y = b_x + torch.mul((1-b), (torch.mul(x, torch.exp(s_x)) + t_x))
 
