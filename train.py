@@ -99,7 +99,7 @@ def train_apply(model, dataset: str, epochs=10, batch_size=32, lr=1e-4, momentum
 if __name__ == "__main__":
 
     epochs=200
-    batch_size=25
+    batch_size=100
     dataset= 'FunDataset'
     samples_train=1000
     samples_test=1000
