@@ -111,7 +111,7 @@ if __name__ == "__main__":
     # Creating the model
     model_rnvp = RNVP(2, 1)
     # Training
-    out = train_apply(model_rnvp, 'FunDataset', 250, batch_size=25)
+    out = train_apply(model_rnvp, 'FunDataset', 250, batch_size=150)
 
     #Ploting the loss for each epoch
     directory = '/home/pml_07/MLP'
@@ -149,8 +149,8 @@ if __name__ == "__main__":
     show(exit_array_bis, 'plot_dataset_recreated')
 
     #Validation test
-    mean, std, skew, kurtosis=index_statistics(torch.tensor(exit_array_test))
 
+    mean, std, skew, kurtosis=index_statistics(torch.tensor(exit_array_test))
     print('mean\n', mean)
     print('std\n', std)
     print('skew\n', skew)
