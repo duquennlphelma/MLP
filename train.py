@@ -135,13 +135,21 @@ if __name__ == "__main__":
     exit_array_bis = np.array(exit_array_bis[1:])
     print('EXIT ARRAY', exit_array_bis)
     show(exit_array_bis, 'plot_after_training_Fun_Dataset')
-    directory_fig = '/home/pml_07/MLP'
 
 
     #Pass the data in the other way after training : from normal distribution to fun dataset
-    #z = torch.distributions.MultivariateNormal(torch.zeros(2), torch.eye(2))
+    z = torch.distributions.MultivariateNormal(torch.zeros(2), torch.eye(2)).sample(1000)
 
-    #dataset_recreated=model_rnvp.inverse(z)
+    dataset_recreated = model_rnvp.inverse(z)
+    exit_data = dataset_recreated[0].detach().numpy()
+
+    # Plot the data
+
+    exit_array_bis = np.array(exit_data)
+    print('EXIT ARRAY', exit_array_bis)
+    show(exit_array_bis, 'plot_after_training_Fun_Dataset')
+
+
 
 
 
