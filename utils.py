@@ -4,7 +4,7 @@ import os
 import torch.utils.data as data
 import torch.nn as nn
 import torch
-from model.rnvp.loss_function import loss_log
+from model.rnvp.loss_function import NLL
 
 
 def show(x, outfile=None):
@@ -37,7 +37,7 @@ def train_one_epoch(model: nn.Module, train_loader: data.DataLoader, optimizer):
         # forward pass
         optimizer.zero_grad()
         y, det_J = model(x)
-        loss = loss_log
+        loss = NLL()
         output = loss(y, det_J)
 
         # print('OUTPUT - train one epoch loss\n', output)
