@@ -41,13 +41,14 @@ def train_one_epoch(model: nn.Module, train_loader: data.DataLoader, optimizer):
     losses = []
 
     for x in train_loader:
-        # forward pass
         optimizer.zero_grad()
+
+        # forward pass
         y, det_J = model(x)
+
+        # Loss function
         loss = NLL()
         output = loss(y, det_J)
-
-        # print('OUTPUT - train one epoch loss\n', output)
 
         # update the model
         output.backward()
