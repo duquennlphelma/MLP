@@ -9,7 +9,7 @@ class NLL(nn.Module):
     """
     def __init__(self):
         super(NLL, self).__init__()
-        self.prior = torch.distributions.normal.Normal(loc=0.0, scale=1.0)
+        self.prior = torch.distributions.MultivariateNormal(torch.zeros(2), torch.eye(2))
 
     def forward(self, z, det_J):
 
