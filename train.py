@@ -100,7 +100,7 @@ if __name__ == "__main__":
 
     # Plot the data
     exit_array = np.array(exit_array[1:])
-    #show(exit_array, 'plot_before_training_Fun_Dataset')
+    show(exit_array, 'plot_before_training_Fun_Dataset')
     directory_fig = '/home/pml_07/MLP'
 
 
@@ -109,11 +109,11 @@ if __name__ == "__main__":
     out = train_apply(model_rnvp, 'FunDataset', 250, batch_size=25)
     directory = '/home/pml_07/MLP'
     file_name = 'epoch_loss' + '.png'
-    #path = os.path.join(directory, file_name)
-    #plt.figure()
-    #plt.plot(out, '.')
-    #plt.savefig(path)
-    #plt.show()
+    path = os.path.join(directory, file_name)
+    plt.figure()
+    plt.plot(out, '.')
+    plt.savefig(path)
+    plt.show()
     print('Final output')
     print(out)
 
@@ -137,7 +137,7 @@ if __name__ == "__main__":
     exit_array_bis = np.array(exit_array_bis[1:])
 
     print('EXIT ARRAY', exit_array_bis)
-    #show(exit_array_bis, 'plot_after_training_Fun_Dataset')
+    show(exit_array_bis, 'plot_after_training_Fun_Dataset')
     plt.figure()
     plt.hist(exit_array_bis[0,:])
     plt.savefig('/home/pml_07/MLP/histogram_X')
