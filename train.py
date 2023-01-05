@@ -9,7 +9,6 @@ import torch.nn as nn
 
 from data import MoonDataset, FunDataset
 from utils import show, train_one_epoch
-from model.rnvp.loss_function import loss_log
 
 path_data_cluster = '/home/space/datasets/MNIST'
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
