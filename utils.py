@@ -59,3 +59,23 @@ def train_one_epoch(model: nn.Module, train_loader: data.DataLoader, optimizer):
     epoch_loss = torch.mean(torch.tensor(losses))
 
     return float(epoch_loss)
+
+
+def index_statistics(samples):
+    """
+    Calculates with simple indexes (mean, std, kurtosis, skewness) the resemblance between the sample distribution and a
+    Normal distribution.
+    :param samples: samples in 2D to calculate the index on
+    :return: indexes
+    """
+
+    mean = torch.mean(samples)
+    diffs = samples - mean
+    var = torch.mean(torch.pow(diffs, 2.0))
+    std = torch.pow(var, 0.5)
+    zscores = diffs / std
+    skew = torch.mean(torch.pow(zscores, 3.0))
+    kurtosis = torch.mean(torch.pow(zscores, 4.0)) - 3.0
+
+    return mean, std, skew, kurtosis
+
