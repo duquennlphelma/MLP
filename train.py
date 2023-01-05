@@ -76,10 +76,10 @@ def train_apply(model, dataset: str, epochs=10, batch_size=32, lr=0.01, momentum
 
 if __name__ == "__main__":
     #Dowload a MoonDataset example
-    data_Moon, train_Moon, _, _ = load_data('MoonDataset', transformation=None, n_train=100, n_test=100, noise=0.1, download=False)
+    #data_Moon, train_Moon, _, _ = load_data('MoonDataset', transformation=None, n_train=100, n_test=100, noise=0.1, download=False)
 
     # Dowload a FunDataset example
-    # data_Fun, train_Fun, _, _ = load_data('FunDataset', transformation=None, n_train=100, n_test=100, noise=0.1, download=True)
+    data_Fun, train_Fun, _, _ = load_data('FunDataset', transformation=None, n_train=100, n_test=100, noise=0.1, download=False)
 
     #Download MNIST
     # data_MNIST, train_MNIST, _, _ = load_data('MNIST', transformation=None, n_train=100, n_test=100, download=True)
@@ -89,7 +89,7 @@ if __name__ == "__main__":
 
     #Passing MoonData into the model
     exit_array = np.array([[0,0]])
-    for element in train_Moon:
+    for element in train_Fun:
         print('element', element)
         exit_data = model_rnvp(element)
         print('exit data before detach',exit_data)
@@ -99,16 +99,16 @@ if __name__ == "__main__":
 
     # Plot the data
     exit_array = np.array(exit_array[1:])
-    show(exit_array, 'plot_before_training')
+    show(exit_array, 'plot_before_training_Fun_Dataset')
     directory_fig = '/home/pml_07/MLP'
 
-    out = train_apply(model_rnvp, 'MoonDataset', 4000, batch_size=25)
+    out = train_apply(model_rnvp, 'FunDataset', 400, batch_size=25)
     print('Final output')
     print(out)
 
     #Passing MoonData into the model
     exit_array_bis = np.array([[0,0]])
-    for element in train_Moon:
+    for element in train_Fun:
         exit_data = model_rnvp(element)
         print('exit data before detach',exit_data)
         exit_data = exit_data[0].detach().numpy()
@@ -120,7 +120,7 @@ if __name__ == "__main__":
 
     exit_array_bis = np.array(exit_array_bis[1:])
     print('EXIT ARRAY', exit_array_bis)
-    show(exit_array_bis, 'plot_after_training')
+    show(exit_array_bis, 'plot_after_training_Fun_Dataset')
     directory_fig = '/home/pml_07/MLP'
 
 
