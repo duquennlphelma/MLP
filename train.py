@@ -98,20 +98,22 @@ def train_apply(model, dataset: str, epochs=10, batch_size=32, lr=1e-4, momentum
 
 if __name__ == "__main__":
     # Dowload a MoonDataset example
-    # data_Moon, train_Moon, _, _ = load_data('MoonDataset', transformation=None, n_train=100, n_test=100, noise=0.1,
+    #data_Moon, train_Moon, _, _ = load_data('MoonDataset', transformation=None, n_train=100, n_test=100, noise=0.1,
     #                                        download=False)
     # Dowload a FunDataset example
     _, _, data_Fun, test_Fun = load_data('FunDataset', transformation=None, n_train=1000, n_test=1000, noise=0.1,
                                          download=False)
 
     # Plotting example of the data
-    data_Fun_array = [data_Fun[i] for i in range(len(data_Fun))]
-    show(data_Fun_array, 'plot_before_training_Fun_Dataset')
+    #ata_Fun_array = [data_Fun[i] for i in range(len(data_Fun))]
+    #show(data_Fun_array, 'plot_before_training_Fun_Dataset')
 
     # Creating the model
     model_rnvp = RNVP(2, 1)
     # Training
     out = train_apply(model_rnvp, 'FunDataset', 250, batch_size=25)
+
+    #Ploting the loss for each epoch
     directory = '/home/pml_07/MLP'
     file_name = 'epoch_loss' + '.png'
     path = os.path.join(directory, file_name)
@@ -119,8 +121,6 @@ if __name__ == "__main__":
     plt.plot(out, '.')
     plt.savefig(path)
     plt.show()
-    print('Final output')
-    print(out)
 
     # Test
 
@@ -134,7 +134,6 @@ if __name__ == "__main__":
     # Plot the data
     exit_array_test = np.array(exit_array_test[1:])
 
-    print('EXIT ARRAY', exit_array_test)
     show(exit_array_test, 'plot_after_training_Fun_Dataset')
 
 
@@ -147,5 +146,4 @@ if __name__ == "__main__":
     # Plot the data
 
     exit_array_bis = np.array(exit_data)
-    print('EXIT ARRAY', exit_array_bis)
     show(exit_array_bis, 'plot_dataset_recreated.png')
