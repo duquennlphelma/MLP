@@ -48,7 +48,7 @@ class RNVP(nn.Module):
         """
 
         x = y
-        sum_det_J = torch.zeros(len(x))
+        sum_det_J = torch.zeros(len(y))
         for i in range(1, len(self.layers)+1):
             x, det_J = self.layers[len(self.layers)-i].inverse(x)
             sum_det_J += det_J
