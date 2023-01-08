@@ -263,7 +263,7 @@ if __name__ == "__main__":
         # Creating the model
         model_rnvp = RNVP(2, 1)
         # Training
-        out = train_apply(model_rnvp, dataset, epochs=1000, batch_size=e, lr=0.001)
+        out = train_apply(model_rnvp, dataset, epochs=100, batch_size=e, lr=0.001)
         # Passing MoonData into the model
         exit_data_array = np.array([[0, 0]])
         for element in test_loader:
@@ -312,7 +312,7 @@ if __name__ == "__main__":
         # Creating the model
         model_rnvp = RNVP(2, 1)
         # Training
-        out = train_apply(model_rnvp, dataset, n_train=e, epochs=1000, batch_size=90, lr=0.001)
+        out = train_apply(model_rnvp, dataset, n_train=e, epochs=100, batch_size=90, lr=0.001)
         # Passing MoonData into the model
         exit_data_array = np.array([[0, 0]])
         for element in test_loader:
@@ -362,7 +362,7 @@ if __name__ == "__main__":
         # Creating the model
         model_rnvp = RNVP(2, 1)
         # Training
-        out = train_apply(model_rnvp, dataset, batch_size=90, lr=e)
+        out = train_apply(model_rnvp, dataset, epochs=100, batch_size=90, lr=e)
         # Passing MoonData into the model
         exit_data_array = np.array([[0, 0]])
         for element in test_loader:
