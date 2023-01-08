@@ -176,16 +176,16 @@ if __name__ == "__main__":
 """
     dataset = 'MoonDataset'
     #the number times that the learning algorithm will work through the entire training dataset.
-    epoch_array = [i * 50 for i in range(1,4)]
+    epoch_array = [i * 50 for i in range(1,40)]
     print("epoch_array", epoch_array)
     #the number of samples to work through before updating the internal model parameters.
-    batch_size_array =[i * 20 for i in range(1,8)]
+    batch_size_array =[i * 10 for i in range(1,20)]
     print("batch_size_array", batch_size_array)
-    samples_train_array = [i * 300 for i in range(1,10)]
+    samples_train_array = [i * 30 for i in range(1,160)]
     print("sample_train_array", samples_train_array)
     samples_test = 1000
     noise = 0.1
-    learning_rate_array = [0, 1e-5, 1e-4, 1e-3]
+    learning_rate_array = [0, 1e-6, 1e-5, 1e-4, 1e-3]
     momentum=0
 
     if dataset == 'FunDataset':
@@ -211,7 +211,7 @@ if __name__ == "__main__":
         # Creating the model
         model_rnvp = RNVP(2, 1)
         # Training
-        out = train_apply(model_rnvp, dataset, epochs=e, batch_size=90, lr=0.001)
+        out = train_apply(model_rnvp, dataset, epochs=e, batch_size=100, lr=0.001)
         print('model has been trained')
         # Passing MoonData into the model
         exit_data_array = np.array([[0, 0]])
@@ -236,15 +236,15 @@ if __name__ == "__main__":
     file_name = 'stat_index_accd_epochs' + '.png'
     path = os.path.join(directory, file_name)
     plt.figure()
-    plt.plot(means, 'r', label='mean')
+    plt.plot(epoch_array, means, 'r', label='mean')
     plt.axhline(y=0, color='r', linestyle='-')
-    plt.plot(stds,'b', label='std')
+    plt.plot(epoch_array, stds,'b', label='std')
     plt.axhline(y=1, color='b', linestyle='--')
-    plt.plot(skews, 'g', label='skew')
+    plt.plot(epoch_array, skews, 'g', label='skew')
     plt.axhline(y=0, color='g', linestyle=':')
-    plt.plot(kurtosiss, 'm', label='kurtosis')
+    plt.plot(epoch_array, kurtosiss, 'm', label='kurtosis')
     plt.axhline(y=0, color='m', linestyle='dashed')
-    plt.plot(losses, 'c', label='losses')
+    plt.plot(epoch_array, losses, 'c', label='losses')
 
     plt.xlabel('number of epochs')
     plt.title('Evolution of statistical indexes regarding epochs')
@@ -263,7 +263,7 @@ if __name__ == "__main__":
         # Creating the model
         model_rnvp = RNVP(2, 1)
         # Training
-        out = train_apply(model_rnvp, dataset, epochs=100, batch_size=e, lr=0.001)
+        out = train_apply(model_rnvp, dataset, epochs=200, batch_size=e, lr=0.001)
         # Passing MoonData into the model
         exit_data_array = np.array([[0, 0]])
         for element in test_loader:
@@ -285,15 +285,15 @@ if __name__ == "__main__":
     path = os.path.join(directory, file_name)
     plt.figure()
     plt.figure()
-    plt.plot(means, 'r', label='mean')
+    plt.plot(batch_size_array, means, 'r', label='mean')
     plt.axhline(y=0, color='r', linestyle='-')
-    plt.plot(stds,'b', label='std')
+    plt.plot(batch_size_array, stds,'b', label='std')
     plt.axhline(y=1, color='b', linestyle='--')
-    plt.plot(skews, 'g', label='skew')
+    plt.plot(batch_size_array, skews, 'g', label='skew')
     plt.axhline(y=0, color='g', linestyle=':')
-    plt.plot(kurtosiss, 'm', label='kurtosis')
+    plt.plot(batch_size_array, kurtosiss, 'm', label='kurtosis')
     plt.axhline(y=0, color='m', linestyle='dashed')
-    plt.plot(losses, 'c', label='losses')
+    plt.plot(batch_size_array, losses, 'c', label='losses')
 
     plt.xlabel('batch size')
     plt.title('Evolution of statistical indexes regarding batch size')
@@ -312,7 +312,7 @@ if __name__ == "__main__":
         # Creating the model
         model_rnvp = RNVP(2, 1)
         # Training
-        out = train_apply(model_rnvp, dataset, n_train=e, epochs=100, batch_size=90, lr=0.001)
+        out = train_apply(model_rnvp, dataset, n_train=e, epochs=200, batch_size=100, lr=0.001)
         # Passing MoonData into the model
         exit_data_array = np.array([[0, 0]])
         for element in test_loader:
@@ -334,15 +334,15 @@ if __name__ == "__main__":
     path = os.path.join(directory, file_name)
     plt.figure()
     plt.figure()
-    plt.plot(means, 'r', label='mean')
+    plt.plot(samples_train_array, means, 'r', label='mean')
     plt.axhline(y=0, color='r', linestyle='-')
-    plt.plot(stds, 'b', label='std')
+    plt.plot(samples_train_array, stds, 'b', label='std')
     plt.axhline(y=1, color='b', linestyle='--')
-    plt.plot(skews, 'g', label='skew')
+    plt.plot(samples_train_array,skews, 'g', label='skew')
     plt.axhline(y=0, color='g', linestyle=':')
-    plt.plot(kurtosiss, 'm', label='kurtosis')
+    plt.plot(samples_train_array,kurtosiss, 'm', label='kurtosis')
     plt.axhline(y=0, color='m', linestyle='dashed')
-    plt.plot(losses, 'c', label='losses')
+    plt.plot(samples_train_array,losses, 'c', label='losses')
 
     plt.xlabel('number of samples')
     plt.title('Evolution of statistical indexes regarding number of samples')
@@ -362,7 +362,7 @@ if __name__ == "__main__":
         # Creating the model
         model_rnvp = RNVP(2, 1)
         # Training
-        out = train_apply(model_rnvp, dataset, epochs=100, batch_size=90, lr=e)
+        out = train_apply(model_rnvp, dataset, epochs=200, batch_size=100, lr=e)
         # Passing MoonData into the model
         exit_data_array = np.array([[0, 0]])
         for element in test_loader:
