@@ -100,7 +100,7 @@ if __name__ == "__main__":
 
     epochs=50
     batch_size=100
-    dataset= 'FunDataset'
+    dataset= 'MoonDataset'
     samples_train=1000
     samples_test=1000
     noise=0.1
@@ -173,7 +173,7 @@ if __name__ == "__main__":
     #The kurtosis : a Normal distribution as a kurtosis equal to 0.
     #The skewness : a Normal distribution is symmetric so has a skewness equal to 0.
 
-    dataset = 'FunDataset'
+    dataset = 'MoonDataset'
     #the number times that the learning algorithm will work through the entire training dataset.
     epochs = np.linspace(1,3000,100)
     #the number of samples to work through before updating the internal model parameters.
