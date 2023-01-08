@@ -78,7 +78,7 @@ def train_apply(model, dataset: str, n_train=1000, epochs=10, batch_size=32, lr=
     :param momentum:
     :return: list of loss value per epoch
     """
-    _, train_loader, _, test_loader = load_data(dataset, transformation=None, n_train=n_train, n_test=100, noise=0.1,
+    _, train_loader, _, test_loader = load_data(dataset, transformation=None, n_train=n_train, n_test=1000, noise=0.1,
                                                 batch_size=batch_size, shuffle=True, download=False)
 
     optimizer = torch.optim.Adam([p for p in model.parameters() if p.requires_grad is True], lr=lr)
@@ -188,14 +188,12 @@ if __name__ == "__main__":
     if dataset == 'FunDataset':
 
          # Dowload a FunDataset example
-        _, train_loader, _, test_loader = load_data('FunDataset', transformation=None, n_train=samples_train, n_test=samples_test,
-                                         noise=noise,
-                                         download=False)
+        _, _, _, test_loader = load_data('FunDataset', transformation=None, n_train=samples_test,
+                                                    n_test=samples_test,noise=noise,download=False)
     if dataset == 'MoonDataset':
         #Dowload a MoonDataset example
-        _, train_loader, _, test_loader = load_data('MoonDataset', transformation=None, n_train=samples_train, n_test=samples_test,
-                                         noise=noise,
-                                           download=False)
+        _, _, _, test_loader = load_data('MoonDataset', transformation=None, n_train=samples_test,
+                                                    n_test=samples_test,noise=noise,download=False)
 
 
     #Plot evolution of statistical indexes different Hyperparameters:
@@ -210,7 +208,7 @@ if __name__ == "__main__":
         # Creating the model
         model_rnvp = RNVP(2, 1)
         # Training
-        out = train_apply(model_rnvp, dataset, e, batch_size=90, lr=0.001)
+        out = train_apply(model_rnvp, dataset, epochs=e, batch_size=90, lr=0.001)
         # Passing MoonData into the model
         exit_data_array = np.array([[0, 0]])
         for element in test_loader:
