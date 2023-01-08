@@ -176,12 +176,12 @@ if __name__ == "__main__":
 """
     dataset = 'MoonDataset'
     #the number times that the learning algorithm will work through the entire training dataset.
-    epoch_array = [i * 50 for i in range(1,6)]
+    epoch_array = [i * 50 for i in range(1,4)]
     print("epoch_array", epoch_array)
     #the number of samples to work through before updating the internal model parameters.
     batch_size_array =[i * 20 for i in range(1,8)]
     print("batch_size_array", batch_size_array)
-    samples_train_array = [i * 300 for i in range(1,30)]
+    samples_train_array = [i * 300 for i in range(1,10)]
     print("sample_train_array", samples_train_array)
     samples_test = 1000
     noise = 0.1
@@ -212,9 +212,11 @@ if __name__ == "__main__":
         model_rnvp = RNVP(2, 1)
         # Training
         out = train_apply(model_rnvp, dataset, epochs=e, batch_size=90, lr=0.001)
+        print('model has been trained')
         # Passing MoonData into the model
         exit_data_array = np.array([[0, 0]])
         for element in test_loader:
+            print('one element')
             exit_data = model_rnvp(element)
             exit_data = exit_data[0].detach().numpy()
             exit_data_array = np.concatenate((exit_data_array, exit_data))
