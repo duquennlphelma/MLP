@@ -274,6 +274,7 @@ if __name__ == "__main__":
         out = train_apply(model_rnvp, dataset, epochs=200, batch_size=e, lr=0.001)
         # Passing MoonData into the model
         exit_data_array = np.array([[0, 0]])
+        loss_data_array = []
         for element in test_loader:
             exit_data, det_exit = model_rnvp(element)
             loss_data = loss(exit_data, det_exit)
@@ -327,6 +328,7 @@ if __name__ == "__main__":
         out = train_apply(model_rnvp, dataset, n_train=e, epochs=200, batch_size=100, lr=0.001)
         # Passing MoonData into the model
         exit_data_array = np.array([[0, 0]])
+        loss_data_array = []
         for element in test_loader:
             exit_data, det_exit = model_rnvp(element)
             loss_data = loss(exit_data, det_exit)
@@ -381,6 +383,7 @@ if __name__ == "__main__":
         out = train_apply(model_rnvp, dataset, epochs=200, batch_size=100, lr=e)
         # Passing MoonData into the model
         exit_data_array = np.array([[0, 0]])
+        loss_data_array = []
         for element in test_loader:
             exit_data, det_exit = model_rnvp(element)
             loss_data = loss(exit_data, det_exit)
