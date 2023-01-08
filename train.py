@@ -66,18 +66,19 @@ def load_data(dataset: str, transformation=None, n_train=None, n_test=None, nois
     return train_dataset, train_loader, test_dataset, test_loader
 
 
-def train_apply(model, dataset: str, epochs=10, batch_size=32, lr=1e-4, momentum=0.0):
+def train_apply(model, dataset: str, n_train=1000, epochs=10, batch_size=32, lr=1e-4, momentum=0.0):
     """
     Training the model
     :param model: model chosen
     :param dataset: dataset to train on
+    :param n_train: number of samples to train on
     :param epochs: number of epochs to train on
     :param batch_size: size of the batches to put the dat into
     :param lr: learning rate
     :param momentum:
     :return: list of loss value per epoch
     """
-    _, train_loader, _, test_loader = load_data(dataset, transformation=None, n_train=1000, n_test=100, noise=0.1,
+    _, train_loader, _, test_loader = load_data(dataset, transformation=None, n_train=n_train, n_test=100, noise=0.1,
                                                 batch_size=batch_size, shuffle=True, download=False)
 
     optimizer = torch.optim.Adam([p for p in model.parameters() if p.requires_grad is True], lr=lr)
@@ -181,7 +182,7 @@ if __name__ == "__main__":
     samples_train = np.linspace(5,2000, 50)
     samples_test = 1000
     noise = 0.1
-    learning_rate = 0.001
+    learning_rate = [0, 1e-5, 1e-4, 1e-3]
     momentum=0
 
     if dataset == 'FunDataset':
@@ -226,30 +227,172 @@ if __name__ == "__main__":
         losses.append(min(out))
 
 
-    # Ploting the loss for each epoch
+    # Ploting the statistical indexes for each epoch
     directory = '/home/pml_07/MLP'
     file_name = 'stat_index_accd_epochs' + '.png'
     path = os.path.join(directory, file_name)
     plt.figure()
-    plt.plot(means, 'r')
-    plt.plot(stds,'b')
-    plt.plot(skews, 'g')
-    plt.plot(kurtosiss, 'm')
-    plt.plot(losses, 'c')
+    plt.plot(means, 'r', label='mean')
+    plt.axhline(y=0, color='r', linestyle='-')
+    plt.plot(stds,'b', label='std')
+    plt.axhline(y=1, color='b', linestyle='--')
+    plt.plot(skews, 'g', label='skew')
+    plt.axhline(y=0, color='g', linestyle=':')
+    plt.plot(kurtosiss, 'm', label='kurtosis')
+    plt.axhline(y=0, color='m', linestyle='dashed')
+    plt.plot(losses, 'c', label='losses')
+
+    plt.xlabel('number of epochs')
+    plt.title('Evolution of statistical indexes regarding epochs')
+
+    plt.legend(bbox_to_anchor=(1.0, 1), loc='upper center')
+    plt.savefig(path)
+    plt.show()
+
+    # BATCH_SIZE
+    means = []
+    stds = []
+    skews = []
+    kurtosiss = []
+    losses = []
+    for e in batch_size:
+        # Creating the model
+        model_rnvp = RNVP(2, 1)
+        # Training
+        out = train_apply(model_rnvp, dataset, epochs=1000, batch_size=e, lr=0.001)
+        # Passing MoonData into the model
+        exit_data_array = np.array([[0, 0]])
+        for element in test_loader:
+            exit_data = model_rnvp(element)
+            exit_data = exit_data[0].detach().numpy()
+            exit_data_array = np.concatenate((exit_data_array, exit_data))
+
+        exit_data_array = np.array(exit_data_array[1:])
+        mean, std, skew, kurtosis = index_statistics(torch.tensor(exit_data_array))
+        means.append(mean)
+        stds.append(std)
+        skews.append(skew)
+        kurtosiss.append(kurtosis)
+        losses.append(min(out))
+
+    # Ploting the statisticak indexes for each batch size
+    directory = '/home/pml_07/MLP'
+    file_name = 'stat_index_accd_batch_size' + '.png'
+    path = os.path.join(directory, file_name)
+    plt.figure()
+    plt.figure()
+    plt.plot(means, 'r', label='mean')
+    plt.axhline(y=0, color='r', linestyle='-')
+    plt.plot(stds,'b', label='std')
+    plt.axhline(y=1, color='b', linestyle='--')
+    plt.plot(skews, 'g', label='skew')
+    plt.axhline(y=0, color='g', linestyle=':')
+    plt.plot(kurtosiss, 'm', label='kurtosis')
+    plt.axhline(y=0, color='m', linestyle='dashed')
+    plt.plot(losses, 'c', label='losses')
+
+    plt.xlabel('batch size')
+    plt.title('Evolution of statistical indexes regarding batch size')
+
+    plt.legend(bbox_to_anchor=(1.0, 1), loc='upper center')
+    plt.savefig(path)
+    plt.show()
+
+    # NUMBER OF SAMPLES
+    means = []
+    stds = []
+    skews = []
+    kurtosiss = []
+    losses = []
+    for e in samples_train:
+        # Creating the model
+        model_rnvp = RNVP(2, 1)
+        # Training
+        out = train_apply(model_rnvp, dataset, n_train=e, epochs=1000, batch_size=90, lr=0.001)
+        # Passing MoonData into the model
+        exit_data_array = np.array([[0, 0]])
+        for element in test_loader:
+            exit_data = model_rnvp(element)
+            exit_data = exit_data[0].detach().numpy()
+            exit_data_array = np.concatenate((exit_data_array, exit_data))
+
+        exit_data_array = np.array(exit_data_array[1:])
+        mean, std, skew, kurtosis = index_statistics(torch.tensor(exit_data_array))
+        means.append(mean)
+        stds.append(std)
+        skews.append(skew)
+        kurtosiss.append(kurtosis)
+        losses.append(min(out))
+
+    # Ploting the loss for each epoch
+    directory = '/home/pml_07/MLP'
+    file_name = 'stat_index_accd_n_train' + '.png'
+    path = os.path.join(directory, file_name)
+    plt.figure()
+    plt.figure()
+    plt.plot(means, 'r', label='mean')
+    plt.axhline(y=0, color='r', linestyle='-')
+    plt.plot(stds, 'b', label='std')
+    plt.axhline(y=1, color='b', linestyle='--')
+    plt.plot(skews, 'g', label='skew')
+    plt.axhline(y=0, color='g', linestyle=':')
+    plt.plot(kurtosiss, 'm', label='kurtosis')
+    plt.axhline(y=0, color='m', linestyle='dashed')
+    plt.plot(losses, 'c', label='losses')
+
+    plt.xlabel('number of samples')
+    plt.title('Evolution of statistical indexes regarding number of samples')
+
+    plt.legend(bbox_to_anchor=(1.0, 1), loc='upper center')
     plt.savefig(path)
     plt.show()
 
 
-    # Pass the data in the other way after training : from normal distribution to fun dataset
-    # z = torch.distributions.MultivariateNormal(torch.zeros(2), torch.eye(2)).sample(1000)
-    z = torch.from_numpy(np.float32(np.random.multivariate_normal(np.zeros(2), np.eye(2), 1000)))
-    dataset_recreated = model_rnvp.inverse(z)
-    exit_data = dataset_recreated[0].detach().numpy()
+    #LEARNING RATE
+    means=[]
+    stds=[]
+    skews=[]
+    kurtosiss=[]
+    losses=[]
+    for e in learning_rate:
+        # Creating the model
+        model_rnvp = RNVP(2, 1)
+        # Training
+        out = train_apply(model_rnvp, dataset, batch_size=90, lr=e)
+        # Passing MoonData into the model
+        exit_data_array = np.array([[0, 0]])
+        for element in test_loader:
+            exit_data = model_rnvp(element)
+            exit_data = exit_data[0].detach().numpy()
+            exit_data_array = np.concatenate((exit_data_array, exit_data))
 
-    # Plot the data
+        exit_data_array = np.array(exit_data_array[1:])
+        mean, std, skew, kurtosis = index_statistics(torch.tensor(exit_data_array))
+        means.append(mean)
+        stds.append(std)
+        skews.append(skew)
+        kurtosiss.append(kurtosis)
+        losses.append(min(out))
 
-    exit_array_bis = np.array(exit_data)
-    show(exit_array_bis, 'plot_dataset_recreated')
 
+    # Ploting the statistical indexes for each epoch
+    directory = '/home/pml_07/MLP'
+    file_name = 'stat_index_accd_lr' + '.png'
+    path = os.path.join(directory, file_name)
+    plt.figure()
+    plt.plot(means, 'r', label='mean')
+    plt.axhline(y=0, color='r', linestyle='-')
+    plt.plot(stds,'b', label='std')
+    plt.axhline(y=1, color='b', linestyle='--')
+    plt.plot(skews, 'g', label='skew')
+    plt.axhline(y=0, color='g', linestyle=':')
+    plt.plot(kurtosiss, 'm', label='kurtosis')
+    plt.axhline(y=0, color='m', linestyle='dashed')
+    plt.plot(losses, 'c', label='losses')
 
+    plt.xlabel('learning rate')
+    plt.title('Evolution of statistical indexes regarding learning rate')
 
+    plt.legend(bbox_to_anchor=(1.0, 1), loc='upper center')
+    plt.savefig(path)
+    plt.show()
