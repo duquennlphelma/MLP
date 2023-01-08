@@ -81,7 +81,6 @@ def train_apply(model, dataset: str, epochs=10, batch_size=32, lr=1e-4, momentum
                                                 batch_size=batch_size, shuffle=True, download=False)
 
     optimizer = torch.optim.Adam([p for p in model.parameters() if p.requires_grad is True], lr=lr)
-    # optimizer = torch.optim.SGD(model.parameters(), lr=lr, momentum=momentum)
 
     # Training metrics
     epoch_loss = []
@@ -105,6 +104,7 @@ if __name__ == "__main__":
     samples_test=1000
     noise=0.1
     learning_rate=0.001
+    momentum=0
     # Dowload a MoonDataset example
     #data_Moon, train_Moon, _, _ = load_data('MoonDataset', transformation=None, n_train=100, n_test=100, noise=0.1,
     #                                        download=False)
@@ -165,3 +165,91 @@ if __name__ == "__main__":
     print('std\n', std)
     print('skew\n', skew)
     print('kurtosis\n',kurtosis)
+
+    #Plot for validity and choose of hyperparameters
+    #The mean : a Normal distribution is centered on 0.
+    #The standard deviation : a Normal distribution is reduced so its standard deviation is equal to 1.
+    #The kurtosis : a Normal distribution as a kurtosis equal to 0.
+    #The skewness : a Normal distribution is symmetric so has a skewness equal to 0.
+
+    dataset = 'FunDataset'
+    #the number times that the learning algorithm will work through the entire training dataset.
+    epochs = np.linspace(1,3000,100)
+    #the number of samples to work through before updating the internal model parameters.
+    batch_size = np.linspace(5,150,20)
+
+    samples_train = np.linspace(5,2000, 50)
+    samples_test = 1000
+    noise = 0.1
+    learning_rate = 0.001
+    momentum=0
+
+    if dataset == 'FunDataset':
+
+         # Dowload a FunDataset example
+        _, train_loader, _, test_loader = load_data('FunDataset', transformation=None, n_train=samples_train, n_test=samples_test,
+                                         noise=noise,
+                                         download=False)
+    if dataset == 'MoonDataset':
+        #Dowload a MoonDataset example
+        _, train_loader, _, test_loader = load_data('MoonDataset', transformation=None, n_train=samples_train, n_test=samples_test,
+                                         noise=noise,
+                                           download=False)
+
+
+    #Plot evolution of statistical indexes different Hyperparameters:
+
+    #EPOCHS
+    means=[]
+    stds=[]
+    skews=[]
+    kurtosiss=[]
+    losses=[]
+    for e in epochs:
+        # Creating the model
+        model_rnvp = RNVP(2, 1)
+        # Training
+        out = train_apply(model_rnvp, dataset, e, batch_size=90, lr=0.001)
+        # Passing MoonData into the model
+        exit_data_array = np.array([[0, 0]])
+        for element in test_loader:
+            exit_data = model_rnvp(element)
+            exit_data = exit_data[0].detach().numpy()
+            exit_data_array = np.concatenate((exit_data_array, exit_data))
+
+        exit_data_array = np.array(exit_data_array[1:])
+        mean, std, skew, kurtosis = index_statistics(torch.tensor(exit_data_array))
+        means.append(mean)
+        stds.append(std)
+        skews.append(skew)
+        kurtosiss.append(kurtosis)
+        losses.append(min(out))
+
+
+    # Ploting the loss for each epoch
+    directory = '/home/pml_07/MLP'
+    file_name = 'stat_index_accd_epochs' + '.png'
+    path = os.path.join(directory, file_name)
+    plt.figure()
+    plt.plot(means, 'r')
+    plt.plot(stds,'b')
+    plt.plot(skews, 'g')
+    plt.plot(kurtosiss, 'm')
+    plt.plot(losses, 'c')
+    plt.savefig(path)
+    plt.show()
+
+
+    # Pass the data in the other way after training : from normal distribution to fun dataset
+    # z = torch.distributions.MultivariateNormal(torch.zeros(2), torch.eye(2)).sample(1000)
+    z = torch.from_numpy(np.float32(np.random.multivariate_normal(np.zeros(2), np.eye(2), 1000)))
+    dataset_recreated = model_rnvp.inverse(z)
+    exit_data = dataset_recreated[0].detach().numpy()
+
+    # Plot the data
+
+    exit_array_bis = np.array(exit_data)
+    show(exit_array_bis, 'plot_dataset_recreated')
+
+
+
