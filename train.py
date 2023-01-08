@@ -3,6 +3,7 @@ import torch
 import torch.utils.data as data
 import torchvision
 from model.rnvp.RNVP2 import RNVP
+from model.rnvp.loss_function import NLL
 import matplotlib.pyplot as plt
 import numpy as np
 import torch.nn as nn
@@ -210,17 +211,22 @@ if __name__ == "__main__":
     for e in epoch_array:
         # Creating the model
         model_rnvp = RNVP(2, 1)
+        loss = NLL()
         # Training
         out = train_apply(model_rnvp, dataset, epochs=e, batch_size=100, lr=0.001)
         print('model has been trained')
         # Passing MoonData into the model
         exit_data_array = np.array([[0, 0]])
+        loss_data_array = []
         for element in test_loader:
             print('one element')
-            exit_data = model_rnvp(element)
-            exit_data = exit_data[0].detach().numpy()
+            exit_data, det_exit = model_rnvp(element)
+            loss_data = loss(exit_data, det_exit)
+            loss_data_array.append(loss_data)
+            exit_data = exit_data.detach().numpy()
             exit_data_array = np.concatenate((exit_data_array, exit_data))
 
+        loss_test = float(torch.mean(torch.tensor(loss_data_array)))
         exit_data_array = np.array(exit_data_array[1:])
         print('exit_data_array', exit_data_array)
         mean, std, skew, kurtosis = index_statistics(torch.tensor(exit_data_array))
@@ -228,7 +234,7 @@ if __name__ == "__main__":
         stds.append(std)
         skews.append(skew)
         kurtosiss.append(kurtosis)
-        losses.append(min(out))
+        losses.append(loss_test)
 
 
     # Ploting the statistical indexes for each epoch
@@ -262,22 +268,26 @@ if __name__ == "__main__":
     for e in batch_size_array:
         # Creating the model
         model_rnvp = RNVP(2, 1)
+        loss = NLL()
         # Training
         out = train_apply(model_rnvp, dataset, epochs=200, batch_size=e, lr=0.001)
         # Passing MoonData into the model
         exit_data_array = np.array([[0, 0]])
         for element in test_loader:
-            exit_data = model_rnvp(element)
-            exit_data = exit_data[0].detach().numpy()
+            exit_data, det_exit = model_rnvp(element)
+            loss_data = loss(exit_data, det_exit)
+            loss_data_array.append(loss_data)
+            exit_data = exit_data.detach().numpy()
             exit_data_array = np.concatenate((exit_data_array, exit_data))
 
+        loss_test = float(torch.mean(torch.tensor(loss_data_array)))
         exit_data_array = np.array(exit_data_array[1:])
         mean, std, skew, kurtosis = index_statistics(torch.tensor(exit_data_array))
         means.append(mean)
         stds.append(std)
         skews.append(skew)
         kurtosiss.append(kurtosis)
-        losses.append(min(out))
+        losses.append(loss_test)
 
     # Ploting the statisticak indexes for each batch size
     directory = '/home/pml_07/MLP'
@@ -311,22 +321,26 @@ if __name__ == "__main__":
     for e in samples_train_array:
         # Creating the model
         model_rnvp = RNVP(2, 1)
+        loss = NLL()
         # Training
         out = train_apply(model_rnvp, dataset, n_train=e, epochs=200, batch_size=100, lr=0.001)
         # Passing MoonData into the model
         exit_data_array = np.array([[0, 0]])
         for element in test_loader:
-            exit_data = model_rnvp(element)
-            exit_data = exit_data[0].detach().numpy()
+            exit_data, det_exit = model_rnvp(element)
+            loss_data = loss(exit_data, det_exit)
+            loss_data_array.append(loss_data)
+            exit_data = exit_data.detach().numpy()
             exit_data_array = np.concatenate((exit_data_array, exit_data))
 
+        loss_test = float(torch.mean(torch.tensor(loss_data_array)))
         exit_data_array = np.array(exit_data_array[1:])
         mean, std, skew, kurtosis = index_statistics(torch.tensor(exit_data_array))
         means.append(mean)
         stds.append(std)
         skews.append(skew)
         kurtosiss.append(kurtosis)
-        losses.append(min(out))
+        losses.append(loss_test)
 
     # Ploting the loss for each epoch
     directory = '/home/pml_07/MLP'
@@ -361,22 +375,26 @@ if __name__ == "__main__":
     for e in learning_rate_array:
         # Creating the model
         model_rnvp = RNVP(2, 1)
+        loss = NLL()
         # Training
         out = train_apply(model_rnvp, dataset, epochs=200, batch_size=100, lr=e)
         # Passing MoonData into the model
         exit_data_array = np.array([[0, 0]])
         for element in test_loader:
-            exit_data = model_rnvp(element)
-            exit_data = exit_data[0].detach().numpy()
+            exit_data, det_exit = model_rnvp(element)
+            loss_data = loss(exit_data, det_exit)
+            loss_data_array.append(loss_data)
+            exit_data = exit_data.detach().numpy()
             exit_data_array = np.concatenate((exit_data_array, exit_data))
 
+        loss_test = float(torch.mean(torch.tensor(loss_data_array)))
         exit_data_array = np.array(exit_data_array[1:])
         mean, std, skew, kurtosis = index_statistics(torch.tensor(exit_data_array))
         means.append(mean)
         stds.append(std)
         skews.append(skew)
         kurtosiss.append(kurtosis)
-        losses.append(min(out))
+        losses.append(loss_test)
 
 
     # Ploting the statistical indexes for each epoch
