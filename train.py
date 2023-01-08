@@ -182,7 +182,7 @@ if __name__ == "__main__":
     #the number of samples to work through before updating the internal model parameters.
     batch_size_array =[i * 10 for i in range(1,10)]
     print("batch_size_array", batch_size_array)
-    samples_train_array = [i * 30 for i in range(1,160)]
+    samples_train_array = [i * 400 for i in range(1,40)]
     print("sample_train_array", samples_train_array)
     samples_test = 1000
     noise = 0.1
@@ -258,7 +258,7 @@ if __name__ == "__main__":
     plt.legend(bbox_to_anchor=(1.0, 1), loc='upper center')
     plt.savefig(path)
     plt.show()
-    """
+ 
 
     # BATCH_SIZE
     means = []
@@ -313,7 +313,7 @@ if __name__ == "__main__":
     plt.legend(bbox_to_anchor=(1.0, 1), loc='upper center')
     plt.savefig(path)
     plt.show()
-
+"""
     # NUMBER OF SAMPLES
     means = []
     stds = []
