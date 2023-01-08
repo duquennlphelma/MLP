@@ -107,10 +107,10 @@ if __name__ == "__main__":
     learning_rate=0.001
     momentum=0
     # Dowload a MoonDataset example
-    #data_Moon, train_Moon, _, _ = load_data('MoonDataset', transformation=None, n_train=100, n_test=100, noise=0.1,
+    _, _, _, test_Moon = load_data('MoonDataset', transformation=None, n_train=100, n_test=100, noise=0.1,
     #                                        download=False)
     # Dowload a FunDataset example
-    _, _, data_Fun, test_Fun = load_data('FunDataset', transformation=None, n_train=samples_train, n_test=samples_test, noise=noise,
+    #_, _, data_Fun, test_Fun = load_data('FunDataset', transformation=None, n_train=samples_train, n_test=samples_test, noise=noise,
                                          download=False)
 
     # Plotting example of the data
@@ -136,7 +136,7 @@ if __name__ == "__main__":
 
     # Passing MoonData into the model
     exit_array_test = np.array([[0, 0]])
-    for element in test_Fun:
+    for element in test_Moon:
         exit_data = model_rnvp(element)
         exit_data = exit_data[0].detach().numpy()
         exit_array_test = np.concatenate((exit_array_test, exit_data))
