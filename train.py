@@ -98,7 +98,7 @@ def train_apply(model, dataset: str, n_train=1000, epochs=10, batch_size=32, lr=
 
 if __name__ == "__main__":
 
-    epochs=200
+    epochs=50
     batch_size=100
     dataset= 'FunDataset'
     samples_train=1000
