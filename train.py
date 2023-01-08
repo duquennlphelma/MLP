@@ -177,10 +177,12 @@ if __name__ == "__main__":
     dataset = 'MoonDataset'
     #the number times that the learning algorithm will work through the entire training dataset.
     epoch_array = [i * 800 for i in range(1,5)]
+    print("epoch_array", epoch_array)
     #the number of samples to work through before updating the internal model parameters.
     batch_size_array =[i * 20 for i in range(1,8)]
-
+    print("batch_size_array", batch_size_array)
     samples_train_array = [i * 300 for i in range(1,30)]
+    print("sample_train_array", samples_train_array)
     samples_test = 1000
     noise = 0.1
     learning_rate_array = [0, 1e-5, 1e-4, 1e-3]
@@ -218,6 +220,7 @@ if __name__ == "__main__":
             exit_data_array = np.concatenate((exit_data_array, exit_data))
 
         exit_data_array = np.array(exit_data_array[1:])
+        print('exit_data_array', exit_data_array)
         mean, std, skew, kurtosis = index_statistics(torch.tensor(exit_data_array))
         means.append(mean)
         stds.append(std)
