@@ -3,6 +3,7 @@ import torch
 import torch.utils.data as data
 import torchvision
 from model.rnvp.RNVP2 import RNVP
+from model.rnvp.loss_function import NLL
 import matplotlib.pyplot as plt
 import numpy as np
 import torch.nn as nn
