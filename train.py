@@ -176,7 +176,7 @@ if __name__ == "__main__":
 """
     dataset = 'MoonDataset'
     #the number times that the learning algorithm will work through the entire training dataset.
-    epoch_array = [i * 25 for i in range(1,20)]
+    epoch_array = [i * 25 for i in range(1,10)]
     print("epoch_array", epoch_array)
     #the number of samples to work through before updating the internal model parameters.
     batch_size_array =[i * 10 for i in range(1,20)]
