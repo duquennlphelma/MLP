@@ -177,12 +177,12 @@ if __name__ == "__main__":
 """
     dataset = 'MoonDataset'
     #the number times that the learning algorithm will work through the entire training dataset.
-    epoch_array = [i * 25 for i in range(1,20)]
+    epoch_array = [i * 25 for i in range(1,10)]
     print("epoch_array", epoch_array)
     #the number of samples to work through before updating the internal model parameters.
-    batch_size_array =[i * 10 for i in range(1,20)]
+    batch_size_array =[i * 10 for i in range(1,10)]
     print("batch_size_array", batch_size_array)
-    samples_train_array = [i * 30 for i in range(1,160)]
+    samples_train_array = [i * 500 for i in range(1,8)]
     print("sample_train_array", samples_train_array)
     samples_test = 1000
     noise = 0.1
@@ -201,7 +201,7 @@ if __name__ == "__main__":
 
 
     #Plot evolution of statistical indexes different Hyperparameters:
-
+    """
     #EPOCHS
     means=[]
     stds=[]
@@ -258,6 +258,7 @@ if __name__ == "__main__":
     plt.legend(bbox_to_anchor=(1.0, 1), loc='upper center')
     plt.savefig(path)
     plt.show()
+ 
 
     # BATCH_SIZE
     means = []
@@ -273,6 +274,7 @@ if __name__ == "__main__":
         out = train_apply(model_rnvp, dataset, epochs=200, batch_size=e, lr=0.001)
         # Passing MoonData into the model
         exit_data_array = np.array([[0, 0]])
+        loss_data_array = []
         for element in test_loader:
             exit_data, det_exit = model_rnvp(element)
             loss_data = loss(exit_data, det_exit)
@@ -311,7 +313,7 @@ if __name__ == "__main__":
     plt.legend(bbox_to_anchor=(1.0, 1), loc='upper center')
     plt.savefig(path)
     plt.show()
-
+"""
     # NUMBER OF SAMPLES
     means = []
     stds = []
@@ -326,6 +328,7 @@ if __name__ == "__main__":
         out = train_apply(model_rnvp, dataset, n_train=e, epochs=200, batch_size=100, lr=0.001)
         # Passing MoonData into the model
         exit_data_array = np.array([[0, 0]])
+        loss_data_array = []
         for element in test_loader:
             exit_data, det_exit = model_rnvp(element)
             loss_data = loss(exit_data, det_exit)
@@ -380,6 +383,7 @@ if __name__ == "__main__":
         out = train_apply(model_rnvp, dataset, epochs=200, batch_size=100, lr=e)
         # Passing MoonData into the model
         exit_data_array = np.array([[0, 0]])
+        loss_data_array = []
         for element in test_loader:
             exit_data, det_exit = model_rnvp(element)
             loss_data = loss(exit_data, det_exit)
