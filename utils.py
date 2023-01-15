@@ -80,3 +80,13 @@ def index_statistics(samples):
 
     return mean, std, skew, kurtosis
 
+
+def checkerboard_mask(h, w, reverse_mask=False):
+    x, y = torch.arange(h, dtype=torch.int32), torch.arange(w, dtype=torch.int32)
+    xx, yy = torch.meshgrid(x, y, indexing='ij')
+    mask = torch.fmod(xx + yy, 2)
+    mask = mask.to(torch.float32).view(1, 1, h, w)
+    if reverse_mask:
+        mask = 1 - mask
+    return mask
+

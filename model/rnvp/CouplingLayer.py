@@ -1,37 +1,34 @@
 import torch
 from torch import nn
 from model.resnet.ResNet import ResNet
-import torch.nn.functional
+import utils
 import numpy as np
 
 
 class CouplingLayer(nn.Module):
-    def __init__(self, input_size, d, up=True):
+    def __init__(self, input_channels, d_channels, reverse=False):
         """
         Initialisation of the coupling layer
         Case of datasets of images
-        :param input_size: size of the input
-        :param d: size of the modified part of the vector into the CouplingLayer
-        :param up: if True the modified part of the vector is the upper part
-                   if False the modified part of the vector is the lower part
+        :param input_channels: size of the input -> number of channels in the input
+        :param d_channels: size of the modified part of the tensor into the CouplingLayer -> number of channels in s & t
+        :param reverse: whether to reverse the mask
         """
         super().__init__()
 
-        list_t = [nn.Linear(input_size, 256), nn.LeakyReLU(), nn.Linear(256, 256), nn.LeakyReLU(),
-                  nn.Linear(256, input_size), nn.Tanh()]
+        self.reverse = reverse
+        self.d = d_channels
+        self.input_size = input_channels
+
+        conv1 = nn.Conv2d(input_channels, d_channels, kernel_size=3, padding=1)
+        conv2 = nn.Conv2d(d_channels, input_channels, kernel_size=3, padding=1)
+        norm_in = nn.BatchNorm2d(input_channels)
+        norm_out = nn.BatchNorm2d(input_channels)
+
+        list_t = [norm_in, nn.ReLU(), conv1, norm_out]
         self.t = nn.Sequential(*list_t)
-
-        list_s = [nn.Linear(input_size, 256), nn.LeakyReLU(), nn.Linear(256, 256), nn.LeakyReLU(),
-                  nn.Linear(256, input_size)]
+        list_s = [norm_in, nn.ReLU(), conv1, norm_out, nn.Tanh()]
         self.s = nn.Sequential(*list_s)
-
-        self.d = d
-        self.input_size = input_size
-
-        if up:
-            self.mask = torch.FloatTensor(np.concatenate((np.ones(d), np.zeros(input_size - d)), axis=None))
-        else:
-            self.mask = torch.FloatTensor(np.concatenate((np.zeros(d), np.ones(input_size - d)), axis=None))
 
     def forward(self, x):
         """
@@ -40,7 +37,8 @@ class CouplingLayer(nn.Module):
         :return: output of the layer
         """
         x = torch.Tensor(x)
-        b = self.mask
+        size = torch.Tensor.size(x)
+        b = utils.checkerboard_mask(size[-2], size[-1], reverse_mask=self.reverse)
 
         b_x = torch.mul(x, b)
         s_x = self.s(b_x) * (1-b)
