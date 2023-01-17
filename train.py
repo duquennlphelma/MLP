@@ -147,7 +147,7 @@ if __name__ == "__main__":
     # Test
 
     # Passing MoonData into the model
-    exit_array_test = np.array([[0, 0]])
+    exit_array_test = np.zeros((28,28))
     #for element in test_MNIST:
     for i, data in enumerate(test_MNIST):
         exit_data = model_rnvp(data[0])
