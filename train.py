@@ -12,7 +12,7 @@ import torch.nn as nn
 import torchvision.transforms as transforms
 
 from data import MoonDataset, FunDataset
-from utils import show, train_one_epoch, index_statistics
+from utils import show, train_one_epoch, index_statistics, train_one_epoch_image
 
 path_data_cluster = '/home/space/datasets'
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
@@ -92,7 +92,10 @@ def train_apply(model, dataset: str, n_train=1000, epochs=10, batch_size=32, lr=
 
     # Train the model epochs * times & Collect metrics progress over the training
     for i in range(epochs):
-        epoch_loss_i = train_one_epoch(model, train_loader, optimizer)
+        if dataset=="MNIST":
+            epoch_loss_i = train_one_epoch_image(model, train_loader, optimizer)
+        else:
+            epoch_loss_i = train_one_epoch(model, train_loader, optimizer)
         epoch_loss.append(epoch_loss_i)
 
     arr_epoch_loss = np.array(epoch_loss)

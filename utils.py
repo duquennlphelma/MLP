@@ -61,6 +61,37 @@ def train_one_epoch(model: nn.Module, train_loader: data.DataLoader, optimizer):
 
     return float(epoch_loss)
 
+def train_one_epoch_image(model: nn.Module, train_loader: data.DataLoader, optimizer):
+    """
+    Training the model on one epoch
+    :param model: model chosen
+    :param train_loader: Dataloader of the training data
+    :param optimizer: chosen optimizer
+    :return: loss value on the epoch
+    """
+    losses = []
+
+    for i, x in enumerate(train_loader):
+        optimizer.zero_grad()
+
+        # forward pass
+        y, det_J = model(x)
+
+        # Loss function
+        loss = NLL()
+        output = loss(y, det_J)
+
+        # update the model
+        output.backward()
+        optimizer.step()
+
+        # collect statistics
+        losses.append(output.detach())
+
+    epoch_loss = torch.mean(torch.tensor(losses))
+
+    return float(epoch_loss)
+
 
 def index_statistics(samples):
     """
