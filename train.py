@@ -152,7 +152,12 @@ if __name__ == "__main__":
     for i, data in enumerate(test_MNIST):
         exit_data = model_rnvp(data[0])
         exit_data = exit_data[0].detach().numpy()
-        show(exit_data[0,0], 'plot_after_training_MNIST_Dataset')
+        directory = '/home/pml_07/MLP/plot_after_training_MNIST_Dataset'
+        file_name = directory + '.png'
+        path = os.path.join(directory, file_name)
+        plt.imshow(exit_data[0,0])
+        plt.savefig(file_name)
+
 
 
 
