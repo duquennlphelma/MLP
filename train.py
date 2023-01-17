@@ -132,8 +132,8 @@ if __name__ == "__main__":
     # Creating the model
     model_rnvp = RNVP(1, 4)
     # Training
-    #out = train_apply(model=model_rnvp, n_train=samples_train, dataset=dataset, epochs=epochs, batch_size=batch_size,
-                      #lr=learning_rate, transformation = transforms.Compose([transforms.ToTensor()]))
+    out = train_apply(model=model_rnvp, n_train=samples_train, dataset=dataset, epochs=epochs, batch_size=batch_size,
+                      lr=learning_rate, transformation = transforms.Compose([transforms.ToTensor()]))
 
     #Ploting the loss for each epoch
     directory = '/home/pml_07/MLP'
