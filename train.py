@@ -136,13 +136,13 @@ if __name__ == "__main__":
                       #lr=learning_rate, transformation = transforms.Compose([transforms.ToTensor()]))
 
     #Ploting the loss for each epoch
-    #directory = '/home/pml_07/MLP'
-    #file_name = 'epoch_loss' + '.png'
-    #path = os.path.join(directory, file_name)
-    #plt.figure()
-    #plt.plot(out, '.')
-    #plt.savefig(path)
-    #plt.show()
+    directory = '/home/pml_07/MLP'
+    file_name = 'epoch_loss' + '.png'
+    path = os.path.join(directory, file_name)
+    plt.figure()
+    plt.plot(out, '.')
+    plt.savefig(path)
+    plt.show()
 
     # Test
 
