@@ -1,4 +1,6 @@
 import os
+
+os.environ['KMP_DUPLICATE_LIB_OK'] = 'True'
 import torch
 import torch.utils.data as data
 import torchvision
@@ -115,7 +117,7 @@ if __name__ == "__main__":
     #_, _, data_Fun, test_Fun = load_data('FunDataset', transformation=None, n_train=samples_train, n_test=samples_test, noise=noise,
     #                                  download=False)
     # Dowload a MNISTDataset example
-    _, test_MNIST, _, _ = load_data('MNIST',
+    _, _, _, test_MNIST = load_data('MNIST',
                                     n_train=100, n_test=100, noise=0.1, download=True)
 
     # Plotting example of the data
