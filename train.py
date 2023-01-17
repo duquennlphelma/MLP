@@ -7,6 +7,7 @@ from model.rnvp.loss_function import NLL
 import matplotlib.pyplot as plt
 import numpy as np
 import torch.nn as nn
+import torchvision.transforms as transforms
 
 from data import MoonDataset, FunDataset
 from utils import show, train_one_epoch, index_statistics
@@ -114,8 +115,8 @@ if __name__ == "__main__":
     #_, _, data_Fun, test_Fun = load_data('FunDataset', transformation=None, n_train=samples_train, n_test=samples_test, noise=noise,
     #                                  download=False)
     # Dowload a MNISTDataset example
-    _, _, _, test_Moon = load_data('MNIST', transformation=None, n_train=100, n_test=100, noise=0.1,
-                                                                          download=True)
+    _, _, _, test_MNIST = load_data('MNIST', transformation=transforms.Compose([transforms.PILToTensor()]),
+                                    n_train=100, n_test=100, noise=0.1, download=True)
 
     # Plotting example of the data
     #ata_Fun_array = [data_Fun[i] for i in range(len(data_Fun))]
@@ -140,7 +141,7 @@ if __name__ == "__main__":
 
     # Passing MoonData into the model
     exit_array_test = np.array([[0, 0]])
-    for element in test_Moon:
+    for element in test_MNIST:
         exit_data = model_rnvp(element)
         exit_data = exit_data[0].detach().numpy()
         exit_array_test = np.concatenate((exit_array_test, exit_data))
