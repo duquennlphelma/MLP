@@ -1,6 +1,7 @@
 import torch
 from torch import nn
 from model.rnvp.CouplingLayer import CouplingLayer
+import numpy as np
 
 
 # todo generalize for n coupling layer in the network
@@ -32,6 +33,7 @@ class RNVP(nn.Module):
         Forward pass of the RNVP network making the data pass into each coupling layers.
         """
         y = x
+        print('x\n', x, len(x), np.shape(x))
         #sum_det_J is size batch_size,1
         sum_det_J = torch.zeros(x.size(0))
         for i in range(len(self.layers)):
