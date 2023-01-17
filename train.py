@@ -157,6 +157,8 @@ if __name__ == "__main__":
         path = os.path.join(directory, file_name)
         plt.imshow(exit_data[0,0])
         plt.savefig(file_name)
+        if i>1:
+            break
 
 
 
