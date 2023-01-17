@@ -116,7 +116,7 @@ if __name__ == "__main__":
     #                                  download=False)
     # Dowload a MNISTDataset example
     _, _, _, test_MNIST = load_data('MNIST',
-                                    n_train=100, n_test=100, noise=0.1, download=True)
+                                    n_train=100, n_test=100, noise=0.1, download=False)
 
     # Plotting example of the data
     #ata_Fun_array = [data_Fun[i] for i in range(len(data_Fun))]
