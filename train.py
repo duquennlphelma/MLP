@@ -121,7 +121,7 @@ if __name__ == "__main__":
     #                                  download=False)
     # Dowload a MNISTDataset example
     _, _, _, test_MNIST = load_data('MNIST',
-                                    n_train=4, n_test=4, noise=0.1, download=False,
+                                    n_train=4, n_test=4, noise=0.1, download=False, batch_size=batch_size,
                                     transformation = transforms.Compose([transforms.ToTensor()]))
 
     # Plotting example of the data
@@ -132,17 +132,17 @@ if __name__ == "__main__":
     # Creating the model
     model_rnvp = RNVP(1, 4)
     # Training
-    out = train_apply(model=model_rnvp, n_train=samples_train, dataset=dataset, epochs=epochs, batch_size=batch_size,
-                      lr=learning_rate, transformation = transforms.Compose([transforms.ToTensor()]))
+    #out = train_apply(model=model_rnvp, n_train=samples_train, dataset=dataset, epochs=epochs, batch_size=batch_size,
+                      #lr=learning_rate, transformation = transforms.Compose([transforms.ToTensor()]))
 
     #Ploting the loss for each epoch
-    directory = '/home/pml_07/MLP'
-    file_name = 'epoch_loss' + '.png'
-    path = os.path.join(directory, file_name)
-    plt.figure()
-    plt.plot(out, '.')
-    plt.savefig(path)
-    plt.show()
+    #directory = '/home/pml_07/MLP'
+    #file_name = 'epoch_loss' + '.png'
+    #path = os.path.join(directory, file_name)
+    #plt.figure()
+    #plt.plot(out, '.')
+    #plt.savefig(path)
+    #plt.show()
 
     # Test
 
@@ -162,14 +162,14 @@ if __name__ == "__main__":
 
     #Pass the data in the other way after training : from normal distribution to fun dataset
     #z = torch.distributions.MultivariateNormal(torch.zeros(2), torch.eye(2)).sample(1000)
-    z= torch.from_numpy(np.float32(np.random.multivariate_normal(np.zeros(2), np.eye(2), 1000)))
-    dataset_recreated = model_rnvp.inverse(z)
-    exit_data = dataset_recreated[0].detach().numpy()
+    #z= torch.from_numpy(np.float32(np.random.multivariate_normal(np.zeros(2), np.eye(2), 1000)))
+    #dataset_recreated = model_rnvp.inverse(z)
+    #exit_data = dataset_recreated[0].detach().numpy()
 
     # Plot the data
 
-    exit_array_bis = np.array(exit_data)
-    show(exit_array_bis, 'plot_dataset_recreated_MNIST')
+    #exit_array_bis = np.array(exit_data)
+    #show(exit_array_bis, 'plot_dataset_recreated_MNIST')
 
     """
     #Validation test
