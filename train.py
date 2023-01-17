@@ -121,7 +121,7 @@ if __name__ == "__main__":
     #                                  download=False)
     # Dowload a MNISTDataset example
     _, _, _, test_MNIST = load_data('MNIST',
-                                    n_train=4, n_test=4, noise=0.1, download=False, batch_size=batch_size,
+                                    n_train=1, n_test=1, noise=0.1, download=False, batch_size=1,
                                     transformation = transforms.Compose([transforms.ToTensor()]))
 
     # Plotting example of the data
@@ -146,15 +146,15 @@ if __name__ == "__main__":
 
     # Test
 
-    # Passing MoonData into the model
+    # Passing MNIST into the model
     exit_array_test = np.zeros((28,28))
     #for element in test_MNIST:
     for i, data in enumerate(test_MNIST):
         exit_data = model_rnvp(data[0])
         exit_data = exit_data[0].detach().numpy()
-        print('len(exit_data)',np.shape(exit_data[0,0]))
+        print('len(exit_data)',np.shape(exit_data))
         print('len(exit_array_test', np.shape(exit_array_test))
-        exit_array_test = np.concatenate((exit_array_test, exit_data[0,0]))
+        exit_array_test = np.concatenate((exit_array_test, exit_data))
 
     # Plot the data
     exit_array_test = np.array(exit_array_test[1:])
