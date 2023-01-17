@@ -102,11 +102,11 @@ def train_apply(model, dataset: str, n_train=1000, epochs=10, batch_size=32, lr=
 
 if __name__ == "__main__":
 
-    epochs=50
-    batch_size=100
-    dataset= 'MoonDataset'
-    samples_train=1000
-    samples_test=1000
+    epochs=3
+    batch_size=2
+    dataset= 'MNIST'
+    samples_train=10
+    samples_test=10
     noise=0.1
     learning_rate=0.001
     momentum=0
@@ -143,8 +143,9 @@ if __name__ == "__main__":
 
     # Passing MoonData into the model
     exit_array_test = np.array([[0, 0]])
-    for element in test_MNIST:
-        exit_data = model_rnvp(element)
+    #for element in test_MNIST:
+    for i, data in enumerate(test_MNIST):
+        exit_data = model_rnvp(data)
         exit_data = exit_data[0].detach().numpy()
         exit_array_test = np.concatenate((exit_array_test, exit_data))
 
