@@ -135,6 +135,7 @@ if __name__ == "__main__":
     out = train_apply(model=model_rnvp, n_train=samples_train, dataset=dataset, epochs=epochs, batch_size=batch_size,
                       lr=learning_rate, transformation = transforms.Compose([transforms.ToTensor()]))
 
+    torch.save(model_rnvp.state_dict(), '/home/pml_07/MLP/model_trained.pth')
     #Ploting the loss for each epoch
     directory = '/home/pml_07/MLP'
     file_name = 'epoch_loss' + '.png'

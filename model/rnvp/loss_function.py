@@ -9,7 +9,7 @@ class NLL(nn.Module):
     """
     def __init__(self):
         super(NLL, self).__init__()
-        self.prior = torch.distributions.MultivariateNormal(torch.zeros(2), torch.eye(2))
+        #self.prior = torch.distributions.MultivariateNormal(torch.zeros((1,28,28)), torch.eye(28))
 
     def forward(self, z, det_J):
 
@@ -18,7 +18,7 @@ class NLL(nn.Module):
         ll = prior_ll + det_J
         nll = -ll.mean()
 
-       # log_pz = self.prior.log_prob(z)
+        #log_pz = self.prior.log_prob(z)
         #return (-log_pz + det_J).mean()
         return nll
 
