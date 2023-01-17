@@ -33,7 +33,7 @@ class RNVP(nn.Module):
         """
         y = x
         #sum_det_J is size batch_size,1
-        sum_det_J = torch.zeros(len(x))
+        sum_det_J = torch.zeros(x.size(0))
         for i in range(len(self.layers)):
             y, det_J = self.layers[i].forward(y)
 
