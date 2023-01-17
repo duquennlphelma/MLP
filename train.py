@@ -152,9 +152,9 @@ if __name__ == "__main__":
     for i, data in enumerate(test_MNIST):
         exit_data = model_rnvp(data[0])
         exit_data = exit_data[0].detach().numpy()
-        print('len(exit_data)',np.shape(exit_data))
+        print('len(exit_data)',np.shape(exit_data[0,0]))
         print('len(exit_array_test', np.shape(exit_array_test))
-        exit_array_test = np.concatenate((exit_array_test, exit_data))
+        exit_array_test = np.concatenate((exit_array_test, exit_data[0,0]))
 
     # Plot the data
     exit_array_test = np.array(exit_array_test[1:])
