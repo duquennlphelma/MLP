@@ -25,9 +25,9 @@ class CouplingLayer(nn.Module):
         norm_in = nn.BatchNorm2d(input_channels)
         norm_out = nn.BatchNorm2d(input_channels)
 
-        list_t = [norm_in, nn.ReLU(), conv1, norm_out]
+        list_t = [norm_in, conv1, nn.ReLU(), conv2, norm_out]
         self.t = nn.Sequential(*list_t)
-        list_s = [norm_in, nn.ReLU(), conv1, norm_out, nn.Tanh()]
+        list_s = [norm_in, conv1, nn.ReLU(), conv2, norm_out, nn.Tanh()]
         self.s = nn.Sequential(*list_s)
 
     def forward(self, x):
@@ -37,7 +37,7 @@ class CouplingLayer(nn.Module):
         :return: output of the layer
         """
         x = torch.Tensor(x)
-        size = torch.Tensor.size(x)
+        size = torch.Tensor.size(x)  # returns (batch_size, n_channels, h, w)
         b = utils.checkerboard_mask(size[-2], size[-1], reverse_mask=self.reverse)
 
         b_x = torch.mul(x, b)
@@ -47,9 +47,11 @@ class CouplingLayer(nn.Module):
         # y = b_x + torch.mul((1-b), (torch.mul(x, torch.exp(s_x)) + t_x))
         z = (1 - b) * (x - t_x) * torch.exp(-s_x) + b_x
 
-        #s_x is a vector of size (batch_size, d) and we sum on d to have the determinant for each samples
+        #s_x is a vector of size (batch_size, n_channels, h, w) and we sum on ? to have the determinant for each samples
         #and we took the logarithm of the det that is why we sum the s and log(1)=0
-        det_J = torch.sum(s_x, 1)
+        #det_J = torch.sum(s_x, 1)
+
+        det_J = s_x.view(s_x.size(0), -1).sum(-1)
 
         return z, det_J
 
@@ -68,7 +70,7 @@ class CouplingLayer(nn.Module):
         z = b_x + (1 - b) * (y * torch.exp(s_x) + t_x)
         #y = b_x + torch.mul((torch.mul((1 - b), y) - t_x), torch.exp(-s_x))
 
-        det_J = torch.sum(-s_x, 1)
+        det_J = (-s_x).view(s_x.size(0), -1).sum(-1)
 
         return z, det_J
 
