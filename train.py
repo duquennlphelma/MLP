@@ -123,7 +123,7 @@ if __name__ == "__main__":
 
 
     # Creating the model
-    model_rnvp = RNVP(2, 1)
+    model_rnvp = RNVP(1, 4)
     # Training
     out = train_apply(model_rnvp, dataset, epochs, batch_size=batch_size, lr=learning_rate)
 
