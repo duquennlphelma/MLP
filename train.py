@@ -115,7 +115,7 @@ if __name__ == "__main__":
     #_, _, data_Fun, test_Fun = load_data('FunDataset', transformation=None, n_train=samples_train, n_test=samples_test, noise=noise,
     #                                  download=False)
     # Dowload a MNISTDataset example
-    _, _, _, test_MNIST = load_data('MNIST', transformation=transforms.Compose([transforms.PILToTensor()]),
+    _, _, _, test_MNIST = load_data('MNIST',
                                     n_train=100, n_test=100, noise=0.1, download=True)
 
     # Plotting example of the data
