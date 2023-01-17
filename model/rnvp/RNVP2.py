@@ -1,6 +1,6 @@
 import torch
 from torch import nn
-from model.rnvp.CouplingLayer2 import CouplingLayer
+from model.rnvp.CouplingLayer import CouplingLayer
 
 
 # todo generalize for n coupling layer in the network
@@ -15,12 +15,12 @@ class RNVP(nn.Module):
     def __init__(self, input_size, d):
         super().__init__()
 
-        layer_0 = CouplingLayer(input_size, d, up=True)
-        layer_1 = CouplingLayer(input_size, d, up=False)
-        layer_2 = CouplingLayer(input_size, d, up=True)
-        layer_3 = CouplingLayer(input_size, d, up=False)
-        layer_4 = CouplingLayer(input_size, d, up=True)
-        layer_5 = CouplingLayer(input_size, d, up=False)
+        layer_0 = CouplingLayer(input_size, d, reverse=True)
+        layer_1 = CouplingLayer(input_size, d, reverse=False)
+        layer_2 = CouplingLayer(input_size, d, reverse=True)
+        layer_3 = CouplingLayer(input_size, d, reverse=False)
+        layer_4 = CouplingLayer(input_size, d, reverse=True)
+        layer_5 = CouplingLayer(input_size, d, reverse=False)
 
         self.input_size = input_size
         self.d = d

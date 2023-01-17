@@ -98,7 +98,7 @@ def train_apply(model, dataset: str, n_train=1000, epochs=10, batch_size=32, lr=
 
 
 if __name__ == "__main__":
-    """
+
     epochs=50
     batch_size=100
     dataset= 'MoonDataset'
@@ -108,11 +108,14 @@ if __name__ == "__main__":
     learning_rate=0.001
     momentum=0
     # Dowload a MoonDataset example
-    _, _, _, test_Moon = load_data('MoonDataset', transformation=None, n_train=100, n_test=100, noise=0.1,
+    #_, _, _, test_Moon = load_data('MoonDataset', transformation=None, n_train=100, n_test=100, noise=0.1,
     #                                        download=False)
     # Dowload a FunDataset example
     #_, _, data_Fun, test_Fun = load_data('FunDataset', transformation=None, n_train=samples_train, n_test=samples_test, noise=noise,
-                                         download=False)
+    #                                  download=False)
+    # Dowload a MNISTDataset example
+    _, _, _, test_Moon = load_data('MNIST', transformation=None, n_train=100, n_test=100, noise=0.1,
+                                                                          download=False)
 
     # Plotting example of the data
     #ata_Fun_array = [data_Fun[i] for i in range(len(data_Fun))]
@@ -145,7 +148,7 @@ if __name__ == "__main__":
     # Plot the data
     exit_array_test = np.array(exit_array_test[1:])
 
-    show(exit_array_test, 'plot_after_training_Fun_Dataset')
+    show(exit_array_test, 'plot_after_training_MNIST_Dataset')
 
 
     #Pass the data in the other way after training : from normal distribution to fun dataset
@@ -157,8 +160,9 @@ if __name__ == "__main__":
     # Plot the data
 
     exit_array_bis = np.array(exit_data)
-    show(exit_array_bis, 'plot_dataset_recreated')
+    show(exit_array_bis, 'plot_dataset_recreated_MNIST')
 
+    """
     #Validation test
 
     mean, std, skew, kurtosis=index_statistics(torch.tensor(exit_array_test))
@@ -174,7 +178,6 @@ if __name__ == "__main__":
     #The kurtosis : a Normal distribution as a kurtosis equal to 0.
     #The skewness : a Normal distribution is symmetric so has a skewness equal to 0.
 
-"""
     dataset = 'MoonDataset'
     #the number times that the learning algorithm will work through the entire training dataset.
     epoch_array = [i * 25 for i in range(1,10)]
@@ -198,10 +201,10 @@ if __name__ == "__main__":
         #Dowload a MoonDataset example
         _, _, _, test_loader = load_data('MoonDataset', transformation=None, n_train=1000,
                                                     n_test=1000,noise=0.1,download=False)
-
+        
 
     #Plot evolution of statistical indexes different Hyperparameters:
-    """
+
     #EPOCHS
     means=[]
     stds=[]
@@ -313,7 +316,7 @@ if __name__ == "__main__":
     plt.legend(bbox_to_anchor=(1.0, 1), loc='upper center')
     plt.savefig(path)
     plt.show()
-"""
+
     # NUMBER OF SAMPLES
     means = []
     stds = []
@@ -422,3 +425,4 @@ if __name__ == "__main__":
     plt.legend(bbox_to_anchor=(1.0, 1), loc='upper center')
     plt.savefig(path)
     plt.show()
+    """
