@@ -70,7 +70,7 @@ def load_data(dataset: str, transformation=None, n_train=None, n_test=None, nois
     return train_dataset, train_loader, test_dataset, test_loader
 
 
-def train_apply(model, dataset: str, n_train=1000, epochs=10, batch_size=32, lr=1e-4, momentum=0.0):
+def train_apply(model, dataset: str, n_train=1000, epochs=10, batch_size=32, lr=1e-4, momentum=0.0, transformation=None):
     """
     Training the model
     :param model: model chosen
@@ -82,7 +82,7 @@ def train_apply(model, dataset: str, n_train=1000, epochs=10, batch_size=32, lr=
     :param momentum:
     :return: list of loss value per epoch
     """
-    _, train_loader, _, test_loader = load_data(dataset, transformation=None, n_train=n_train, n_test=1000, noise=0.1,
+    _, train_loader, _, test_loader = load_data(dataset, transformation=transformation, n_train=n_train, n_test=1000, noise=0.1,
                                                 batch_size=batch_size, shuffle=True, download=False)
 
     optimizer = torch.optim.Adam([p for p in model.parameters() if p.requires_grad is True], lr=lr)
@@ -121,7 +121,8 @@ if __name__ == "__main__":
     #                                  download=False)
     # Dowload a MNISTDataset example
     _, _, _, test_MNIST = load_data('MNIST',
-                                    n_train=100, n_test=100, noise=0.1, download=False)
+                                    n_train=100, n_test=100, noise=0.1, download=False,
+                                    transformation = transforms.Compose([transforms.ToTensor()]))
 
     # Plotting example of the data
     #ata_Fun_array = [data_Fun[i] for i in range(len(data_Fun))]
@@ -131,7 +132,8 @@ if __name__ == "__main__":
     # Creating the model
     model_rnvp = RNVP(1, 4)
     # Training
-    out = train_apply(model_rnvp, dataset, epochs, batch_size=batch_size, lr=learning_rate)
+    out = train_apply(model_rnvp, dataset, epochs, batch_size=batch_size,
+                      lr=learning_rate, transformation = transforms.Compose([transforms.ToTensor()]))
 
     #Ploting the loss for each epoch
     directory = '/home/pml_07/MLP'
