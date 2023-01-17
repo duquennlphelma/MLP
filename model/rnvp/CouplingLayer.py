@@ -36,7 +36,7 @@ class CouplingLayer(nn.Module):
         :param x: input of the layer
         :return: output of the layer
         """
-        x = torch.Tensor(x)
+        # x = torch.Tensor(x)
         size = torch.Tensor.size(x)  # returns (batch_size, n_channels, h, w)
         b = utils.checkerboard_mask(size[-2], size[-1], reverse_mask=self.reverse)
 
@@ -61,7 +61,7 @@ class CouplingLayer(nn.Module):
         :param y: output of the layer
         :return: input of the layer
         """
-        y = torch.Tensor(y)
+        # y = torch.Tensor(y)
         b = self.mask
 
         b_x = torch.mul(y, b)
