@@ -105,8 +105,8 @@ def train_apply(model, dataset: str, n_train=1000, epochs=10, batch_size=32, lr=
 
 if __name__ == "__main__":
 
-    epochs=1
-    batch_size=2
+    epochs=10
+    batch_size=32
     dataset= 'MNIST'
     samples_train=4
     samples_test=4
