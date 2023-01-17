@@ -121,7 +121,7 @@ if __name__ == "__main__":
     #                                  download=False)
     # Dowload a MNISTDataset example
     _, _, _, test_MNIST = load_data('MNIST',
-                                    n_train=100, n_test=100, noise=0.1, download=False,
+                                    n_train=10, n_test=10, noise=0.1, download=False,
                                     transformation = transforms.Compose([transforms.ToTensor()]))
 
     # Plotting example of the data
@@ -132,7 +132,7 @@ if __name__ == "__main__":
     # Creating the model
     model_rnvp = RNVP(1, 4)
     # Training
-    out = train_apply(model_rnvp, dataset, epochs, batch_size=batch_size,
+    out = train_apply(model=model_rnvp, n_train=samples_train, dataset=dataset, epochs=epochs, batch_size=batch_size,
                       lr=learning_rate, transformation = transforms.Compose([transforms.ToTensor()]))
 
     #Ploting the loss for each epoch
@@ -150,7 +150,7 @@ if __name__ == "__main__":
     exit_array_test = np.array([[0, 0]])
     #for element in test_MNIST:
     for i, data in enumerate(test_MNIST):
-        exit_data = model_rnvp(data)
+        exit_data = model_rnvp(data[0])
         exit_data = exit_data[0].detach().numpy()
         exit_array_test = np.concatenate((exit_array_test, exit_data))
 
