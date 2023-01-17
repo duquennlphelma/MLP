@@ -37,7 +37,6 @@ class CouplingLayer(nn.Module):
         :return: output of the layer
         """
         # x = torch.Tensor(x)
-        print('x:\n', x)
         x=x[0]
         size = x.size()  # returns (batch_size, n_channels, h, w)
         b = utils.checkerboard_mask(size[-2], size[-1], reverse_mask=self.reverse)
