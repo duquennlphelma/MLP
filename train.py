@@ -105,11 +105,11 @@ def train_apply(model, dataset: str, n_train=1000, epochs=10, batch_size=32, lr=
 
 if __name__ == "__main__":
 
-    epochs=3
+    epochs=1
     batch_size=2
     dataset= 'MNIST'
-    samples_train=10
-    samples_test=10
+    samples_train=4
+    samples_test=4
     noise=0.1
     learning_rate=0.001
     momentum=0
@@ -121,7 +121,7 @@ if __name__ == "__main__":
     #                                  download=False)
     # Dowload a MNISTDataset example
     _, _, _, test_MNIST = load_data('MNIST',
-                                    n_train=10, n_test=10, noise=0.1, download=False,
+                                    n_train=4, n_test=4, noise=0.1, download=False,
                                     transformation = transforms.Compose([transforms.ToTensor()]))
 
     # Plotting example of the data
