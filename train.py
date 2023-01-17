@@ -11,7 +11,7 @@ import torch.nn as nn
 from data import MoonDataset, FunDataset
 from utils import show, train_one_epoch, index_statistics
 
-path_data_cluster = '/home/space/datasets/MNIST'
+path_data_cluster = '/home/space/datasets'
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 
