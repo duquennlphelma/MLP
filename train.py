@@ -119,23 +119,27 @@ if __name__ == "__main__":
     # Dowload a FunDataset example
     #_, _, data_Fun, test_Fun = load_data('FunDataset', transformation=None, n_train=samples_train, n_test=samples_test, noise=noise,
     #                                  download=False)
-    # Dowload a MNISTDataset example
+    print('Dowload a MNISTDataset example\nSTART')
     _, _, _, test_MNIST = load_data('MNIST',
                                     n_train=1, n_test=1, noise=0.1, download=False, batch_size=1,
                                     transformation = transforms.Compose([transforms.ToTensor()]))
-
+    print('FINISH')
     # Plotting example of the data
     #ata_Fun_array = [data_Fun[i] for i in range(len(data_Fun))]
     #show(data_Fun_array, 'plot_before_training_Fun_Dataset')
 
 
-    # Creating the model
+    print('Creating the model')
     model_rnvp = RNVP(1, 4)
     # Training
+    print('start training')
     out = train_apply(model=model_rnvp, n_train=samples_train, dataset=dataset, epochs=epochs, batch_size=batch_size,
                       lr=learning_rate, transformation = transforms.Compose([transforms.ToTensor()]))
 
+    print('end training')
     torch.save(model_rnvp.state_dict(), '/home/pml_07/MLP/model_trained.pth')
+    print('model saved ?')
+
     #Ploting the loss for each epoch
     directory = '/home/pml_07/MLP'
     file_name = 'epoch_loss' + '.png'
