@@ -178,6 +178,64 @@ def main(dataset, epoch, batch_size, sample_train, sample_test, noise, learning_
         if i>1:
             break
 
+
+    if dataset == 'MNIST':
+        # Test
+
+        # Passing MNIST into the model
+
+        # for element in test_MNIST:
+        for i, data in enumerate(test_set):
+            exit_data = model_rnvp(data[0])
+            exit_data = exit_data[0].detach().numpy()
+            directory = '/home/pml_07/MLP'
+            file_name = 'plot_test_set_' + dataset + '_' + str(epoch) + 'epochs_' + str(batch_size) + 'batchsize.png'
+            path = os.path.join(directory, file_name)
+            plt.imshow(exit_data[0, 0])
+            plt.savefig(path)
+            if i > 1:
+                break
+
+        #REVERSE
+        gaussian_image=torch.from_numpy(np.float32([[np.random.randn(test_set.dataset[0][0][0].size(0), test_set.dataset[0][0][0].size(1))]]))
+        image_recreated= model_rnvp.inverse(gaussian_image)
+        exit_data = image_recreated[0].detach().numpy()[0][0]
+        directory = '/home/pml_07/MLP'
+        file_name = 'plot_recreated' + dataset + '_' + str(epoch) + 'epochs_' + str(batch_size) + 'batchsize.png'
+        path = os.path.join(directory, file_name)
+        plt.imshow(exit_data[0, 0])
+        plt.savefig(path)
+
+    if dataset == 'FunDataset' or dataset == 'MoonDataset':
+
+        # Passing MoonData into the model
+        exit_data_array = np.array([[0, 0]])
+        loss_data_array = []
+        for element in test_set:
+            exit_data, det_exit = model_rnvp(element)
+            exit_data = exit_data.detach().numpy()
+            exit_data_array = np.concatenate((exit_data_array, exit_data))
+        exit_data_array = np.array(exit_data_array[1:])
+        file_name = 'plot_test' + dataset + '_' + str(epoch) + 'epochs_' + str(batch_size) + 'batchsize.png'
+        show(exit_data_array, file_name)
+
+
+
+        #REVERSE
+        # Pass the data in the other way after training : from normal distribution to fun dataset
+        z = torch.distributions.MultivariateNormal(torch.zeros(2), torch.eye(2)).sample(1000)
+        z= torch.from_numpy(np.float32(np.random.multivariate_normal(np.zeros(2), np.eye(2), 1000)))
+        dataset_recreated = model_rnvp.inverse(z)
+        exit_data = dataset_recreated[0].detach().numpy()
+
+        # Plot the data
+
+        exit_array_bis = np.array(exit_data)
+        file_name = 'plot_recreated' + dataset + '_' + str(epoch) + 'epochs_' + str(batch_size) + 'batchsize.png'
+        show(exit_array_bis, file_name)
+
+
+
 if __name__== '__main__' :
 
     main()
@@ -192,6 +250,8 @@ if __name__== '__main__' :
 
     #exit_array_bis = np.array(exit_data)
     #show(exit_array_bis, 'plot_dataset_recreated_MNIST')
+
+
 
     """
     #Validation test

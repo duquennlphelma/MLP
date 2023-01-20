@@ -62,14 +62,14 @@ class CouplingLayer(nn.Module):
         :param y: output of the layer
         :return: input of the layer
         """
-        # y = torch.Tensor(y)
-        b = self.mask
+
+        size = y.size()  # returns (batch_size, n_channels, h, w)
+        b = utils.checkerboard_mask(size[-2], size[-1], reverse_mask=self.reverse)
 
         b_x = torch.mul(y, b)
         s_x = self.s(b_x)
         t_x = self.t(b_x)
         z = b_x + (1 - b) * (y * torch.exp(s_x) + t_x)
-        #y = b_x + torch.mul((torch.mul((1 - b), y) - t_x), torch.exp(-s_x))
 
         det_J = (-s_x).view(s_x.size(0), -1).sum(-1)
 
