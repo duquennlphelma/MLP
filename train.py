@@ -90,7 +90,7 @@ def train_apply(model, dataset: str, n_train=1000, epochs=10, batch_size=32, lr=
 
     # Train the model epochs * times & Collect metrics progress over the training
     for i in range(epochs):
-        if dataset=="MNIST":
+        if dataset == "MNIST":
             epoch_loss_i = train_one_epoch_image(model, train_loader, optimizer)
         else:
             epoch_loss_i = train_one_epoch(model, train_loader, optimizer)
@@ -103,29 +103,28 @@ def train_apply(model, dataset: str, n_train=1000, epochs=10, batch_size=32, lr=
 
 if __name__ == "__main__":
 
-    epochs=1000
-    batch_size=32
-    dataset= 'MNIST'
-    samples_train=4
-    samples_test=4
-    noise=0.1
-    learning_rate=0.001
-    momentum=0
+    epochs = 1000
+    batch_size = 32
+    dataset = 'MNIST'
+    samples_train = 4
+    samples_test = 4
+    noise = 0.1
+    learning_rate = 0.001
+    momentum = 0
     # Dowload a MoonDataset example
-    #_, _, _, test_Moon = load_data('MoonDataset', transformation=None, n_train=100, n_test=100, noise=0.1,
+    # _, _, _, test_Moon = load_data('MoonDataset', transformation=None, n_train=100, n_test=100, noise=0.1,
     #                                        download=False)
     # Dowload a FunDataset example
-    #_, _, data_Fun, test_Fun = load_data('FunDataset', transformation=None, n_train=samples_train, n_test=samples_test, noise=noise,
+    # _, _, data_Fun, test_Fun = load_data('FunDataset', transformation=None, n_train=samples_train, n_test=samples_test, noise=noise,
     #                                  download=False)
-    print('Dowload a MNISTDataset example\nSTART')
+    print('Dowload a MNIST_Dataset example\nSTART')
     _, _, _, test_MNIST = load_data('MNIST',
                                     n_train=1, n_test=1, noise=0.1, download=False, batch_size=1,
-                                    transformation = transforms.Compose([transforms.ToTensor()]))
+                                    transformation=transforms.Compose([transforms.ToTensor()]))
     print('FINISH')
     # Plotting example of the data
-    #ata_Fun_array = [data_Fun[i] for i in range(len(data_Fun))]
-    #show(data_Fun_array, 'plot_before_training_Fun_Dataset')
-
+    # ata_Fun_array = [data_Fun[i] for i in range(len(data_Fun))]
+    # show(data_Fun_array, 'plot_before_training_Fun_Dataset')
 
     print('Creating the model')
     model_rnvp = RNVP(1, 4)
@@ -136,9 +135,9 @@ if __name__ == "__main__":
 
     print('end training')
     torch.save(model_rnvp.state_dict(), '/home/pml_07/MLP/model_trained.pth')
-    print('model saved ?')
+    print('model saved')
 
-    #Ploting the loss for each epoch
+    # Ploting the loss for each epoch
     directory = '/home/pml_07/MLP'
     file_name = 'epoch_loss' + '.png'
     path = os.path.join(directory, file_name)
@@ -151,7 +150,7 @@ if __name__ == "__main__":
 
     # Passing MNIST into the model
 
-    #for element in test_MNIST:
+    # for element in test_MNIST:
     for i, data in enumerate(test_MNIST):
         exit_data = model_rnvp(data[0])
         exit_data = exit_data[0].detach().numpy()
