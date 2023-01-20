@@ -1,4 +1,6 @@
 import os
+
+import click
 import torch
 import torch.utils.data as data
 import torchvision
@@ -11,6 +13,9 @@ import torchvision.transforms as transforms
 
 from data import MoonDataset, FunDataset
 from utils import show, train_one_epoch, index_statistics, train_one_epoch_image
+
+
+
 
 path_data_cluster = '/home/space/datasets'
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
@@ -101,45 +106,56 @@ def train_apply(model, dataset: str, n_train=1000, epochs=10, batch_size=32, lr=
     return arr_epoch_loss
 
 
-if __name__ == "__main__":
 
-    epochs = 1000
-    batch_size = 32
-    dataset = 'MNIST'
-    samples_train = 4
-    samples_test = 4
-    noise = 0.1
-    learning_rate = 0.001
-    momentum = 0
+
+@click.command()
+@click.argument("--dataset", default='MNIST', type=click.Choice(['MoonDataset', 'FunDataset', 'MNIST']),
+                    help="Dataset chosen : MNIST, FunDataset, MoonDataset.")
+@click.argument("--epoch", default=10, help="Number of epochs for the training.")
+@click.argument("--batch_size", default=32, help="Size of the batch for the training and the test.")
+@click.argument("--sample_train", default=1000,
+                    help="Number od samples for training for FunDataset or MoonDataset.")
+@click.argument("--sample_test", default=1000, help="Number od samples for test for FunDataset or MoonDataset.")
+@click.argument("--noise", default=0.1,
+                    help="Standard deviation of gaussian noise added to the samples for FunDataset or MoonDataset.")
+@click.argument("--learning_rate", default=0.001, help="Learning rate for the training.")
+@click.argument("--momentum", default=0, help="Momentum for the training.")
+
+def main(dataset, epoch, batch_size, sample_train, sample_test, noise, learning_rate, momentum):
+
     # Dowload a MoonDataset example
     # _, _, _, test_Moon = load_data('MoonDataset', transformation=None, n_train=100, n_test=100, noise=0.1,
     #                                        download=False)
     # Dowload a FunDataset example
     # _, _, data_Fun, test_Fun = load_data('FunDataset', transformation=None, n_train=samples_train, n_test=samples_test, noise=noise,
     #                                  download=False)
-    print('Dowload a MNIST_Dataset example\nSTART')
-    _, _, _, test_MNIST = load_data('MNIST',
-                                    n_train=1, n_test=1, noise=0.1, download=False, batch_size=1,
+    print('Download a MNIST_Dataset example\nSTART')
+    _, _, _, test_set = load_data(dataset,
+                                    n_train=sample_train, n_test=sample_test, noise=noise, download=False, batch_size=batch_size,
                                     transformation=transforms.Compose([transforms.ToTensor()]))
     print('FINISH')
-    # Plotting example of the data
-    # ata_Fun_array = [data_Fun[i] for i in range(len(data_Fun))]
-    # show(data_Fun_array, 'plot_before_training_Fun_Dataset')
 
     print('Creating the model')
+
+    #number of channel input, number of squeezed channel
     model_rnvp = RNVP(1, 4)
     # Training
     print('start training')
-    out = train_apply(model=model_rnvp, n_train=samples_train, dataset=dataset, epochs=epochs, batch_size=batch_size,
+    out = train_apply(model=model_rnvp, n_train=sample_train, dataset=dataset, epochs=epoch, batch_size=batch_size,
                       lr=learning_rate, transformation = transforms.Compose([transforms.ToTensor()]))
 
     print('end training')
-    torch.save(model_rnvp.state_dict(), '/home/pml_07/MLP/model_trained.pth')
+    directory = '/home/pml_07/MLP'
+    file_name = 'model_trained_' + dataset + '_' + str(epoch) +'epochs_' + str(batch_size) + 'batchsize.pth'
+
+    path = os.path.join(directory, file_name)
+    torch.save(model_rnvp.state_dict(), path)
     print('model saved')
 
     # Ploting the loss for each epoch
+
     directory = '/home/pml_07/MLP'
-    file_name = 'epoch_loss' + '.png'
+    file_name = 'epoch_loss_' + dataset + '_' + str(epoch) +'epochs_' + str(batch_size) + 'batchsize.png'
     path = os.path.join(directory, file_name)
     plt.figure()
     plt.plot(out, '.')
@@ -151,20 +167,16 @@ if __name__ == "__main__":
     # Passing MNIST into the model
 
     # for element in test_MNIST:
-    for i, data in enumerate(test_MNIST):
+    for i, data in enumerate(test_set):
         exit_data = model_rnvp(data[0])
         exit_data = exit_data[0].detach().numpy()
-        directory = '/home/pml_07/MLP/plot_after_training_MNIST_Dataset'
-        file_name = directory + '.png'
+        directory = '/home/pml_07/MLP'
+        file_name = 'plot_test_set_' + dataset + '_' + str(epoch) + 'epochs_' + str(batch_size) + 'batchsize.png'
         path = os.path.join(directory, file_name)
         plt.imshow(exit_data[0,0])
-        plt.savefig(file_name)
+        plt.savefig(path)
         if i>1:
             break
-
-
-
-
 
 
 
