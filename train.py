@@ -106,21 +106,18 @@ def train_apply(model, dataset: str, n_train=1000, epochs=10, batch_size=32, lr=
     return arr_epoch_loss
 
 
-
-
 @click.command()
-@click.argument("--dataset", default='MNIST', type=click.Choice(['MoonDataset', 'FunDataset', 'MNIST']),
+@click.option("--dataset", default='MNIST', type=click.Choice(['MoonDataset', 'FunDataset', 'MNIST']),
                     help="Dataset chosen : MNIST, FunDataset, MoonDataset.")
-@click.argument("--epoch", default=10, help="Number of epochs for the training.")
-@click.argument("--batch_size", default=32, help="Size of the batch for the training and the test.")
-@click.argument("--sample_train", default=1000,
+@click.option("--epoch", default=10, help="Number of epochs for the training.")
+@click.option("--batch_size", default=32, help="Size of the batch for the training and the test.")
+@click.option("--sample_train", default=1000,
                     help="Number od samples for training for FunDataset or MoonDataset.")
-@click.argument("--sample_test", default=1000, help="Number od samples for test for FunDataset or MoonDataset.")
-@click.argument("--noise", default=0.1,
+@click.option("--sample_test", default=1000, help="Number od samples for test for FunDataset or MoonDataset.")
+@click.option("--noise", default=0.1,
                     help="Standard deviation of gaussian noise added to the samples for FunDataset or MoonDataset.")
-@click.argument("--learning_rate", default=0.001, help="Learning rate for the training.")
-@click.argument("--momentum", default=0, help="Momentum for the training.")
-
+@click.option("--learning_rate", default=0.001, help="Learning rate for the training.")
+@click.option("--momentum", default=0, help="Momentum for the training.")
 def main(dataset, epoch, batch_size, sample_train, sample_test, noise, learning_rate, momentum):
 
     # Dowload a MoonDataset example
