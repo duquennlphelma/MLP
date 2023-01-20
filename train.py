@@ -178,7 +178,9 @@ def main(dataset, epoch, batch_size, sample_train, sample_test, noise, learning_
         if i>1:
             break
 
+if __name__== '__main__' :
 
+    main()
 
     #Pass the data in the other way after training : from normal distribution to fun dataset
     #z = torch.distributions.MultivariateNormal(torch.zeros(2), torch.eye(2)).sample(1000)
