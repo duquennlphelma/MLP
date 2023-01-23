@@ -25,9 +25,9 @@ class CouplingLayer(nn.Module):
         norm_in = nn.BatchNorm2d(input_channels)
         norm_out = nn.BatchNorm2d(input_channels)
 
-        list_t = [norm_in, conv1, torch.nn.Linear(d_channels, d_channels), nn.ReLU(),  conv2, norm_out]
+        list_t = [norm_in, conv1, nn.ReLU(),  conv2, norm_out]
         self.t = nn.Sequential(*list_t)
-        list_s = [norm_in, conv1, torch.nn.Linear(d_channels, d_channels), nn.ReLU(), conv2, norm_out, nn.Tanh()]
+        list_s = [norm_in, conv1, nn.ReLU(), conv2, norm_out, nn.Tanh()]
         self.s = nn.Sequential(*list_s)
 
     def forward(self, x):
