@@ -1,6 +1,6 @@
 import torch
 from torch import nn
-from model.rnvp.CouplingLayer2 import CouplingLayer
+from model.rnvp.CouplingLayer import CouplingLayer
 import numpy as np
 
 
@@ -16,12 +16,12 @@ class RNVP(nn.Module):
     def __init__(self, input_size, d):
         super().__init__()
 
-        layer_0 = CouplingLayer(input_size, d, up=True)
-        layer_1 = CouplingLayer(input_size, d, up=False)
-        layer_2 = CouplingLayer(input_size, d, up=True)
-        layer_3 = CouplingLayer(input_size, d, up=False)
-        layer_4 = CouplingLayer(input_size, d, up=True)
-        layer_5 = CouplingLayer(input_size, d, up=False)
+        layer_0 = CouplingLayer(input_size, d, reverse=True)
+        layer_1 = CouplingLayer(input_size, d, reverse=False)
+        layer_2 = CouplingLayer(input_size, d, reverse=True)
+        layer_3 = CouplingLayer(input_size, d, reverse=False)
+        layer_4 = CouplingLayer(input_size, d, reverse=True)
+        layer_5 = CouplingLayer(input_size, d, reverse=False)
 
         self.input_size = input_size
         self.d = d
@@ -32,7 +32,7 @@ class RNVP(nn.Module):
         """
         Forward pass of the RNVP network making the data pass into each coupling layers.
         """
-
+        x=x[0]
         y = x
         #sum_det_J is size batch_size,1
         sum_det_J = torch.zeros(len(x))

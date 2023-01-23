@@ -4,7 +4,9 @@ import click
 import torch
 import torch.utils.data as data
 import torchvision
-from model.rnvp.RNVP2 import RNVP
+from model.rnvp.RNVP2 import RNVP as RNVP2
+from model.rnvp.RNVP import RNVP
+
 from model.rnvp.loss_function import NLL
 import matplotlib.pyplot as plt
 import numpy as np
@@ -135,7 +137,7 @@ def main(dataset, epoch, batch_size, sample_train, sample_test, noise, learning_
     print('Creating the model')
 
     #number of channel input, number of squeezed channel
-    model_rnvp = RNVP(1, 4)
+    model_rnvp = RNVP2(2, 1)
     # Training
     print('start training')
     out = train_apply(model=model_rnvp, n_train=sample_train, dataset=dataset, epochs=epoch, batch_size=batch_size,
