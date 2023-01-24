@@ -137,7 +137,7 @@ def main(dataset, epoch, batch_size, sample_train, sample_test, noise, learning_
     print('Creating the model')
 
     #number of channel input, number of squeezed channel
-    model_rnvp = RNVP2(2, 1)
+    model_rnvp = RNVP(1, 4)
     # Training
     print('start training')
     out = train_apply(model=model_rnvp, n_train=sample_train, dataset=dataset, epochs=epoch, batch_size=batch_size,
