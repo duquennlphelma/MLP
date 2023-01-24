@@ -202,7 +202,7 @@ def main(dataset, epoch, batch_size, sample_train, sample_test, noise, learning_
         directory = '/home/pml_07/MLP'
         file_name = 'plot_recreated' + dataset + '_' + str(epoch) + 'epochs_' + str(batch_size) + 'batchsize.png'
         path = os.path.join(directory, file_name)
-        plt.imshow(exit_data[0, 0])
+        plt.imshow(exit_data)
         plt.savefig(path)
 
     if dataset == 'FunDataset' or dataset == 'MoonDataset':
