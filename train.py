@@ -118,7 +118,7 @@ def train_apply(model, dataset: str, n_train=1000, epochs=10, batch_size=32, lr=
 @click.option("--sample_test", default=1000, help="Number od samples for test for FunDataset or MoonDataset.")
 @click.option("--noise", default=0.1,
                     help="Standard deviation of gaussian noise added to the samples for FunDataset or MoonDataset.")
-@click.option("--learning_rate", default=0.001, help="Learning rate for the training.")
+@click.option("--learning_rate", default=1e-4, help="Learning rate for the training.")
 @click.option("--momentum", default=0, help="Momentum for the training.")
 def main(dataset, epoch, batch_size, sample_train, sample_test, noise, learning_rate, momentum):
 
