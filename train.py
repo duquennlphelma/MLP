@@ -112,7 +112,7 @@ def train_apply(model, dataset: str, n_train=1000, epochs=10, batch_size=32, lr=
 @click.option("--dataset", default='MNIST', type=click.Choice(['MoonDataset', 'FunDataset', 'MNIST']),
                     help="Dataset chosen : MNIST, FunDataset, MoonDataset.")
 @click.option("--epoch", default=10, help="Number of epochs for the training.")
-@click.option("--batch_size", default=125, help="Size of the batch for the training and the test.")
+@click.option("--batch_size", default=128, help="Size of the batch for the training and the test.")
 @click.option("--sample_train", default=1000,
                     help="Number od samples for training for FunDataset or MoonDataset.")
 @click.option("--sample_test", default=1000, help="Number od samples for test for FunDataset or MoonDataset.")

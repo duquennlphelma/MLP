@@ -71,7 +71,7 @@ def train_one_epoch_image(model: nn.Module, train_loader: data.DataLoader, optim
     """
     losses = []
 
-    for i, x in enumerate(train_loader):
+    for x, i in enumerate(train_loader):
         optimizer.zero_grad()
 
         # forward pass
