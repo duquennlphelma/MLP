@@ -46,7 +46,7 @@ class RNVP(nn.Module):
         """
         Forward pass of the RNVP network making the data pass into each coupling layers.
         """
-        x = x[0]
+        #x = x[0]
         y = x
         sum_det_J = torch.zeros(len(x))
         for i in range(len(self.layers_check1)):
