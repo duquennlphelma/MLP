@@ -130,3 +130,21 @@ def channel_mask(n_channels, reverse_mask=False):
         mask = 1-mask
     return mask
 
+
+def squeeze(x):
+    """converts a (batch_size,1,4,4) tensor into a (batch_size,4,2,2) tensor"""
+    batch_size, c, h, w = x.size()
+    x = x.reshape(batch_size, c, h//2, 2, w//2, 2)
+    x = x.permute(0, 1, 3, 5, 2, 4)
+    x = x.reshape(batch_size, c*4, h//2, w//2)
+    return x
+
+
+def unsqueeze(x):
+    """converts a (batch_size,4,2,2) tensor into a (batch_size,1,4,4) tensor"""
+    batch_size, c, h, w = x.size()
+    x = x.reshape(batch_size, c//4, 2, 2, h, w)
+    x = x.permute(0, 1, 4, 2, 5, 3)
+    x = x.reshape(batch_size, c//4, h*2, w*2)
+    return x
+
