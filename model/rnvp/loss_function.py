@@ -14,7 +14,7 @@ class NLL(nn.Module):
 
     def forward(self, z, det_J):
         print('------enter loss------')
-        print('print size z ', y.size())
+        print('print size z ', z.size())
         log_pz = self.prior.log_prob(z).sum(dim=[1, 2, 3])
         print('print size log pz: ', log_pz.size())
         log_px = det_J + log_pz
