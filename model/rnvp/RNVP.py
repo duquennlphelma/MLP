@@ -47,24 +47,27 @@ class RNVP(nn.Module):
         Forward pass of the RNVP network making the data pass into each coupling layers.
         """
         #x = x[0]
+        print('-----enetr RNVP forward-------')
         y = x
+        print('datay: ', y.size())
         sum_det_J = torch.zeros(len(x))
         for i in range(len(self.layers_check1)):
             y, det_J = self.layers_check1[i].forward(y)
             sum_det_J += det_J
-
+        print('print after check1: ', y.size())
         y = utils.squeeze(y)
+        print('print after squeeze: ', y.size())
 
         for i in range(len(self.layers_channel)):
             y, det_J = self.layers_channel[i].forward(y)
             sum_det_J += det_J
-
+        print('print after channel: ', y.size())
         y = utils.unsqueeze(y)
-
+        print('print after unsqueeze: ', y.size())
         for i in range(len(self.layers_check2)):
             y, det_J = self.layers_check2[i].forward(y)
             sum_det_J += det_J
-
+        print('print after check2: ', y.size())
         return y, sum_det_J
 
     def inverse(self, y: torch.Tensor):

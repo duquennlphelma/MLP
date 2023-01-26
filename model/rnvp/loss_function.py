@@ -13,8 +13,10 @@ class NLL(nn.Module):
         self.prior = torch.distributions.normal.Normal(loc=0.0, scale=1.0)
 
     def forward(self, z, det_J):
-
+        print('------enter loss------')
+        print('print size z ', y.size())
         log_pz = self.prior.log_prob(z).sum(dim=[1, 2, 3])
+        print('print size log pz: ', log_pz.size())
         log_px = det_J + log_pz
         nll = -log_px
         # Calculating bits per dimension

@@ -72,7 +72,10 @@ def train_one_epoch_image(model: nn.Module, train_loader: data.DataLoader, optim
     losses = []
 
     for i, x in enumerate(train_loader):
+        print('------start new iteration epoch--------')
         x=x[0]
+        print('data x', x.size())
+        print('data i', i.size())
         optimizer.zero_grad()
         #print ('data x[0].size', x[0].size())
         #print ('data i', i)
@@ -83,6 +86,7 @@ def train_one_epoch_image(model: nn.Module, train_loader: data.DataLoader, optim
         loss = NLL()
         output = loss(y, det_J)
 
+
         # update the model
         output.backward()
         optimizer.step()
@@ -91,6 +95,8 @@ def train_one_epoch_image(model: nn.Module, train_loader: data.DataLoader, optim
         losses.append(output.detach())
 
     epoch_loss = torch.mean(torch.tensor(losses))
+    print('epoch loss', epoch_loss)
+
 
     return float(epoch_loss)
 

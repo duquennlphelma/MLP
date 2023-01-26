@@ -97,6 +97,7 @@ def train_apply(model, dataset: str, n_train=1000, epochs=10, batch_size=32, lr=
 
     # Train the model epochs * times & Collect metrics progress over the training
     for i in range(epochs):
+        print('epoch number :', i)
         if dataset == "MNIST":
             epoch_loss_i = train_one_epoch_image(model, train_loader, optimizer)
         else:
