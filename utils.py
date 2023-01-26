@@ -75,7 +75,7 @@ def train_one_epoch_image(model: nn.Module, train_loader: data.DataLoader, optim
         print('------start new iteration epoch--------')
         x=x[0]
         print('data x', x.size())
-        print('data i', i.size())
+        #print('data i', i.size())
         optimizer.zero_grad()
         #print ('data x[0].size', x[0].size())
         #print ('data i', i)
