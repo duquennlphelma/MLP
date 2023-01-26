@@ -72,9 +72,10 @@ def train_one_epoch_image(model: nn.Module, train_loader: data.DataLoader, optim
     losses = []
 
     for i, x in enumerate(train_loader):
+        x=x[0]
         optimizer.zero_grad()
-        print ('data x[0].size', x[0].size())
-        print ('data i', i)
+        #print ('data x[0].size', x[0].size())
+        #print ('data i', i)
         # forward pass
         y, det_J = model(x)
 
