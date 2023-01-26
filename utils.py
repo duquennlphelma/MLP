@@ -121,6 +121,7 @@ def checkerboard_mask(h, w, reverse_mask=False):
         mask = 1 - mask
     return mask
 
+
 def channel_mask(n_channels, reverse_mask=False):
     mask = torch.cat([torch.ones(n_channels//2, dtype=torch.float32),
                       torch.zeros(n_channels-n_channels//2, dtype=torch.float32)])
