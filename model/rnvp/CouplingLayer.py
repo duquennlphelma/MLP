@@ -6,7 +6,7 @@ import numpy as np
 
 
 class CouplingLayer(nn.Module):
-    def __init__(self, input_channels, d_channels, reverse=False):
+    def __init__(self, input_channels, d_channels, mask_type, reverse=False):
         """
         Initialisation of the coupling layer
         Case of datasets of images
@@ -19,6 +19,7 @@ class CouplingLayer(nn.Module):
         self.reverse = reverse
         self.d = d_channels
         self.input_size = input_channels
+        self.mask_type = mask_type
 
         conv1 = nn.Conv2d(input_channels, d_channels, kernel_size=3, padding=1)
         conv2 = nn.Conv2d(d_channels, input_channels, kernel_size=3, padding=1)
@@ -39,7 +40,11 @@ class CouplingLayer(nn.Module):
         # x = torch.Tensor(x)
 
         size = x.size()  # returns (batch_size, n_channels, h, w)
-        b = utils.checkerboard_mask(size[-2], size[-1], reverse_mask=self.reverse)
+        if self.mask_type == 'checkerboard':
+            b = utils.checkerboard_mask(size[-2], size[-1], reverse_mask=self.reverse)
+
+        if self.mask_type == 'channel_wise':
+            b = utils.channel_mask(self.input_size, reverse_mask=self.reverse)
 
         b_x = torch.mul(x, b)
         s_x = self.s(b_x) * (1-b)
@@ -64,7 +69,11 @@ class CouplingLayer(nn.Module):
         """
 
         size = torch.Tensor.size(y)  # returns (batch_size, n_channels, h, w)
-        b = utils.checkerboard_mask(size[-2], size[-1], reverse_mask=self.reverse)
+        if self.mask_type == 'checkerboard':
+            b = utils.checkerboard_mask(size[-2], size[-1], reverse_mask=self.reverse)
+
+        if self.mask_type == 'channel_wise':
+            b = utils.channel_mask(self.input_size, reverse_mask=self.reverse)
 
         b_x = torch.mul(y, b)
         s_x = self.s(b_x)
