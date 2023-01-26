@@ -32,7 +32,7 @@ class RNVP(nn.Module):
         layer_6 = CouplingLayer(1, 64, mask_type='checkerboard', reverse=True)
         layer_7 = CouplingLayer(1, 64, mask_type='checkerboard', reverse=False)
         layer_8 = CouplingLayer(1, 64, mask_type='checkerboard', reverse=True)
-        layer_9 = CouplingLayer(1, 64, mask_type='checkerboard', reverse=True)
+        layer_9 = CouplingLayer(1, 64, mask_type='checkerboard', reverse=False)
 
         # self.de_squeeze2 = nn.Conv2d(2, 1, kernel_size=3, padding=1)
 
