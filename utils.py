@@ -73,7 +73,8 @@ def train_one_epoch_image(model: nn.Module, train_loader: data.DataLoader, optim
 
     for i, x in enumerate(train_loader):
         optimizer.zero_grad()
-
+        print ('data x', x)
+        print ('data i', i)
         # forward pass
         y, det_J = model(x)
 
