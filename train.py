@@ -94,7 +94,7 @@ def train_apply(model, dataset: str, n_train=1000, epochs=10, batch_size=32, lr=
 
     for name, param in model.named_parameters():
         if param.requires_grad:
-            print('name',name,'param', param.data)
+            print('name',name)
 
     # Training metrics
     epoch_loss = []
