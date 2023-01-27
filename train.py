@@ -139,36 +139,37 @@ def main(dataset, epoch, batch_size, sample_train, sample_test, noise, learning_
                                     transformation=transforms.Compose([transforms.ToTensor()]))
     print('FINISH')
 
-    print('Creating the model')
-
-    #number of channel input, number of squeezed channel
+    print('CREATING THE MODEL')
     model_rnvp = RNVP(1, 4)
 
     # Training
-    print('start training')
+    print('--------- start training ---------')
     out = train_apply(model=model_rnvp, n_train=sample_train, dataset=dataset, epochs=epoch, batch_size=batch_size,
-                     lr=learning_rate, transformation = transforms.Compose([transforms.ToTensor()]))
+                      lr=learning_rate, transformation=transforms.Compose([transforms.ToTensor()]))
 
-    print('end training')
+    print('---------- end training ----------')
+
+    print('SAVE THE CURRENT PARAMETERS OF THE MODEL')
     directory = '/home/pml_07/MLP'
-    file_name = 'model_trained_' + dataset + '_' + str(epoch) +'epochs_' + str(batch_size) + 'batchsize.pth'
-
+    file_name = 'model_trained_' + dataset + '_' + str(epoch) + 'epochs_' + str(batch_size) + 'batchsize.pth'
     path = os.path.join(directory, file_name)
     torch.save(model_rnvp.state_dict(), path)
-    print('model saved')
 
     #loading the model
     #model_rnvp.load_state_dict(torch.load('/home/pml_07/MLP/model_10epoch_jupyter'))
 
     # Ploting the loss for each epoch
-
+    print('PLOT THE LOSS FUNCTION')
     directory = '/home/pml_07/MLP'
-    file_name = 'epoch_loss_' + dataset + '_' + str(epoch) +'epochs_' + str(batch_size) + 'batchsize.png'
+    file_name = 'epoch_loss_' + dataset + '_' + str(epoch) + 'epochs_' + str(batch_size) + 'batchsize.png'
     path = os.path.join(directory, file_name)
-    #plt.figure()
-    #plt.plot(out, '-')
-    #plt.savefig(path)
-    #plt.show()
+    plt.figure()
+    plt.title('Loss function per epoch for' + dataset + ' dataset\n'
+              + 'Hyper-parameters :' + str(epoch) + ' epochs, '
+              + str(batch_size) + ' batch size & lr=1e-5 (Adam)')
+    plt.plot(out, '-')
+    plt.savefig(path)
+    plt.show()
 
     # Test
 
