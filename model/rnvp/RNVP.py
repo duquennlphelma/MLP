@@ -50,7 +50,8 @@ class RNVP(nn.Module):
         print('-----enetr RNVP forward-------')
         y = x
         print('datay: ', y.size())
-        sum_det_J = torch.zeros(len(x))
+
+        sum_det_J = torch.zeros(len(y))
         for i in range(len(self.layers_check1)):
             y, det_J = self.layers_check1[i].forward(y)
             sum_det_J += det_J
