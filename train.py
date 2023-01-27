@@ -154,7 +154,7 @@ def main(dataset, epoch, batch_size, sample_train, sample_test, noise, learning_
     print('model saved')
 
     #loading the model
-    model_rnvp.load_state_dict(torch.load('/Users/louiseduquenne/Documents/BERLIN/Cours/machine_learning_project/MLP/model_10epoch_jupyter'))
+    model_rnvp.load_state_dict(torch.load('/home/pml_07/MLP/model_10epoch_jupyter'))
 
     # Ploting the loss for each epoch
 
