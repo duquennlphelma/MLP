@@ -142,19 +142,19 @@ def main(dataset, epoch, batch_size, sample_train, sample_test, noise, learning_
 
     # Training
     print('start training')
-    #out = train_apply(model=model_rnvp, n_train=sample_train, dataset=dataset, epochs=epoch, batch_size=batch_size,
-    #                 lr=learning_rate, transformation = transforms.Compose([transforms.ToTensor()]))
+    out = train_apply(model=model_rnvp, n_train=sample_train, dataset=dataset, epochs=epoch, batch_size=batch_size,
+                     lr=learning_rate, transformation = transforms.Compose([transforms.ToTensor()]))
 
     print('end training')
     directory = '/home/pml_07/MLP'
     file_name = 'model_trained_' + dataset + '_' + str(epoch) +'epochs_' + str(batch_size) + 'batchsize.pth'
 
-    #path = os.path.join(directory, file_name)
-    #torch.save(model_rnvp.state_dict(), path)
+    path = os.path.join(directory, file_name)
+    torch.save(model_rnvp.state_dict(), path)
     print('model saved')
 
     #loading the model
-    model_rnvp.load_state_dict(torch.load('/home/pml_07/MLP/model_10epoch_jupyter'))
+    #model_rnvp.load_state_dict(torch.load('/home/pml_07/MLP/model_10epoch_jupyter'))
 
     # Ploting the loss for each epoch
 
