@@ -356,16 +356,16 @@ out = train_apply(model=model_rnvp, n_train=10, dataset='MNIST', epochs=10, batc
 
 print('PLOT THE LOSS FUNCTION')
 directory = '/home/pml_07/MLP'
-file_name = 'epoch_loss_' + dataset + '_' + str(epoch) +'epochs_' + str(batch_size) + 'batchsize.png'
+file_name = 'epoch_loss_' + 'MNIST' + '_' + '10' +'_epochs_' + '128' + 'batchsize.png'
 path = os.path.join(directory, file_name)
 plt.figure(1)
-plt.title('Loss function per epoch for MNIST dataset\n' + 'parameters :' + str(epoch) + 'epochs, batch=128 and lr=1e-5 (Adam)')
+plt.title('Loss function per epoch for MNIST dataset\n' + 'parameters : 10 epochs, batch=128 and lr=1e-5 (Adam)')
 plt.plot(out, 'g-')
 plt.savefig(path)
 plt.show()
 
 
-torch.save(model_rnvp.state_dict(), '/home/pml_07/MLP/model_'+ str(epoch) + 'epochs')
+torch.save(model_rnvp.state_dict(), '/home/pml_07/MLP/model_10epochs')
 
 
 print('TESTING THE REVERSE MODEL')
