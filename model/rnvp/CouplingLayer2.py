@@ -1,10 +1,7 @@
 import torch
 from torch import nn
-from model.resnet.ResNet import ResNet
 import torch.nn.functional
 import numpy as np
-
-#todo generalize for more than dimensions of points
 
 
 class CouplingLayer(nn.Module):
@@ -19,14 +16,12 @@ class CouplingLayer(nn.Module):
         """
         super().__init__()
 
-        #list_t = [nn.Linear(input_size, input_size), nn.ReLU(), nn.Linear(input_size, input_size - d)]
-        list_t = [nn.Linear(input_size, 256), nn.LeakyReLU(), nn.Linear(256, 256), nn.LeakyReLU(),
-                  nn.Linear(256, input_size), nn.Tanh()]
+        list_t = [nn.Linear(input_size, 256), nn.LeakyReLU(), nn.Linear(256, 256),
+                  nn.LeakyReLU(), nn.Linear(256, input_size)]
         self.t = nn.Sequential(*list_t)
 
-        #list_s = [nn.Linear(input_size, input_size), nn.ReLU(), nn.Linear(input_size, input_size - d)]
-        list_s = [nn.Linear(input_size, 256), nn.LeakyReLU(), nn.Linear(256, 256), nn.LeakyReLU(),
-                  nn.Linear(256, input_size)]
+        list_s = [nn.Linear(input_size, 256), nn.LeakyReLU(), nn.Linear(256, 256),
+                  nn.LeakyReLU(), nn.Linear(256, input_size), nn.Tanh()]
         self.s = nn.Sequential(*list_s)
 
         self.d = d
@@ -40,8 +35,6 @@ class CouplingLayer(nn.Module):
     def forward(self, x):
         """
         Definition of the forward pass into a coupling layer for an input x
-        :param x: input of the layer
-        :return: output of the layer
         """
         x = torch.Tensor(x)
         b = self.mask
@@ -50,11 +43,10 @@ class CouplingLayer(nn.Module):
         s_x = self.s(b_x) * (1-b)
         t_x = self.t(b_x) * (1-b)
 
-        # y = b_x + torch.mul((1-b), (torch.mul(x, torch.exp(s_x)) + t_x))
         z = (1 - b) * (x - t_x) * torch.exp(-s_x) + b_x
 
-        #s_x is a vector of size (batch_size, d) and we sum on d to have the determinant for each samples
-        #and we took the logarithm of the det that is why we sum the s and log(1)=0
+        # s_x is a vector of size (batch_size, d) and we sum on d to have the determinant for each samples
+        # and we took the logarithm of the det that is why we sum the s and log(1)=0
         det_J = torch.sum(s_x, 1)
 
         return z, det_J
@@ -62,8 +54,6 @@ class CouplingLayer(nn.Module):
     def inverse(self, y):
         """
         Definition of the inverse pass into a coupling layer for an output y
-        :param y: output of the layer
-        :return: input of the layer
         """
         y = torch.Tensor(y)
         b = self.mask
@@ -72,7 +62,6 @@ class CouplingLayer(nn.Module):
         s_x = self.s(b_x)
         t_x = self.t(b_x)
         z = b_x + (1 - b) * (y * torch.exp(s_x) + t_x)
-        #y = b_x + torch.mul((torch.mul((1 - b), y) - t_x), torch.exp(-s_x))
 
         det_J = torch.sum(-s_x, 1)
 
