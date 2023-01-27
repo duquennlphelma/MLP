@@ -32,7 +32,7 @@ def show(x, outfile=None):
 
 def train_one_epoch(model: nn.Module, train_loader: data.DataLoader, optimizer):
     """
-    Training the model on one epoch
+    Training the model on one epoch for 2D data (Moon & Fun)
     :param model: model chosen
     :param train_loader: Dataloader of the training data
     :param optimizer: chosen optimizer
@@ -61,9 +61,10 @@ def train_one_epoch(model: nn.Module, train_loader: data.DataLoader, optimizer):
 
     return float(epoch_loss)
 
+
 def train_one_epoch_image(model: nn.Module, train_loader: data.DataLoader, optimizer):
     """
-    Training the model on one epoch
+    Training the model on one epoch for images data (MNIST)
     :param model: model chosen
     :param train_loader: Dataloader of the training data
     :param optimizer: chosen optimizer
@@ -72,11 +73,8 @@ def train_one_epoch_image(model: nn.Module, train_loader: data.DataLoader, optim
     losses = []
 
     for x, i in train_loader:
-        print('------start new iteration epoch--------')
-        #print('data i', i.size())
         optimizer.zero_grad()
-        #print ('data x[0].size', x[0].size())
-        #print ('data i', i)
+
         # forward pass
         y, det_J = model(x)
 
@@ -93,7 +91,6 @@ def train_one_epoch_image(model: nn.Module, train_loader: data.DataLoader, optim
         losses.append(output.detach())
 
     epoch_loss = torch.mean(torch.tensor(losses))
-    print('epoch loss', epoch_loss)
 
     return float(epoch_loss)
 
@@ -105,7 +102,6 @@ def index_statistics(samples):
     :param samples: samples in 2D to calculate the index on
     :return: indexes
     """
-
     mean = torch.mean(samples)
     diffs = samples - mean
     var = torch.mean(torch.pow(diffs, 2.0))
@@ -118,6 +114,14 @@ def index_statistics(samples):
 
 
 def checkerboard_mask(h, w, reverse_mask=False):
+    """
+    Creates a checkerboard mask of size (h, w).
+    :param h: height of the mask
+    :param w: width of the mask
+    :param reverse_mask: if False the left corner is 0
+                         if True the left corner is 1
+    :return: the calculated mask
+    """
     x, y = torch.arange(h, dtype=torch.int32), torch.arange(w, dtype=torch.int32)
     xx, yy = torch.meshgrid(x, y, indexing='ij')
     mask = torch.fmod(xx + yy, 2)
@@ -128,6 +132,13 @@ def checkerboard_mask(h, w, reverse_mask=False):
 
 
 def channel_mask(n_channels, reverse_mask=False):
+    """
+    Creates a channel-wise mask for n_channels channels.
+    :param n_channels: number of channels for the mask
+    :param reverse_mask: if False
+                         if True
+    :return: the calculated mask
+    """
     mask = torch.cat([torch.ones(n_channels//2, dtype=torch.float32),
                       torch.zeros(n_channels-n_channels//2, dtype=torch.float32)])
     mask = mask.view(1, n_channels, 1, 1)
@@ -137,7 +148,11 @@ def channel_mask(n_channels, reverse_mask=False):
 
 
 def squeeze(x):
-    """converts a (batch_size,1,4,4) tensor into a (batch_size,4,2,2) tensor"""
+    """
+    Squeezes a tensor x from (batch_size,1,4,4) to (batch_size,4,2,2).
+    :param x: data to squeeze
+    :return: squeezed data
+    """
     batch_size, c, h, w = x.size()
     x = x.reshape(batch_size, c, h//2, 2, w//2, 2)
     x = x.permute(0, 1, 3, 5, 2, 4)
@@ -146,7 +161,11 @@ def squeeze(x):
 
 
 def unsqueeze(x):
-    """converts a (batch_size,4,2,2) tensor into a (batch_size,1,4,4) tensor"""
+    """
+    Unsqueezes a tensor x from (batch_size,4,2,2) to (batch_size,1,4,4).
+    :param x: data to unsqueeze
+    :return: unsqueezed data
+    """
     batch_size, c, h, w = x.size()
     x = x.reshape(batch_size, c//4, 2, 2, h, w)
     x = x.permute(0, 1, 4, 2, 5, 3)
