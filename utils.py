@@ -17,12 +17,12 @@ def show(x, outfile=None):
     x_array = np.array(x)
 
     if outfile is not None:
-        directory = '/home/pml_07/MLP'
+        """directory = '/home/pml_07/MLP'
         file_name = outfile + '.png'
-        path = os.path.join(directory, file_name)
+        path = os.path.join(directory, file_name)"""
         plt.figure()
         plt.plot(x_array[:, 0], x_array[:, 1], '.')
-        plt.savefig(path)
+        plt.savefig(outfile)
         plt.show()
     else:
         plt.figure()

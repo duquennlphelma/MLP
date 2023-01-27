@@ -5,6 +5,7 @@ import torch.utils.data as data
 import torchvision
 from model.rnvp.RNVP2 import RNVP as RNVP2
 from model.rnvp.RNVP import RNVP
+from random import randrange
 
 from model.rnvp.loss_function import NLL
 import matplotlib.pyplot as plt
@@ -44,16 +45,16 @@ def load_data(dataset: str, transformation=None, n_train=None, n_test=None, nois
 
     if dataset == 'FunDataset':
         directory = FunDataset.DIRECTORY
-        train_dataset = FunDataset.FunDataset(n_train, noise=noise, transform=transformation, download=download)
+        train_dataset = FunDataset.FunDataset(n_train, noise=noise, transform=None, download=download)
         train_loader = data.DataLoader(train_dataset, batch_size=batch_size, shuffle=shuffle)
-        test_dataset = FunDataset.FunDataset(n_test, noise=noise, transform=transformation, download=download)
+        test_dataset = FunDataset.FunDataset(n_test, noise=noise, transform=None, download=download)
         test_loader = data.DataLoader(test_dataset, batch_size=batch_size, shuffle=shuffle)
 
     elif dataset == 'MoonDataset':
         directory = MoonDataset.DIRECTORY
-        train_dataset = MoonDataset.MoonDataset(n_train, noise=noise, transform=transformation, download=download)
+        train_dataset = MoonDataset.MoonDataset(n_train, noise=noise, transform=None, download=download)
         train_loader = data.DataLoader(train_dataset, batch_size=batch_size, shuffle=shuffle)
-        test_dataset = MoonDataset.MoonDataset(n_test, noise=noise, transform=transformation, download=download)
+        test_dataset = MoonDataset.MoonDataset(n_test, noise=noise, transform=None, download=download)
         test_loader = data.DataLoader(test_dataset, batch_size=batch_size, shuffle=shuffle)
 
     elif dataset == 'MNIST':
@@ -90,10 +91,6 @@ def train_apply(model, dataset: str, n_train=1000, epochs=10, batch_size=32, lr=
 
     optimizer = torch.optim.Adam([p for p in model.parameters() if p.requires_grad is True], lr=lr)
 
-    for name, param in model.named_parameters():
-        if param.requires_grad:
-            print('name',name)
-
     # Training metrics
     epoch_loss = []
 
@@ -112,138 +109,155 @@ def train_apply(model, dataset: str, n_train=1000, epochs=10, batch_size=32, lr=
 
 
 @click.command()
+@click.option("--train", default=True, help="Whether to train a new model or not")
+@click.option("--save", default=True, help="Whether to save the trained model parameters")
+@click.option("--load_path", default=None, help="Path to the already trained model parameters to load")
 @click.option("--dataset", default='MNIST', type=click.Choice(['MoonDataset', 'FunDataset', 'MNIST']),
-                    help="Dataset chosen : MNIST, FunDataset, MoonDataset.")
+              help="Dataset chosen : MNIST, FunDataset, MoonDataset.")
 @click.option("--epoch", default=10, help="Number of epochs for the training.")
 @click.option("--batch_size", default=128, help="Size of the batch for the training and the test.")
-@click.option("--sample_train", default=1000,
-                    help="Number od samples for training for FunDataset or MoonDataset.")
+@click.option("--sample_train", default=1000, help="Number od samples for training for FunDataset or MoonDataset.")
 @click.option("--sample_test", default=1000, help="Number od samples for test for FunDataset or MoonDataset.")
 @click.option("--noise", default=0.1,
-                    help="Standard deviation of gaussian noise added to the samples for FunDataset or MoonDataset.")
+              help="Standard deviation of gaussian noise added to the samples for FunDataset or MoonDataset.")
 @click.option("--learning_rate", default=1e-4, help="Learning rate for the training.")
 @click.option("--momentum", default=0, help="Momentum for the training.")
-def main(dataset, epoch, batch_size, sample_train, sample_test, noise, learning_rate, momentum):
+def main(train, load_path, save, dataset, epoch, batch_size, sample_train, sample_test, noise, learning_rate, momentum):
+    # CREATING THE MODEL
+    if dataset == 'MNIST':
+        model_rnvp = RNVP()
+    else:
+        model_rnvp = RNVP2()
 
-    # Dowload a MoonDataset example
-    # _, _, _, test_Moon = load_data('MoonDataset', transformation=None, n_train=100, n_test=100, noise=0.1,
-    #                                        download=False)
-    # Dowload a FunDataset example
-    # _, _, data_Fun, test_Fun = load_data('FunDataset', transformation=None, n_train=samples_train, n_test=samples_test, noise=noise,
-    #                                  download=False)
-    print('Download a MNIST_Dataset example\nSTART')
-    _, _, _, test_set = load_data(dataset,
-                                    n_train=sample_train, n_test=sample_test, noise=noise, download=False, batch_size=batch_size,
-                                    transformation=transforms.Compose([transforms.ToTensor()]))
-    print('FINISH')
+    if load_path:
+        # LOAD PARAMETERS OF THE MODEL
+        print(f'LOADING THE MODEL PARAMETERS FROM : {load_path}')
+        model_rnvp.load_state_dict(torch.load(load_path))
 
-    print('CREATING THE MODEL')
-    model_rnvp = RNVP(1, 4)
-
-    # Training
-    print('--------- start training ---------')
-    out = train_apply(model=model_rnvp, n_train=sample_train, dataset=dataset, epochs=epoch, batch_size=batch_size,
-                      lr=learning_rate, transformation=transforms.Compose([transforms.ToTensor()]))
-
-    print('---------- end training ----------')
-
-    print('SAVE THE CURRENT PARAMETERS OF THE MODEL')
-    directory = '/home/pml_07/MLP'
-    file_name = 'model_trained_' + dataset + '_' + str(epoch) + 'epochs_' + str(batch_size) + 'batchsize.pth'
-    path = os.path.join(directory, file_name)
-    torch.save(model_rnvp.state_dict(), path)
-
-    #loading the model
-    #model_rnvp.load_state_dict(torch.load('/home/pml_07/MLP/model_10epoch_jupyter'))
-
-    # Ploting the loss for each epoch
-    print('PLOT THE LOSS FUNCTION')
-    directory = '/home/pml_07/MLP'
-    file_name = 'epoch_loss_' + dataset + '_' + str(epoch) + 'epochs_' + str(batch_size) + 'batchsize.png'
-    path = os.path.join(directory, file_name)
-    plt.figure()
-    plt.title('Loss function per epoch for' + dataset + ' dataset\n'
-              + 'Hyper-parameters :' + str(epoch) + ' epochs, '
-              + str(batch_size) + ' batch size & lr=1e-5 (Adam)')
-    plt.plot(out, '-')
-    plt.savefig(path)
-    plt.show()
-
-    # Test
-
-    # Passing MNIST into the model
-
-    # for element in test_MNIST:
-    for i, data in enumerate(test_set):
-        exit_data = model_rnvp(data[0])
-        exit_data = exit_data[0].detach().numpy()
-        directory = '/home/pml_07/MLP'
-        file_name = 'plot_test_set_' + dataset + '_' + str(epoch) + 'epochs_' + str(batch_size) + 'batchsize.png'
+    if train:
+        # TRAINING
+        print('TRAINING THE MODEL')
+        out = train_apply(model=model_rnvp, n_train=sample_train, dataset=dataset, epochs=epoch, batch_size=batch_size,
+                          lr=learning_rate, transformation=transforms.Compose([transforms.ToTensor()]))
+        # PLOT - LOSS PER EPOCH
+        print('FIGURE - TRAINING LOSS PER EPOCH')
+        directory = CURRENT_DIR
+        file_name = f'epoch_loss_{epoch}_epochs_{batch_size}_batchsize.png'
         path = os.path.join(directory, file_name)
-        plt.imshow(exit_data[0,0], cmap='gray')
+        plt.figure()
+        plt.title(f'Loss per epoch for {dataset} dataset\n'
+                  f'Hyper-parameters :{epoch} epochs, batch_size = {batch_size} & lr={learning_rate} (Adam)')
+        plt.xlabel('Epoch')
+        plt.ylabel('Loss')
+        plt.plot(out, '-')
         plt.savefig(path)
-        if i>1:
-            break
+        plt.show()
 
+        if save:
+            # SAVE THE CURRENT PARAMETERS OF THE MODEL
+            print('SAVING THE MODEL')
+            directory = CURRENT_DIR
+            file_name = f'model_trained_{dataset}_{epoch}_epochs_{batch_size}_batchsize.pth'
+            path = os.path.join(directory, file_name)
+            torch.save(model_rnvp.state_dict(), path)
+
+    # TESTING THE MODEL
+    print('TESTING THE MODEL')
+    _, _, test_set, test_loader = load_data(dataset, n_train=sample_train, n_test=sample_test, noise=noise, download=False,
+                                            batch_size=batch_size, transformation=transforms.Compose([transforms.ToTensor()]))
 
     if dataset == 'MNIST':
-        # Test
+        # PASSING DATA THROUGH THE MODEL
+        print('PASSING TEST DATA THROUGH THE MODEL')
+        rand_in_batch = randrange(0, batch_size)
+        for x, i in test_loader:
+            out_im_batch = model_rnvp(x)
+            out_im = out_im_batch[0][rand_in_batch].detach().numpy()
 
-        # Passing MNIST into the model
-
-        # for element in test_MNIST:
-        for i, data in enumerate(test_set):
-            exit_data = model_rnvp(data[0])
-            exit_data = exit_data[0].detach().numpy()
-            directory = '/home/pml_07/MLP'
-            file_name = 'plot_test_set_' + dataset + '_' + str(epoch) + 'epochs_' + str(batch_size) + 'batchsize.png'
+            directory = CURRENT_DIR
+            file_name = f'test_output_MNIST_{epoch}_epochs_{batch_size}_batchsize.png'
             path = os.path.join(directory, file_name)
-            plt.imshow(exit_data[0, 0], cmap='gray')
+            plt.figure()
+            plt.suptitle(f'Image in the latent space for MNIST dataset\n'
+                         f'Hyper-parameters :{epoch} epochs, batch_size = {batch_size} & lr={learning_rate} (Adam)')
+            plt.subplot(1, 2, 1)
+            plt.title('Data space')
+            plt.imshow(x[rand_in_batch].detach().numpy()[0], cmap='gray')
+            plt.subplot(1, 2, 2)
+            plt.title('Latent space')
+            plt.imshow(out_im[0], cmap='gray')
             plt.savefig(path)
-            if i > 1:
-                break
+            break
 
-        #REVERSE
-        gaussian_image=torch.from_numpy(np.float32([[np.random.randn(test_set.dataset[0][0][0].size(0), test_set.dataset[0][0][0].size(1))]]))
-        image_recreated= model_rnvp.inverse(gaussian_image)
-        exit_data = image_recreated[0].detach().numpy()[0][0]
-        directory = '/home/pml_07/MLP'
-        file_name = 'plot_recreated' + dataset + '_' + str(epoch) + 'epochs_' + str(batch_size) + 'batchsize.png'
+        # TEST OF THE INVERTED MODEL
+        print('TEST OF THE INVERTED MODEL')
+        gauss_im_batch = torch.from_numpy(np.float32([[np.random.randn(test_loader.dataset[0][0][0].size(0),
+                                                                       test_loader.dataset[0][0][0].size(1))]]))
+        gauss_im = gauss_im_batch[0][0]
+        im_invert_batch = model_rnvp.inverse(gauss_im_batch)
+        im_invert = im_invert_batch[0].detach().numpy()[0][0]
+        directory = CURRENT_DIR
+        file_name = f'test_invert_MNIST_{epoch}_epochs_{batch_size}_batchsize.png'
         path = os.path.join(directory, file_name)
-        plt.imshow(exit_data, cmap='gray')
+        plt.figure()
+        plt.suptitle(f'Data recreated by inverting the model for MNIST dataset\n'
+                     f'Hyper-parameters :{epoch} epochs, batch_size = {batch_size} & lr={learning_rate} (Adam)')
+        plt.subplot(1, 2, 1)
+        plt.title('Latent space')
+        plt.imshow(gauss_im, cmap='gray')
+        plt.subplot(1, 2, 2)
+        plt.title('Data space')
+        plt.imshow(im_invert, cmap='gray')
+        plt.savefig(path)
         plt.savefig(path)
 
-    if dataset == 'FunDataset' or dataset == 'MoonDataset':
-
-        # Passing MoonData into the model
+    elif dataset == 'FunDataset' or dataset == 'MoonDataset':
+        # PASSING DATA THROUGH THE MODEL
+        print('PASSING TEST DATA THROUGH THE MODEL')
         exit_data_array = np.array([[0, 0]])
-        loss_data_array = []
         for element in test_set:
             exit_data, det_exit = model_rnvp(element)
             exit_data = exit_data.detach().numpy()
             exit_data_array = np.concatenate((exit_data_array, exit_data))
         exit_data_array = np.array(exit_data_array[1:])
-        file_name = 'plot_test' + dataset + '_' + str(epoch) + 'epochs_' + str(batch_size) + 'batchsize.png'
-        show(exit_data_array, file_name)
+
+        directory = CURRENT_DIR
+        file_name = f'test_output_{dataset}_{epoch}_epochs_{sample_test}_points_{batch_size}_batchsize.png'
+        path = os.path.join(directory, file_name)
+        plt.figure()
+        plt.suptitle(f'Points in the latent space for {dataset} dataset\n'
+                     f'Hyper-parameters :{epoch} epochs, {sample_test} points, batch_size = {batch_size} '
+                     f'& lr={learning_rate} (Adam)')
+        plt.subplot(1, 2, 1)
+        plt.title('Data space')
+        plt.plot(test_set[:, 0], test_set[:, 1], 'b.')
+        plt.subplot(1, 2, 2)
+        plt.title('Latent space')
+        plt.plot(exit_data_array[:, 0], exit_data_array[:, 1], 'r.')
+        plt.savefig(path)
+
+        # TEST OF THE INVERTED MODEL
+        print('TEST OF THE INVERTED MODEL')
+        gauss_np = np.float32(np.random.multivariate_normal(np.zeros(2), np.eye(2), sample_test))
+        gauss_sample = torch.from_numpy(gauss_np)
+        sample_invert = model_rnvp.inverse(gauss_sample)[0].detach().numpy()
+        directory = CURRENT_DIR
+        file_name = f'test_invert_MNIST_{epoch}_epochs_{batch_size}_batchsize.png'
+        path = os.path.join(directory, file_name)
+        plt.figure()
+        plt.suptitle(f'Data recreated by inverting the model for {dataset} dataset\n'
+                     f'Hyper-parameters :{epoch} epochs, {sample_test} points, batch_size = {batch_size} '
+                     f'& lr={learning_rate} (Adam)')
+        plt.subplot(1, 2, 1)
+        plt.title('Latent space')
+        plt.imshow(gauss_np[:, 0], gauss_np[:, 1], 'r.')
+        plt.subplot(1, 2, 2)
+        plt.title('Data space')
+        plt.imshow(sample_invert[:, 0], sample_invert[:, 1], 'b.')
+        plt.savefig(path)
 
 
-
-        #REVERSE
-        # Pass the data in the other way after training : from normal distribution to fun dataset
-        z = torch.distributions.MultivariateNormal(torch.zeros(2), torch.eye(2)).sample(1000)
-        z= torch.from_numpy(np.float32(np.random.multivariate_normal(np.zeros(2), np.eye(2), 1000)))
-        dataset_recreated = model_rnvp.inverse(z)
-        exit_data = dataset_recreated[0].detach().numpy()
-
-        # Plot the data
-
-        exit_array_bis = np.array(exit_data)
-        file_name = 'plot_recreated' + dataset + '_' + str(epoch) + 'epochs_' + str(batch_size) + 'batchsize.png'
-        show(exit_array_bis, file_name)
-
-
-
-if __name__== '__main__' :
+if __name__ == '__main__':
 
     main()
 
