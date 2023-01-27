@@ -91,6 +91,9 @@ def train_apply(model, dataset: str, n_train=1000, epochs=10, batch_size=32, lr=
                                                 batch_size=batch_size, shuffle=True, download=False)
 
     optimizer = torch.optim.Adam([p for p in model.parameters() if p.requires_grad is True], lr=lr)
+    for p in model.parameters():
+        if p.requires_grad is True:
+            print(p)
 
     # Training metrics
     epoch_loss = []
