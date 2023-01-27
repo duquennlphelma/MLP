@@ -1,5 +1,4 @@
 import os
-
 import click
 import torch
 import torch.utils.data as data
@@ -16,10 +15,9 @@ import torchvision.transforms as transforms
 from data import MoonDataset, FunDataset
 from utils import show, train_one_epoch, index_statistics, train_one_epoch_image
 
-
-
-
-path_data_cluster = '/home/space/datasets'
+# GLOBAL VARIABLES
+DIR_DATA_CLUSTER = '/home/space/datasets'
+CURRENT_DIR = os.getcwd()
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 
@@ -27,7 +25,7 @@ def load_data(dataset: str, transformation=None, n_train=None, n_test=None, nois
               download=False):
     """
     Loading of the dataset
-    :param dataset: Name of the datset (MoonDataset, FunDataset or MNIST)
+    :param dataset: Name of the dataset (MoonDataset, FunDataset or MNIST)
     :param transformation
     :param n_train: number of training points generated
     :param n_test: number of testing points generated
@@ -59,14 +57,14 @@ def load_data(dataset: str, transformation=None, n_train=None, n_test=None, nois
         test_loader = data.DataLoader(test_dataset, batch_size=batch_size, shuffle=shuffle)
 
     elif dataset == 'MNIST':
-        directory = path_data_cluster
+        directory = DIR_DATA_CLUSTER
         train_dataset = torchvision.datasets.MNIST(directory, train=True, transform=transformation, download=download)
         train_loader = data.DataLoader(train_dataset, batch_size=batch_size, shuffle=shuffle)
         test_dataset = torchvision.datasets.MNIST(directory, train=False, transform=transformation, download=download)
         test_loader = data.DataLoader(test_dataset, batch_size=batch_size, shuffle=shuffle)
 
     else:
-        print('Dataset not found')
+        print('DATASET NOT FOUND')
         train_dataset = None
         test_dataset = None
         train_loader = None
