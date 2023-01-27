@@ -1,40 +1,32 @@
 import torch
 from torch import nn
 from model.rnvp.CouplingLayer import CouplingLayer
-import numpy as np
 import utils
-
-
-# todo generalize for n coupling layer in the network
-# todo generalize for more than dimensions of points
 
 
 class RNVP(nn.Module):
     """
-    RNVP network model for 2 layers, using CouplingLayer2
+    RNVP network model adapted to image transformation using CouplingLayer.
     """
-
-    def __init__(self, input_size, d):
+    def __init__(self, input_size=1, d=64):
+        """RNVP constructor for one scale : 3 checkerboard, 4 channel-wise and 4 checkerboard
+        :param input_size: number of channels for the input image dataset (1 for MNIST)
+        :param d: size of the modified part of the tensor into the CouplingLayer
+        """
         super().__init__()
 
-        layer_0 = CouplingLayer(1, 64, mask_type='checkerboard', reverse=True)
-        layer_1 = CouplingLayer(1, 64, mask_type='checkerboard', reverse=False)
-        layer_2 = CouplingLayer(1, 64, mask_type='checkerboard', reverse=True)
+        layer_0 = CouplingLayer(input_size, d, mask_type='checkerboard', reverse=True)
+        layer_1 = CouplingLayer(input_size, d, mask_type='checkerboard', reverse=False)
+        layer_2 = CouplingLayer(input_size, d, mask_type='checkerboard', reverse=True)
 
-        # self.squeeze = nn.Conv2d(1, 4, kernel_size=3, padding=1)
+        layer_3 = CouplingLayer(4*input_size, 2*d, mask_type='channel_wise', reverse=False)
+        layer_4 = CouplingLayer(4*input_size, 2*d, mask_type='channel_wise', reverse=True)
+        layer_5 = CouplingLayer(4*input_size, 2*d, mask_type='channel_wise', reverse=False)
 
-        layer_3 = CouplingLayer(4, 128, mask_type='channel_wise', reverse=False)
-        layer_4 = CouplingLayer(4, 128, mask_type='channel_wise', reverse=True)
-        layer_5 = CouplingLayer(4, 128, mask_type='channel_wise', reverse=False)
-
-        # self.de_squeeze1 = nn.Conv2d(4, 2, kernel_size=3, padding=1)
-
-        layer_6 = CouplingLayer(1, 64, mask_type='checkerboard', reverse=True)
-        layer_7 = CouplingLayer(1, 64, mask_type='checkerboard', reverse=False)
-        layer_8 = CouplingLayer(1, 64, mask_type='checkerboard', reverse=True)
-        layer_9 = CouplingLayer(1, 64, mask_type='checkerboard', reverse=False)
-
-        # self.de_squeeze2 = nn.Conv2d(2, 1, kernel_size=3, padding=1)
+        layer_6 = CouplingLayer(input_size, d, mask_type='checkerboard', reverse=True)
+        layer_7 = CouplingLayer(input_size, d, mask_type='checkerboard', reverse=False)
+        layer_8 = CouplingLayer(input_size, d, mask_type='checkerboard', reverse=True)
+        layer_9 = CouplingLayer(input_size, d, mask_type='checkerboard', reverse=False)
 
         self.input_size = input_size
         self.d = d
@@ -46,29 +38,25 @@ class RNVP(nn.Module):
         """
         Forward pass of the RNVP network making the data pass into each coupling layers.
         """
-        #x = x[0]
-        print('-----enetr RNVP forward-------')
         y = x
-        print('datay: ', y.size())
-
         sum_det_J = torch.zeros(len(y))
+
         for i in range(len(self.layers_check1)):
             y, det_J = self.layers_check1[i].forward(y)
             sum_det_J += det_J
-        print('print after check1: ', y.size())
+
         y = utils.squeeze(y)
-        print('print after squeeze: ', y.size())
 
         for i in range(len(self.layers_channel)):
             y, det_J = self.layers_channel[i].forward(y)
             sum_det_J += det_J
-        print('print after channel: ', y.size())
+
         y = utils.unsqueeze(y)
-        print('print after unsqueeze: ', y.size())
+
         for i in range(len(self.layers_check2)):
             y, det_J = self.layers_check2[i].forward(y)
             sum_det_J += det_J
-        print('print after check2: ', y.size())
+
         return y, sum_det_J
 
     def inverse(self, y: torch.Tensor):
