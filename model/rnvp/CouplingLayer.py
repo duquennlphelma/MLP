@@ -1,8 +1,6 @@
 import torch
 from torch import nn
-from model.resnet.ResNet import ResNet
 import utils
-import numpy as np
 
 
 class CouplingLayer(nn.Module):
@@ -10,8 +8,9 @@ class CouplingLayer(nn.Module):
         """
         Initialisation of the coupling layer
         Case of datasets of images
-        :param input_channels: size of the input -> number of channels in the input
+        :param input_channels: number of channels in the input
         :param d_channels: size of the modified part of the tensor into the CouplingLayer -> number of channels in s & t
+        :param mask_type: mask type (checkerboard or channel-wise)
         :param reverse: whether to reverse the mask
         """
         super().__init__()
@@ -34,14 +33,11 @@ class CouplingLayer(nn.Module):
     def forward(self, x):
         """
         Definition of the forward pass into a coupling layer for an input x
-        :param x: input of the layer
-        :return: output of the layer
         """
-        # x = torch.Tensor(x)
         size = torch.Tensor.size(x)  # returns (batch_size, n_channels, h, w)
+
         if self.mask_type == 'checkerboard':
             b = utils.checkerboard_mask(size[-2], size[-1], reverse_mask=self.reverse)
-
         if self.mask_type == 'channel_wise':
             b = utils.channel_mask(self.input_size, reverse_mask=self.reverse)
 
@@ -49,12 +45,7 @@ class CouplingLayer(nn.Module):
         s_x = self.s(b_x) * (1-b)
         t_x = self.t(b_x) * (1-b)
 
-        # y = b_x + torch.mul((1-b), (torch.mul(x, torch.exp(s_x)) + t_x))
         z = (1 - b) * (x - t_x) * torch.exp(-s_x) + b_x
-
-        #s_x is a vector of size (batch_size, n_channels, h, w) and we sum on ? to have the determinant for each samples
-        #and we took the logarithm of the det that is why we sum the s and log(1)=0
-        #det_J = torch.sum(s_x, 1)
 
         det_J = s_x.view(s_x.size(0), -1).sum(-1)
 
@@ -63,20 +54,18 @@ class CouplingLayer(nn.Module):
     def inverse(self, y):
         """
         Definition of the inverse pass into a coupling layer for an output y
-        :param y: output of the layer
-        :return: input of the layer
         """
-
         size = torch.Tensor.size(y)  # returns (batch_size, n_channels, h, w)
+
         if self.mask_type == 'checkerboard':
             b = utils.checkerboard_mask(size[-2], size[-1], reverse_mask=self.reverse)
-
         if self.mask_type == 'channel_wise':
             b = utils.channel_mask(self.input_size, reverse_mask=self.reverse)
 
         b_x = torch.mul(y, b)
         s_x = self.s(b_x)
         t_x = self.t(b_x)
+
         z = b_x + (1 - b) * (y * torch.exp(s_x) + t_x)
 
         det_J = (-s_x).view(s_x.size(0), -1).sum(-1)
