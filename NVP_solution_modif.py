@@ -448,9 +448,6 @@ y = torch.from_numpy(np.float32(exit_data))
 reconstruct = model_rnvp.inverse(y)
 plt.title('Test reverse of the trained network')
 plt.imshow(reconstruct[0].detach().numpy()[0][0], cmap='gray')"""
-"
-
-# In[ ]:
 
 
 
