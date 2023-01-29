@@ -177,8 +177,10 @@ def main(train, load_path, save, dataset, epoch, batch_size, sample_train, sampl
             out_im = out_im_batch[0][rand_in_batch].detach().numpy()
 
             directory = CURRENT_DIR
+            plot_directory = 'plots'
+            global_directory = os.path.join(directory, plot_directory)
             file_name = f'test_output_MNIST_{epoch}_epochs_{batch_size}_batchsize_{learning_rate}_lr.png'
-            path = os.path.join(directory, file_name)
+            path = os.path.join(global_directory, file_name)
             plt.figure()
             plt.suptitle(f'Image in the latent space for MNIST dataset\n'
                          f'Hyper-parameters :{epoch} epochs, batch_size = {batch_size} & lr={learning_rate} (Adam)')
@@ -199,8 +201,10 @@ def main(train, load_path, save, dataset, epoch, batch_size, sample_train, sampl
         im_invert_batch = model_rnvp.inverse(gauss_im_batch)
         im_invert = im_invert_batch[0].detach().numpy()[0][0]
         directory = CURRENT_DIR
+        plot_directory = 'plots'
+        global_directory = os.path.join(directory, plot_directory)
         file_name = f'test_invert_MNIST_{epoch}_epochs_{batch_size}_batchsize_{learning_rate}_lr.png'
-        path = os.path.join(directory, file_name)
+        path = os.path.join(global_directory, file_name)
         plt.figure()
         plt.suptitle(f'Data recreated by inverting the model for MNIST dataset\n'
                      f'Hyper-parameters :{epoch} epochs, batch_size = {batch_size} & lr={learning_rate} (Adam)')
@@ -210,7 +214,6 @@ def main(train, load_path, save, dataset, epoch, batch_size, sample_train, sampl
         plt.subplot(1, 2, 2)
         plt.title('Data space')
         plt.imshow(im_invert, cmap='gray')
-        plt.savefig(path, bbox_inches='tight')
         plt.savefig(path, bbox_inches='tight')
 
     elif dataset == 'FunDataset' or dataset == 'MoonDataset':
@@ -225,8 +228,10 @@ def main(train, load_path, save, dataset, epoch, batch_size, sample_train, sampl
         exit_data_array = np.array(exit_data_array[1:])
 
         directory = CURRENT_DIR
+        plot_directory = 'plots'
+        global_directory = os.path.join(directory, plot_directory)
         file_name = f'test_output_{dataset}_{epoch}_epochs_{sample_train}_points_{batch_size}_batchsize_{learning_rate}_lr.png'
-        path = os.path.join(directory, file_name)
+        path = os.path.join(global_directory, file_name)
         plt.figure()
         plt.suptitle(f'Points in the latent space for {dataset} dataset\n'
                      f'Hyper-parameters :{epoch} epochs, {sample_train} points, batch_size = {batch_size} '
@@ -245,8 +250,10 @@ def main(train, load_path, save, dataset, epoch, batch_size, sample_train, sampl
         gauss_sample = torch.from_numpy(gauss_np)
         sample_invert = model_rnvp.inverse(gauss_sample)[0].detach().numpy()
         directory = CURRENT_DIR
+        plot_directory = 'plots'
+        global_directory = os.path.join(directory, plot_directory)
         file_name = f'test_invert_{dataset}_{epoch}_epochs_{sample_train}_points_{batch_size}_batchsize_{learning_rate}_lr.png'
-        path = os.path.join(directory, file_name)
+        path = os.path.join(global_directory, file_name)
         plt.figure()
         plt.suptitle(f'Data recreated by inverting the model for {dataset} dataset\n'
                      f'Hyper-parameters :{epoch} epochs, {sample_test} points, batch_size = {batch_size} '
