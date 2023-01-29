@@ -1,13 +1,42 @@
-# MLP
+# Real NVP in Pytorch - TUB
 
-## MS1 - 24/11/2022
+## Real NVP
 
 ### Description of the project
-On this date the project is a first model of RNVP network :
-1. Data folder contains the Dataset class
-2. Model/rnvp folder contains the first version of the model
-  * CouplingLayer2 is a class representing the object CouplingLayer for coordinates entries (MoonDataset & FunDataset)
-  * RNVP2 is the architecture of two complementary CouplingLayer2 with non learnable attributes
-3. train.py is the main script to run to start the "training" which consists for the moment of data loading and passing through the model
 
-### How to run the project
+This project is an implementation of the Real NVP in Pytorch based on the paper :
+
+> **Density estimation using Real NVP**
+>
+> Laurent Dinh, Jascha Sohl-Dickstein, Samy Bengio
+> 
+> https://arxiv.org/abs/1605.08803
+
+### Use the code
+
+> **Environment**
+> 
+> Miniconda environment - Python 3.7
+
+> **Datasets**
+> 
+> 1. MoonDataset (2D) : generated from `sklearn.datasets.make_moons`
+> 2. FunDataset (2D) : samples generated from an image
+> 3. MNIST (images)
+
+> **Run**
+> 
+> 1. Main code to run : `RNVP_shell_script.sh` directly calls `train.py`
+> 2. Modify `RNVP_shell_script.sh` with the hyperparameters you want to use 
+> (use `python train.py --help` to see the parameters you can modify)
+>
+> You can train a model or load an already trained one on a specific Dataset.
+
+
+> **Results**
+>
+> Running the code generates different figures : 
+> - Training loss per epoch (if you trained a model)
+> - Example of an output of the model (data space -> latent space)
+> - Example of a reconstructed data (latent space -> data space)
+> You also save the parameters of your trained model
