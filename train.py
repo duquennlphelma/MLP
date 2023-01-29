@@ -150,7 +150,7 @@ def main(train, load_path, save, dataset, epoch, batch_size, sample_train, sampl
         plt.xlabel('Epoch')
         plt.ylabel('Loss')
         plt.plot(out, '-')
-        plt.savefig(path)
+        plt.savefig(path, bbox_inches='tight')
         plt.show()
 
         if save:
@@ -186,7 +186,7 @@ def main(train, load_path, save, dataset, epoch, batch_size, sample_train, sampl
             plt.subplot(1, 2, 2)
             plt.title('Latent space')
             plt.imshow(out_im[0], cmap='gray')
-            plt.savefig(path)
+            plt.savefig(path, bbox_inches='tight')
             break
 
         # TEST OF THE INVERTED MODEL
@@ -208,8 +208,8 @@ def main(train, load_path, save, dataset, epoch, batch_size, sample_train, sampl
         plt.subplot(1, 2, 2)
         plt.title('Data space')
         plt.imshow(im_invert, cmap='gray')
-        plt.savefig(path)
-        plt.savefig(path)
+        plt.savefig(path, bbox_inches='tight')
+        plt.savefig(path, bbox_inches='tight')
 
     elif dataset == 'FunDataset' or dataset == 'MoonDataset':
         # PASSING DATA THROUGH THE MODEL
@@ -235,7 +235,7 @@ def main(train, load_path, save, dataset, epoch, batch_size, sample_train, sampl
         plt.subplot(1, 2, 2)
         plt.title('Latent space')
         plt.plot(exit_data_array[:, 0], exit_data_array[:, 1], 'r.')
-        plt.savefig(path)
+        plt.savefig(path, bbox_inches='tight')
 
         # TEST OF THE INVERTED MODEL
         print('TEST OF THE INVERTED MODEL')
@@ -255,7 +255,7 @@ def main(train, load_path, save, dataset, epoch, batch_size, sample_train, sampl
         plt.subplot(1, 2, 2)
         plt.title('Data space')
         plt.plot(sample_invert[:, 0], sample_invert[:, 1], 'b.')
-        plt.savefig(path)
+        plt.savefig(path, bbox_inches='tight')
 
 
 if __name__ == '__main__':
