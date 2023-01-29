@@ -33,10 +33,13 @@ This project is an implementation of the Real NVP in Pytorch based on the paper 
 > You can train a model or load an already trained one on a specific Dataset.
 
 
-> **Results**
+> **Outputs**
 >
-> Running the code generates different figures : 
+> Running the code generates different figures in the `plots` directory: 
 > - Training loss per epoch (if you trained a model)
 > - Example of an output of the model (data space -> latent space)
 > - Example of a reconstructed data (latent space -> data space)
-> You also save the parameters of your trained model
+> 
+> You also save the parameters of your trained model in the `trained_model` directory
+
+### Results
