@@ -1,4 +1,4 @@
-# Real NVP in Pytorch - Tecknische Universität Berlin
+# Real NVP in Pytorch - TUB
 
 ## Real NVP
 
@@ -18,9 +18,24 @@ This project is an implementation of the Real NVP in Pytorch based on the paper 
 > 
 > Miniconda environment - Python 3.7
 
+> **Datasets**
+> 
+> 1. MoonDataset (2D) : generated from `sklearn.datasets.make_moons`
+> 2. FunDataset (2D) : samples generated from an image
+> 3. MNIST (images)
+
 > **Run**
 > 
 > 1. Main code to run : `RNVP_shell_script.sh` directly calls `train.py`
 > 2. Modify `RNVP_shell_script.sh` with the hyperparameters you want to use 
 > (use `python train.py --help` to see the parameters you can modify)
-> 
+>
+> You can train a model or load an already trained one on a specific Dataset.
+
+
+> **Results**
+>
+> Running the code generates different figures : 
+> - Training loss per epoch (if you trained a model)
+> - Example of an output of the model (data space -> latent space)
+> - Example of a reconstructed data (latent space -> data space)
