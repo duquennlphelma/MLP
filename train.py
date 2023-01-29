@@ -157,8 +157,10 @@ def main(train, load_path, save, dataset, epoch, batch_size, sample_train, sampl
             # SAVE THE CURRENT PARAMETERS OF THE MODEL
             print('SAVING THE MODEL')
             directory = CURRENT_DIR
+            model_trained_directory = 'trained_models'
+            global_directory = os.path.join(directory, model_trained_directory)
             file_name = f'model_trained_{dataset}_{epoch}_epochs_{batch_size}_batchsize_{learning_rate}_lr.pth'
-            path = os.path.join(directory, file_name)
+            path = os.path.join(global_directory, file_name)
             torch.save(model_rnvp.state_dict(), path)
 
     # TESTING THE MODEL
