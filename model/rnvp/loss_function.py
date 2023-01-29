@@ -12,7 +12,8 @@ class NLL(nn.Module):
         self.prior = torch.distributions.normal.Normal(loc=0.0, scale=1.0)
 
     def forward(self, z, det_J):
-        print('z_size:', z.size())
+        print('z_size:', self.prior.log_prob(z).size())
+        print('log_pz_size:', z.size())
         if len(z.size())>1:
             log_pz = self.prior.log_prob(z).sum(dim=[1, 2, 3])
         else :
