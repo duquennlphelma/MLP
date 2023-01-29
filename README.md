@@ -46,4 +46,4 @@ This project is an implementation of the Real NVP in Pytorch based on the paper 
 
 1. MoonDataset
 
-![MoonResults](MLP/plots/readme/epochs_loss_FunDataset_250_epochs_250_batchsize_0.0001_lr.png)
+![MoonResults]([MLP/plots/readme/epochs_loss_FunDataset_250_epochs_250_batchsize_0.0001_lr.png](https://github.com/duquennlphelma/MLP/blob/main/plots/readme/epochs_loss_FunDataset_250_epochs_250_batchsize_0.0001_lr.png)
