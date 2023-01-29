@@ -17,7 +17,8 @@ class NLL(nn.Module):
         if len(z.size())>1:
             log_pz = self.prior.log_prob(z).sum(dim=[1, 2, 3])
         else :
-            log_pz = self.prior.log_prob(z)
+            log_pz = self.prior.log_prob(z).sum(dim=[1])
+        print('log_pz_sizesum:', z.size())
         log_px = det_J + log_pz
         nll = -log_px
         bpd = nll * np.log2(np.exp(1)) / np.prod(z.shape[1:])
