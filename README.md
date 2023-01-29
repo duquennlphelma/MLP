@@ -44,9 +44,17 @@ This project is an implementation of the Real NVP in Pytorch based on the paper 
 
 ### Results
 
-1. MoonDataset : model ![MoonModel](/trained_models/model_trained_MoonDataset_250_epochs_250_batchsize_0.0001_lr.pth)
+1. MoonDataset : model ![Model]([/trained_models/model_trained_MoonDataset_250_epochs_250_batchsize_0.0001_lr.pth](https://github.com/duquennlphelma/MLP/blob/main/trained_models/model_trained_MoonDataset_250_epochs_250_batchsize_0.0001_lr.pth))
 
-![MoonResults](/plots/readme/epochs_loss_FunDataset_250_epochs_250_batchsize_0.0001_lr.png)
+![MoonResults](/plots/readme/epochs_loss_MoonDataset_250_epochs_250_batchsize_0.0001_lr.png)
 ![MoonResults](/plots/readme/test_output_MoonDataset_250_epochs_1000_points_250_batchsize_0.0001_lr.png)
 ![MoonResults](/plots/readme/test_invert_MoonDataset_250_epochs_1000_points_250_batchsize_0.0001_lr.png)
+
+1. FunDataset : model ![Model]([/trained_models/model_trained_FunDataset_250_epochs_250_batchsize_0.0001_lr.pth](https://github.com/duquennlphelma/MLP/blob/main/trained_models/model_trained_FunDataset_250_epochs_250_batchsize_0.0001_lr.pth))
+
+![MoonResults](/plots/readme/epochs_loss_FunDataset_250_epochs_250_batchsize_0.0001_lr.png)
+![MoonResults](/plots/readme/test_output_FunDataset_250_epochs_1000_points_250_batchsize_0.0001_lr.png)
+![MoonResults](/plots/readme/test_invert_FunDataset_250_epochs_1000_points_250_batchsize_0.0001_lr.png)
+
+
 
