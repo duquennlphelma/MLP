@@ -14,7 +14,7 @@ class NLL(nn.Module):
     def forward(self, z, det_J):
         print('z_size:', self.prior.log_prob(z).size())
         print('log_pz_size:', z.size())
-        if len(z.size())>1:
+        if len(z.size())>2:
             log_pz = self.prior.log_prob(z).sum(dim=[1, 2, 3])
         else :
             log_pz = self.prior.log_prob(z).sum(dim=[1])
