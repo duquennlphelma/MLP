@@ -215,7 +215,7 @@ def main(train, load_path, save, dataset, epoch, batch_size, sample_train, sampl
         # PASSING DATA THROUGH THE MODEL
         print('PASSING TEST DATA THROUGH THE MODEL')
         exit_data_array = np.array([[0, 0]])
-        for element in test_set:
+        for element in test_loader:
             print('ELEMENT VALIDATION', element)
             exit_data, det_exit = model_rnvp(element)
             exit_data = exit_data.detach().numpy()
