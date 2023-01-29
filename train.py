@@ -251,10 +251,10 @@ def main(train, load_path, save, dataset, epoch, batch_size, sample_train, sampl
                      f'& lr={learning_rate} (Adam)')
         plt.subplot(1, 2, 1)
         plt.title('Latent space')
-        plt.imshow(gauss_np[:, 0], gauss_np[:, 1], cmap=plt.cm.gray)
+        plt.plot(gauss_np[:, 0], gauss_np[:, 1], 'r.')
         plt.subplot(1, 2, 2)
         plt.title('Data space')
-        plt.imshow(sample_invert[:, 0], sample_invert[:, 1], cmap=plt.cm.viridis)
+        plt.plot(sample_invert[:, 0], sample_invert[:, 1], 'b.')
         plt.savefig(path)
 
 
