@@ -134,7 +134,7 @@ def main(train, load_path, save, dataset, epoch, batch_size, sample_train, sampl
         print(f'LOADING THE MODEL PARAMETERS FROM : {load_path}')
         model_rnvp.load_state_dict(torch.load(load_path))
 
-    if train:
+    if train == True:
         # TRAINING
         print('TRAINING THE MODEL')
         out = train_apply(model=model_rnvp, n_train=sample_train, dataset=dataset, epochs=epoch, batch_size=batch_size,
