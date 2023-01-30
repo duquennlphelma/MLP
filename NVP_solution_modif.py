@@ -348,19 +348,20 @@ def train_apply(model, dataset: str, n_train=1000, epochs=10, batch_size=32, lr=
 
 CURRENT_DIR = os.getcwd()
 
-
+batch_size=400
+epochs=50
 print('CREATING THE MODEL')
 model_rnvp = RNVP(1,4)
-out = train_apply(model=model_rnvp, n_train=10, dataset='MNIST', epochs=100, batch_size=128,
+out = train_apply(model=model_rnvp, n_train=10, dataset='MNIST', epochs=epochs, batch_size=batch_size,
                       lr=1e-5, transformation = transforms.Compose([transforms.ToTensor()]))
 
 print('FIGURE - TRAINING LOSS PER EPOCH')
 directory = CURRENT_DIR
-file_name = 'jupyter_epochs_loss_MNIST_100_epochs_128_batchsize_1e-5_lr.png'
+file_name = f'jupyter_epochs_loss_MNIST_{epochs}_epochs_{batch_size}_batchsize_1e-5_lr.png'
 path = os.path.join(directory, file_name)
 plt.figure()
 plt.title('Loss per epoch for MNIST dataset\n'
-          'Hyper-parameters : 100 epochs, batch_size = 128 & lr=1e-5 (Adam)')
+          f'Hyper-parameters : {epochs} epochs, batch_size = {batch_size} & lr=1e-5 (Adam)')
 plt.xlabel('Epoch')
 plt.ylabel('Loss')
 plt.plot(out, '-')
@@ -369,7 +370,7 @@ plt.show()
 
 print('SAVING THE MODEL')
 directory = CURRENT_DIR
-file_name = 'jupyter_model_trained_MNIST_100_epochs_128_batchsize_1e-5_lr.pth'
+file_name = f'jupyter_model_trained_MNIST_{epochs}_epochs_{batch_size}_batchsize_1e-5_lr.pth'
 path = os.path.join(directory, file_name)
 torch.save(model_rnvp.state_dict(), path)
 
