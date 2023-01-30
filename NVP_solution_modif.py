@@ -348,7 +348,7 @@ def train_apply(model, dataset: str, n_train=1000, epochs=10, batch_size=32, lr=
 
 CURRENT_DIR = os.getcwd()
 
-batch_size=400
+batch_size=250
 epochs=50
 print('CREATING THE MODEL')
 model_rnvp = RNVP(1,4)
