@@ -56,5 +56,11 @@ This project is an implementation of the Real NVP in Pytorch based on the paper 
 ![MoonResults](/plots/readme/test_output_FunDataset_250_epochs_1000_points_250_batchsize_0.0001_lr.png)
 ![MoonResults](/plots/readme/test_invert_FunDataset_250_epochs_1000_points_250_batchsize_0.0001_lr.png)
 
+2. MNIST Dataset : [Model](https://github.com/duquennlphelma/MLP/blob/main/trained_models/model_trained_MNIST_50_epochs_800_batchsize_1e-5_lr.pth)
+
+![MoonResults](/plots/readme/epochs_loss_FunDataset_250_epochs_250_batchsize_0.0001_lr.png)
+![MoonResults](/plots/readme/test_output_FunDataset_250_epochs_1000_points_250_batchsize_0.0001_lr.png)
+![MoonResults](/plots/readme/test_invert_FunDataset_250_epochs_1000_points_250_batchsize_0.0001_lr.png)
+
 
 
